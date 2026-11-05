@@ -1,0 +1,221 @@
+{
+  "EXTERNAL_CACHE_DIR_6EEB665BBA": [
+    "training_data/sources/26/options/cache_dir"
+  ],
+  "EXTERNAL_CACHE_DIR_773CB897AE": [
+    "training_data/sources/27/options/cache_dir"
+  ],
+  "EXTERNAL_CACHE_DIR_F6579970CB": [
+    "training_data/sources/14/options/cache_dir",
+    "training_data/sources/15/options/cache_dir",
+    "training_data/sources/16/options/cache_dir",
+    "training_data/sources/17/options/cache_dir",
+    "training_data/sources/18/options/cache_dir",
+    "training_data/sources/19/options/cache_dir",
+    "training_data/sources/20/options/cache_dir",
+    "training_data/sources/21/options/cache_dir",
+    "training_data/sources/22/options/cache_dir"
+  ],
+  "EXTERNAL_CACHE_DIR_F6E2078DBE": [
+    "training_data/sources/0/options/cache_dir",
+    "training_data/sources/1/options/cache_dir",
+    "training_data/sources/2/options/cache_dir",
+    "training_data/sources/3/options/cache_dir",
+    "training_data/sources/4/options/cache_dir",
+    "training_data/sources/5/options/cache_dir",
+    "training_data/sources/6/options/cache_dir",
+    "training_data/sources/7/options/cache_dir",
+    "training_data/sources/8/options/cache_dir"
+  ],
+  "EXTERNAL_CAMERA_METADATA_698C76334A": [
+    "training_data/sources/8/options/camera_metadata"
+  ],
+  "EXTERNAL_DEPTH_VALIDITY_MASK_ROOT_EE350154D0": [
+    "training_data/sources/2/options/depth_validity_mask_root"
+  ],
+  "EXTERNAL_ELIGIBILITY_MANIFEST_47D5E60842": [
+    "training_data/sources/26/options/eligibility_manifest"
+  ],
+  "EXTERNAL_INVALID_LOG_A51D140C62": [
+    "training_data/invalid_log"
+  ],
+  "EXTERNAL_MANIFEST_0B832B2C62": [
+    "training_data/sources/16/manifest"
+  ],
+  "EXTERNAL_MANIFEST_11BB0E2B6F": [
+    "training_data/sources/9/manifest"
+  ],
+  "EXTERNAL_MANIFEST_38202855E0": [
+    "training_data/sources/8/manifest"
+  ],
+  "EXTERNAL_MANIFEST_3F0DB712E9": [
+    "training_data/sources/14/manifest"
+  ],
+  "EXTERNAL_MANIFEST_639D356E76": [
+    "training_data/sources/5/manifest"
+  ],
+  "EXTERNAL_MANIFEST_6A1CCDA865": [
+    "training_data/sources/11/manifest"
+  ],
+  "EXTERNAL_MANIFEST_6ABE52100E": [
+    "training_data/sources/13/manifest"
+  ],
+  "EXTERNAL_MANIFEST_6E4C8A38D8": [
+    "training_data/sources/2/manifest"
+  ],
+  "EXTERNAL_MANIFEST_79775838F7": [
+    "training_data/sources/7/manifest"
+  ],
+  "EXTERNAL_MANIFEST_7C51BF9CBC": [
+    "training_data/sources/18/manifest"
+  ],
+  "EXTERNAL_MANIFEST_8CAAB7914D": [
+    "training_data/sources/4/manifest"
+  ],
+  "EXTERNAL_MANIFEST_8CFC41DA98": [
+    "training_data/sources/15/manifest"
+  ],
+  "EXTERNAL_MANIFEST_96862EFBD2": [
+    "training_data/sources/1/manifest"
+  ],
+  "EXTERNAL_MANIFEST_A188E6AB14": [
+    "training_data/sources/6/manifest"
+  ],
+  "EXTERNAL_MANIFEST_A507230A8F": [
+    "training_data/sources/3/manifest"
+  ],
+  "EXTERNAL_MANIFEST_C134391CA4": [
+    "training_data/sources/12/manifest"
+  ],
+  "EXTERNAL_MANIFEST_CBE637CD0A": [
+    "training_data/sources/20/manifest"
+  ],
+  "EXTERNAL_MANIFEST_CD395A9B5F": [
+    "training_data/sources/21/manifest"
+  ],
+  "EXTERNAL_MANIFEST_DCA9AE0049": [
+    "training_data/sources/10/manifest"
+  ],
+  "EXTERNAL_MANIFEST_EA0AD03C97": [
+    "training_data/sources/0/manifest"
+  ],
+  "EXTERNAL_MANIFEST_F2BC1BAB62": [
+    "training_data/sources/17/manifest"
+  ],
+  "EXTERNAL_MANIFEST_F649504EA5": [
+    "training_data/sources/22/manifest"
+  ],
+  "EXTERNAL_MANIFEST_FDA3371EDA": [
+    "training_data/sources/19/manifest"
+  ],
+  "EXTERNAL_ROOT_0517BD8285": [
+    "training_data/sources/9/root"
+  ],
+  "EXTERNAL_ROOT_0EE9591136": [
+    "training_data/sources/16/root",
+    "training_data/sources/17/root",
+    "training_data/sources/18/root",
+    "training_data/sources/19/root",
+    "training_data/sources/20/root",
+    "training_data/sources/21/root",
+    "training_data/sources/22/root"
+  ],
+  "EXTERNAL_ROOT_22AF505E7E": [
+    "training_data/sources/10/root"
+  ],
+  "EXTERNAL_ROOT_372AEB5E18": [
+    "training_data/sources/3/root"
+  ],
+  "EXTERNAL_ROOT_45ADC004E7": [
+    "training_data/sources/8/root"
+  ],
+  "EXTERNAL_ROOT_48ED6F7B6E": [
+    "training_data/sources/25/root"
+  ],
+  "EXTERNAL_ROOT_6AEFC1288E": [
+    "training_data/sources/12/root"
+  ],
+  "EXTERNAL_ROOT_6D60549443": [
+    "training_data/sources/14/root",
+    "training_data/sources/4/root",
+    "training_data/sources/5/root"
+  ],
+  "EXTERNAL_ROOT_77250FD343": [
+    "training_data/sources/26/root"
+  ],
+  "EXTERNAL_ROOT_79AB0AFDE8": [
+    "training_data/sources/1/root",
+    "training_data/sources/2/root"
+  ],
+  "EXTERNAL_ROOT_8973E74912": [
+    "training_data/sources/0/root"
+  ],
+  "EXTERNAL_ROOT_B24698D41D": [
+    "training_data/sources/11/root"
+  ],
+  "EXTERNAL_ROOT_C893AB7EF1": [
+    "training_data/sources/15/root",
+    "training_data/sources/6/root",
+    "training_data/sources/7/root"
+  ],
+  "EXTERNAL_ROOT_CF1371BA97": [
+    "training_data/sources/27/root"
+  ],
+  "EXTERNAL_ROOT_DABF26D7FD": [
+    "training_data/sources/23/root",
+    "training_data/sources/24/root"
+  ],
+  "EXTERNAL_ROOT_F4E841F5E6": [
+    "training_data/sources/13/root"
+  ],
+  "EXTERNAL_SPLIT_METADATA_766991A61A": [
+    "training_data/sources/8/options/split_metadata"
+  ],
+  "EXTERNAL_VALIDATION_STAMP_DIR_7A1FAC1E22": [
+    "training_data/sources/0/options/validation_stamp_dir"
+  ],
+  "RUNTIME_BOOTSTRAP": [
+    "private_python"
+  ],
+  "RUNTIME_BOOTSTRAP_SHA256": [
+    "deployment/files"
+  ],
+  "RUNTIME_WRAPPER": [
+    "deployment/python_wrapper"
+  ],
+  "RUNTIME_WRAPPER_SHA256": [
+    "deployment/files"
+  ],
+  "SOURCE_ROOT": [
+    "activation_ready/gate_cwd",
+    "checkpoint_validation/repo",
+    "deployment/candidate_source"
+  ],
+  "TRAINING_EXECUTION_SOURCE_SHA256": [
+    "deployment/files/multicamera4rc/training_execution_future.py"
+  ],
+  "TRAIN_GPU_0_UUID": [
+    "control_common.py",
+    "deployment/ordered_gpu_uuids/0"
+  ],
+  "TRAIN_GPU_1_UUID": [
+    "control_common.py",
+    "deployment/ordered_gpu_uuids/1"
+  ],
+  "TRAIN_GPU_2_UUID": [
+    "control_common.py",
+    "deployment/ordered_gpu_uuids/2"
+  ],
+  "TRAIN_GPU_5_UUID": [
+    "control_common.py",
+    "deployment/ordered_gpu_uuids/3"
+  ],
+  "TRAIN_GPU_6_UUID": [
+    "control_common.py",
+    "deployment/ordered_gpu_uuids/4"
+  ],
+  "TRAIN_GPU_7_UUID": [
+    "control_common.py",
+    "deployment/ordered_gpu_uuids/5"
+  ]
+}

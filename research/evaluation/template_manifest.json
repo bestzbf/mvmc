@@ -1,0 +1,1501 @@
+{
+  "schema": "multid4rt-source-templates-v1",
+  "role": "current evaluation runtime source closure",
+  "original_hash_scope": "Exact source bytes captured from running evaluation deployment or the stated local preparation source.",
+  "source_restoration_verified_before_export": true,
+  "jobs_observed_for_entrypoint_discovery": 333,
+  "score_recipe_configs_inspected_for_source_paths": 28,
+  "external_python_entries": [
+    {
+      "role": "external author checkout",
+      "repository_folder": "mose3",
+      "file": "mose3.py"
+    }
+  ],
+  "excluded_runtime_assets": [
+    "model weights and checkpoints",
+    "RGB, annotations, datasets and inference inputs",
+    "production plans, sample IDs, manifests and recipes",
+    "predictions, caches, scores and logs",
+    "GPU identities, credentials and private path bindings",
+    "third-party checkout contents"
+  ],
+  "files": [
+    {
+      "template_path": "templates/adapters/arrow_20261103/predict_arrow.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/arrow_20261103/predict_arrow.py",
+      "logical_source": "@@ADAPTERS_ROOT@@/arrow_20261103/predict_arrow.py",
+      "template_sha256": "88e1cdfa096fa91d7dfc189ed3889e8e170d963d3f504848966696171b96047f",
+      "original_sha256": "88e1cdfa096fa91d7dfc189ed3889e8e170d963d3f504848966696171b96047f",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/adapters/arrow_rgbfix_20261103/predict_arrow.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/arrow_rgbfix_20261103/predict_arrow.py",
+      "logical_source": "@@ADAPTERS_ROOT@@/arrow_rgbfix_20261103/predict_arrow.py",
+      "template_sha256": "f2b6fe73a8f3bdca465f82cbef3a926cc17b2e5a3d2420aa50d8c8a2f4be5e98",
+      "original_sha256": "f2b6fe73a8f3bdca465f82cbef3a926cc17b2e5a3d2420aa50d8c8a2f4be5e98",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/adapters/mose3_20261104/predict_mose3.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/mose3_20261104/predict_mose3.py",
+      "logical_source": "@@ADAPTERS_ROOT@@/mose3_20261104/predict_mose3.py",
+      "template_sha256": "3c62acb78d376b17504deb0a044b5cac90055454bd4f665a92587cd9b232bcf9",
+      "original_sha256": "3c62acb78d376b17504deb0a044b5cac90055454bd4f665a92587cd9b232bcf9",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/adapters/point4d_20261104/predict_point4d.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/point4d_20261104/predict_point4d.py",
+      "logical_source": "@@ADAPTERS_ROOT@@/point4d_20261104/predict_point4d.py",
+      "template_sha256": "2e43726e3ab22e45cfbb9c841e6682478b42af6f1a29b0ea84b6e2e26143a25e",
+      "original_sha256": "2e43726e3ab22e45cfbb9c841e6682478b42af6f1a29b0ea84b6e2e26143a25e",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/adapters/relift_20261104/predict_relift.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/relift_20261104/predict_relift.py",
+      "logical_source": "@@ADAPTERS_ROOT@@/relift_20261104/predict_relift.py",
+      "template_sha256": "be432e2d75708333d87e3b711d078fdcb4b7c40180674bf2c3e676d1c2f0df97",
+      "original_sha256": "be432e2d75708333d87e3b711d078fdcb4b7c40180674bf2c3e676d1c2f0df97",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/adapters/trackeverything_20261104/predict_trackeverything.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/trackeverything_20261104/predict_trackeverything.py",
+      "logical_source": "@@ADAPTERS_ROOT@@/trackeverything_20261104/predict_trackeverything.py",
+      "template_sha256": "f9552726a83ae3786086647fa698fac9f2aee0f48c4bb2af077e9c6f25ec533d",
+      "original_sha256": "f9552726a83ae3786086647fa698fac9f2aee0f48c4bb2af077e9c6f25ec533d",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/adapters/uniquery4r_20261104/predict_uniquery4r.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/uniquery4r_20261104/predict_uniquery4r.py",
+      "logical_source": "@@ADAPTERS_ROOT@@/uniquery4r_20261104/predict_uniquery4r.py",
+      "template_sha256": "e6345ee1249827347638648d4a08d0fa1eab2438c827697c1277a00acbbd62ce",
+      "original_sha256": "e6345ee1249827347638648d4a08d0fa1eab2438c827697c1277a00acbbd62ce",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/adapters/uniquery4r_20261104/score_worldtrack_native.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/uniquery4r_20261104/score_worldtrack_native.py",
+      "logical_source": "@@ADAPTERS_ROOT@@/uniquery4r_20261104/score_worldtrack_native.py",
+      "template_sha256": "7f70a10ebcf061c8ab0812fa6b009557d637ec245cfc89896702ed8692a3f8b2",
+      "original_sha256": "7f70a10ebcf061c8ab0812fa6b009557d637ec245cfc89896702ed8692a3f8b2",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/models/__init__.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/models/__init__.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/models/__init__.py",
+      "template_sha256": "b4d0955afcf09aa04c9eded25f5654296cc456984e994ce3268df6ea80fe1fcf",
+      "original_sha256": "b4d0955afcf09aa04c9eded25f5654296cc456984e994ce3268df6ea80fe1fcf",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/models/d4rt.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/models/d4rt.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/models/d4rt.py",
+      "template_sha256": "4c9d05bcb0a645645a53366a0fc9057dcd2065eefa4384bf844a5cc9569eae75",
+      "original_sha256": "4c9d05bcb0a645645a53366a0fc9057dcd2065eefa4384bf844a5cc9569eae75",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/models/decoder.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/models/decoder.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/models/decoder.py",
+      "template_sha256": "fe362dffbf285bebd38def7289b7828cc0a45bfb54dc7677df0dd27594fb379d",
+      "original_sha256": "fe362dffbf285bebd38def7289b7828cc0a45bfb54dc7677df0dd27594fb379d",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/models/dense_tracking.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/models/dense_tracking.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/models/dense_tracking.py",
+      "template_sha256": "8a89a9844a7d308012450ac15e663308bb83134cb3d24b156575c86d1b12c4e6",
+      "original_sha256": "8a89a9844a7d308012450ac15e663308bb83134cb3d24b156575c86d1b12c4e6",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/models/embeddings.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/models/embeddings.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/models/embeddings.py",
+      "template_sha256": "83261a5a0002fce77ddb9793598f3b341856a51a8034a35b0d5f00678ca6666d",
+      "original_sha256": "83261a5a0002fce77ddb9793598f3b341856a51a8034a35b0d5f00678ca6666d",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/models/encoder.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/models/encoder.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/models/encoder.py",
+      "template_sha256": "db4699fcb8bc1338572ee9d85a0da86dce915a374006975ed481bfdfe7d6f873",
+      "original_sha256": "db4699fcb8bc1338572ee9d85a0da86dce915a374006975ed481bfdfe7d6f873",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/models/sdpa_backends.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/models/sdpa_backends.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/models/sdpa_backends.py",
+      "template_sha256": "eaccb0b5c8a3150d2c8c1885ccc00e40ae060b18b3d2bca544d06259ebf1d9a8",
+      "original_sha256": "eaccb0b5c8a3150d2c8c1885ccc00e40ae060b18b3d2bca544d06259ebf1d9a8",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/__init__.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/__init__.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/__init__.py",
+      "template_sha256": "10b1cb261877e68fcd2a1089c2a6a9d82a462fa0e4d8cb4acbd087214eeab859",
+      "original_sha256": "10b1cb261877e68fcd2a1089c2a6a9d82a462fa0e4d8cb4acbd087214eeab859",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/attention.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/attention.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/attention.py",
+      "template_sha256": "332ab4208101cf0754676fa408825076b545cdf918e750c955d4158ba905f5e5",
+      "original_sha256": "332ab4208101cf0754676fa408825076b545cdf918e750c955d4158ba905f5e5",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/benchmarks/__init__.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/benchmarks/__init__.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/benchmarks/__init__.py",
+      "template_sha256": "0f60f2b589e5e9bfc2d30194acb172655cce6e1614f966f3c19e527f6cf1b406",
+      "original_sha256": "0f60f2b589e5e9bfc2d30194acb172655cce6e1614f966f3c19e527f6cf1b406",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/benchmarks/official.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/benchmarks/official.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/benchmarks/official.py",
+      "template_sha256": "2e82e7b07910f815bba0b176bcb7a159d28010d99b0d9e01bca6d3eed3ddff89",
+      "original_sha256": "2e82e7b07910f815bba0b176bcb7a159d28010d99b0d9e01bca6d3eed3ddff89",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/benchmarks/protocols.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/benchmarks/protocols.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/benchmarks/protocols.py",
+      "template_sha256": "3152c890cbbfd2ab8ede05bdbfca08944f96cbc59488b11e66c66368a1234428",
+      "original_sha256": "3152c890cbbfd2ab8ede05bdbfca08944f96cbc59488b11e66c66368a1234428",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/benchmarks/refined_current.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/benchmarks/refined_current.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/benchmarks/refined_current.py",
+      "template_sha256": "98449dcb9c55852ac8c1233f3ff050123bcad7fb572505fbc74b95e8289043d7",
+      "original_sha256": "98449dcb9c55852ac8c1233f3ff050123bcad7fb572505fbc74b95e8289043d7",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/benchmarks/released_baselines.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/benchmarks/released_baselines.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/benchmarks/released_baselines.py",
+      "template_sha256": "c0ac5b04d4d7883f28c13ae46ff6d0b78364a477a149d5a64a83cab303b15b91",
+      "original_sha256": "1cf617140c09bccf31716cd8a52292fdd4f4d27bd2cac2feb6c93fa144208fd7",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_ROOT"
+      ]
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/benchmarks/released_data.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/benchmarks/released_data.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/benchmarks/released_data.py",
+      "template_sha256": "a409c8c82d4c0fd41cfd6dcd0cc633fca8b915bd0b230e7278a7e01da37ad841",
+      "original_sha256": "a409c8c82d4c0fd41cfd6dcd0cc633fca8b915bd0b230e7278a7e01da37ad841",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/benchmarks/released_geometry.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/benchmarks/released_geometry.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/benchmarks/released_geometry.py",
+      "template_sha256": "18d388f71909288cd3572d2abbf8601e941ba9cabb6ec5b20f40f549cd5db8b0",
+      "original_sha256": "18d388f71909288cd3572d2abbf8601e941ba9cabb6ec5b20f40f549cd5db8b0",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/benchmarks/released_official.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/benchmarks/released_official.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/benchmarks/released_official.py",
+      "template_sha256": "beaff70d1185fb6fc206054f4a729c82f10b6a9a6f2d76ae3fdf001534a4d059",
+      "original_sha256": "beaff70d1185fb6fc206054f4a729c82f10b6a9a6f2d76ae3fdf001534a4d059",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/benchmarks/released_runner.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/benchmarks/released_runner.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/benchmarks/released_runner.py",
+      "template_sha256": "274e575cf484027de2c71816e965e0091d39297d9fe5658e79e67ac5a2efaa61",
+      "original_sha256": "274e575cf484027de2c71816e965e0091d39297d9fe5658e79e67ac5a2efaa61",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/benchmarks/tapvid_mv.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/benchmarks/tapvid_mv.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/benchmarks/tapvid_mv.py",
+      "template_sha256": "d3c3dc136d1cf0b1a1d8e19c930ddb4e9b5312b2bd94f621e4468eaf739b12b7",
+      "original_sha256": "d3c3dc136d1cf0b1a1d8e19c930ddb4e9b5312b2bd94f621e4468eaf739b12b7",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/benchmarks/tracker_baselines.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/benchmarks/tracker_baselines.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/benchmarks/tracker_baselines.py",
+      "template_sha256": "e5c6e17de90ca58bb6aa825cfb742fafe3ab83dcd1621ea3f375ff97267e1400",
+      "original_sha256": "3b25538cb9ea1865398069e4c052572a89a2f1ee84df0aa7919336811a9f4980",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_ROOT"
+      ]
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/checkpoint.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/checkpoint.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/checkpoint.py",
+      "template_sha256": "773ca8df59218a670bbdcf543105e307492dd2c70d80cfe70294a38921e16242",
+      "original_sha256": "773ca8df59218a670bbdcf543105e307492dd2c70d80cfe70294a38921e16242",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/config.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/config.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/config.py",
+      "template_sha256": "1fa8e9c030944d54cb6ca5716ba2e73e5548fd68ebe5daa59346f04516d72740",
+      "original_sha256": "1fa8e9c030944d54cb6ca5716ba2e73e5548fd68ebe5daa59346f04516d72740",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/embeddings.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/embeddings.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/embeddings.py",
+      "template_sha256": "cccb25133ccae6dece5267da444fc0ec5bb16f4ccf2775305f4ab939dc2c4378",
+      "original_sha256": "cccb25133ccae6dece5267da444fc0ec5bb16f4ccf2775305f4ab939dc2c4378",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/encoder.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/encoder.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/encoder.py",
+      "template_sha256": "12c8c7b27da1617e5cf24c233be6c75d19dc6aaf41800c7a52ecd302ef068822",
+      "original_sha256": "12c8c7b27da1617e5cf24c233be6c75d19dc6aaf41800c7a52ecd302ef068822",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/geometry.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/geometry.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/geometry.py",
+      "template_sha256": "60c3770552d9034720b9b1492411921f35519b976ff8ac37e481d00799df0cd3",
+      "original_sha256": "60c3770552d9034720b9b1492411921f35519b976ff8ac37e481d00799df0cd3",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/metadata.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/metadata.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/metadata.py",
+      "template_sha256": "a81c80b366b5e712fe3b430e08a22aba54341f3e70fe7e938a9ab08f54af9f88",
+      "original_sha256": "a81c80b366b5e712fe3b430e08a22aba54341f3e70fe7e938a9ab08f54af9f88",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/model.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/model.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/model.py",
+      "template_sha256": "e03b43285fa597787b74f690e5b52c5754fd9cf121a0c9873d53e5ac88b16e72",
+      "original_sha256": "e03b43285fa597787b74f690e5b52c5754fd9cf121a0c9873d53e5ac88b16e72",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/motion.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/motion.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/motion.py",
+      "template_sha256": "9d7adffaa0c21bf530b08fa282bd38a071e84f924424fa1014cbf67f161c27ab",
+      "original_sha256": "9d7adffaa0c21bf530b08fa282bd38a071e84f924424fa1014cbf67f161c27ab",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/__init__.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/__init__.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/__init__.py",
+      "template_sha256": "9dab461215d8fef7661dba4a9b056af755d938714d5c89eaacff77e4e98f3383",
+      "original_sha256": "9dab461215d8fef7661dba4a9b056af755d938714d5c89eaacff77e4e98f3383",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/dinov2/__init__.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/dinov2/__init__.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/__init__.py",
+      "template_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/dinov2/layers/__init__.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/dinov2/layers/__init__.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/__init__.py",
+      "template_sha256": "321a97ffc00375d6d48569cbc851a38e7d2dc8bbdbfcffbee722c6c27783acda",
+      "original_sha256": "321a97ffc00375d6d48569cbc851a38e7d2dc8bbdbfcffbee722c6c27783acda",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/dinov2/layers/attention.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/dinov2/layers/attention.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/attention.py",
+      "template_sha256": "90926957ea9c7ec8f4dcb98f848d71cfe8a5956d2b204c465ac2dbfbee13f74c",
+      "original_sha256": "90926957ea9c7ec8f4dcb98f848d71cfe8a5956d2b204c465ac2dbfbee13f74c",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/dinov2/layers/block.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/dinov2/layers/block.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/block.py",
+      "template_sha256": "9064e1750f46d110c05f76e3b9607fe54a8d30b27a8d11fa4340b5a2612a372c",
+      "original_sha256": "9064e1750f46d110c05f76e3b9607fe54a8d30b27a8d11fa4340b5a2612a372c",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/dinov2/layers/drop_path.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/dinov2/layers/drop_path.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/drop_path.py",
+      "template_sha256": "80b5cc50297f3049d313c5659c1244901407bdac80cf424c5d7ed64ae79cd141",
+      "original_sha256": "80b5cc50297f3049d313c5659c1244901407bdac80cf424c5d7ed64ae79cd141",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/dinov2/layers/layer_scale.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/dinov2/layers/layer_scale.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/layer_scale.py",
+      "template_sha256": "23aba2710d7d425b5abd50c006edef9c9224360d6499171b6c1ec18ef73c0b00",
+      "original_sha256": "23aba2710d7d425b5abd50c006edef9c9224360d6499171b6c1ec18ef73c0b00",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/dinov2/layers/mlp.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/dinov2/layers/mlp.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/mlp.py",
+      "template_sha256": "4f17c26120d04e4e4368b07a2396a977044b00d1dcbf1bbd1a9d3447be1aa6cf",
+      "original_sha256": "4f17c26120d04e4e4368b07a2396a977044b00d1dcbf1bbd1a9d3447be1aa6cf",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/dinov2/layers/patch_embed.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/dinov2/layers/patch_embed.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/patch_embed.py",
+      "template_sha256": "72f14d7b3daf3f545ba93c085b0a90f3b63efcf1a14f8d694dc77763c0607528",
+      "original_sha256": "72f14d7b3daf3f545ba93c085b0a90f3b63efcf1a14f8d694dc77763c0607528",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/dinov2/layers/rope.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/dinov2/layers/rope.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/rope.py",
+      "template_sha256": "dcd09808cf03ceae7abfdcbe6805ee36990412b5308b09a86c4b51a040cff38b",
+      "original_sha256": "dcd09808cf03ceae7abfdcbe6805ee36990412b5308b09a86c4b51a040cff38b",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/dinov2/layers/swiglu_ffn.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/dinov2/layers/swiglu_ffn.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/swiglu_ffn.py",
+      "template_sha256": "f0e0bab6e9e835b81c53bd69616af43d254a91af4b119923160b7df1602b1562",
+      "original_sha256": "f0e0bab6e9e835b81c53bd69616af43d254a91af4b119923160b7df1602b1562",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/dinov2/vision_transformer.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/dinov2/vision_transformer.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/vision_transformer.py",
+      "template_sha256": "1a41fc78cfbc8cf0709b5028757a71557e699e0a859fd4834e6360865430f63e",
+      "original_sha256": "1a41fc78cfbc8cf0709b5028757a71557e699e0a859fd4834e6360865430f63e",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/heads/__init__.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/heads/__init__.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/heads/__init__.py",
+      "template_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/heads/cam_dec.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/heads/cam_dec.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/heads/cam_dec.py",
+      "template_sha256": "f7bc81d846b786e314c03eaaf809126505fa0c82eb5177b95eadbfad5beefd63",
+      "original_sha256": "f7bc81d846b786e314c03eaaf809126505fa0c82eb5177b95eadbfad5beefd63",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/heads/dpt_head.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/heads/dpt_head.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/heads/dpt_head.py",
+      "template_sha256": "2665fa666abe6f6a3d5157d8d93fb7204c9edcad0d787b63328339626634f9ae",
+      "original_sha256": "2665fa666abe6f6a3d5157d8d93fb7204c9edcad0d787b63328339626634f9ae",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/heads/dualdpt.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/heads/dualdpt.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/heads/dualdpt.py",
+      "template_sha256": "93b1fb2e81fd9624749145cbb01fe6d64cb90fb6a445907203c11ea39aab8fd2",
+      "original_sha256": "93b1fb2e81fd9624749145cbb01fe6d64cb90fb6a445907203c11ea39aab8fd2",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/heads/head_act.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/heads/head_act.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/heads/head_act.py",
+      "template_sha256": "a6125296113ff97b8d7fc33a771429c786ef2300b277a14bb5a594b000f6fd17",
+      "original_sha256": "a6125296113ff97b8d7fc33a771429c786ef2300b277a14bb5a594b000f6fd17",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/heads/motiondecoder.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/heads/motiondecoder.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/heads/motiondecoder.py",
+      "template_sha256": "cfad1351800532029e55d1231ba659db113fca9e40517b0e171f53b6da894af0",
+      "original_sha256": "cfad1351800532029e55d1231ba659db113fca9e40517b0e171f53b6da894af0",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/heads/utils.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/heads/utils.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/heads/utils.py",
+      "template_sha256": "2dce4c0dca1974a5250cc5d5d95bd3417e3ba9494978437a12d5ab6bbff4d4df",
+      "original_sha256": "2dce4c0dca1974a5250cc5d5d95bd3417e3ba9494978437a12d5ab6bbff4d4df",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/layers/__init__.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/layers/__init__.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/layers/__init__.py",
+      "template_sha256": "e3c28c7b775165b6844000eb69f44d104d6c3803ac7da5d59f6ac3ecfb46d9d8",
+      "original_sha256": "e3c28c7b775165b6844000eb69f44d104d6c3803ac7da5d59f6ac3ecfb46d9d8",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/layers/attention.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/layers/attention.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/layers/attention.py",
+      "template_sha256": "b2357c24e0c76bb0fed1475f4543ed81653577007b6fc8cc583c5abd3179ec3a",
+      "original_sha256": "b2357c24e0c76bb0fed1475f4543ed81653577007b6fc8cc583c5abd3179ec3a",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/layers/block.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/layers/block.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/layers/block.py",
+      "template_sha256": "c7c0f4e58cf0907b0462c73b4505f69f877880131e77a56e19e1faef96664848",
+      "original_sha256": "c7c0f4e58cf0907b0462c73b4505f69f877880131e77a56e19e1faef96664848",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/layers/drop_path.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/layers/drop_path.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/layers/drop_path.py",
+      "template_sha256": "b9f8236e86054b9d9a71275efcad2a9ecaa1f86b529d4b8d6109ddb5e806f67a",
+      "original_sha256": "b9f8236e86054b9d9a71275efcad2a9ecaa1f86b529d4b8d6109ddb5e806f67a",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/layers/layer_scale.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/layers/layer_scale.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/layers/layer_scale.py",
+      "template_sha256": "abb7bbfae152a9de2e6d0961ab5e75c79428e849281bfe50dd07b66b54b485d1",
+      "original_sha256": "abb7bbfae152a9de2e6d0961ab5e75c79428e849281bfe50dd07b66b54b485d1",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/layers/mlp.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/layers/mlp.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/layers/mlp.py",
+      "template_sha256": "255825c73b60a916dd00eb1e38aacbcdbf316e40d6a005efb46e245b7edb43aa",
+      "original_sha256": "255825c73b60a916dd00eb1e38aacbcdbf316e40d6a005efb46e245b7edb43aa",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/layers/patch_embed.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/layers/patch_embed.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/layers/patch_embed.py",
+      "template_sha256": "40da6add3d811198ea3e17cb99cdd4e5cda59e369efbbe3d18d89308618cf142",
+      "original_sha256": "40da6add3d811198ea3e17cb99cdd4e5cda59e369efbbe3d18d89308618cf142",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/layers/rope.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/layers/rope.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/layers/rope.py",
+      "template_sha256": "d9a0b426d54328077853b46c832a6a44724b256fe19ef4eeaece93b284b97715",
+      "original_sha256": "d9a0b426d54328077853b46c832a6a44724b256fe19ef4eeaece93b284b97715",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/layers/swiglu_ffn.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/layers/swiglu_ffn.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/layers/swiglu_ffn.py",
+      "template_sha256": "7b4319195ff93393985291e06cd0aff4e207007547ed6c1c9d7ee58e194031c8",
+      "original_sha256": "7b4319195ff93393985291e06cd0aff4e207007547ed6c1c9d7ee58e194031c8",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/utils/__init__.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/utils/__init__.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/utils/__init__.py",
+      "template_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/vendor/utils/head_utils.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/vendor/utils/head_utils.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/vendor/utils/head_utils.py",
+      "template_sha256": "efed71ecd3b742d5969d1a938bbf34c9923d202dfd5232f204641c4674f0bd6b",
+      "original_sha256": "efed71ecd3b742d5969d1a938bbf34c9923d202dfd5232f204641c4674f0bd6b",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/multicamera4rc/visibility.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/multicamera4rc/visibility.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/multicamera4rc/visibility.py",
+      "template_sha256": "4f8ccfe6125420421eaa787464510099e46e96ed0440f10a870efea3c2b0959b",
+      "original_sha256": "4f8ccfe6125420421eaa787464510099e46e96ed0440f10a870efea3c2b0959b",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/utils/__init__.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/utils/__init__.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/utils/__init__.py",
+      "template_sha256": "7f386464e0d6d0ebd582955b417898f2bfdde53f11d6ec192657ec724aa378ce",
+      "original_sha256": "7f386464e0d6d0ebd582955b417898f2bfdde53f11d6ec192657ec724aa378ce",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/utils/camera.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/utils/camera.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/utils/camera.py",
+      "template_sha256": "1a136d16f18c0709e6ccb1003470ccd61814ed31e97e31927e087a25258fc9b6",
+      "original_sha256": "1a136d16f18c0709e6ccb1003470ccd61814ed31e97e31927e087a25258fc9b6",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/utils/geometry.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/utils/geometry.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/utils/geometry.py",
+      "template_sha256": "ab1a3f6b06fd5ce9997783e54ef325c21654d1f4b78a1d7477b85d0c4f17b484",
+      "original_sha256": "ab1a3f6b06fd5ce9997783e54ef325c21654d1f4b78a1d7477b85d0c4f17b484",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/utils/metrics.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/utils/metrics.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/utils/metrics.py",
+      "template_sha256": "ab3448d9bc2ae275eb96e11e4baa3cb5ebcd752d72063ffca2c693a92d17a19a",
+      "original_sha256": "ab3448d9bc2ae275eb96e11e4baa3cb5ebcd752d72063ffca2c693a92d17a19a",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/utils/misc.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/utils/misc.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/utils/misc.py",
+      "template_sha256": "bebcd02ab3cc7882f66b281883bca5c2c21320b6ba4c0494aa24830476724db2",
+      "original_sha256": "bebcd02ab3cc7882f66b281883bca5c2c21320b6ba4c0494aa24830476724db2",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/baseline_harness/utils/patches.py",
+      "output_path": "benchmarks/code/released_baselines_v3_omnix_oomfix_20261027/utils/patches.py",
+      "logical_source": "@@RELEASED_BASELINE_HARNESS_ROOT@@/utils/patches.py",
+      "template_sha256": "8fba460e5c563f19c6540f35efb0dd5df5b562f5bece253b6d9a43b5fce72b42",
+      "original_sha256": "8fba460e5c563f19c6540f35efb0dd5df5b562f5bece253b6d9a43b5fce72b42",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/eval_10h/scripts/prepare_world.py",
+      "output_path": "baseline_assets/eval_10h_20261104/scripts/prepare_world.py",
+      "logical_source": "@@EVAL_10H_ROOT@@/scripts/prepare_world.py",
+      "template_sha256": "ff77d49ccb3d747a79aeb612540fa965ac789b239b8b9d63d81934f8d58be60b",
+      "original_sha256": "799304fdadc2517536963fcc6bae745f406ec0e38cce1b2d4f765cb291760d55",
+      "mode": 420,
+      "bindings": [
+        "BASELINE_ASSETS_ROOT",
+        "BENCHMARK_ROOT",
+        "RELEASED_BASELINE_HARNESS_ROOT"
+      ]
+    },
+    {
+      "template_path": "templates/eval_10h/scripts/world_subset_score.py",
+      "output_path": "baseline_assets/eval_10h_20261104/scripts/world_subset_score.py",
+      "logical_source": "@@EVAL_10H_ROOT@@/scripts/world_subset_score.py",
+      "template_sha256": "a2421aa88d4e3d302b2d5c3c47a4e744797ab1f3757ef9e96195acbb474e0f3a",
+      "original_sha256": "a2421aa88d4e3d302b2d5c3c47a4e744797ab1f3757ef9e96195acbb474e0f3a",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/eval_10h/tools/mv_subset_score.py",
+      "output_path": "baseline_assets/eval_10h_20261104/tools/mv_subset_score.py",
+      "logical_source": "@@EVAL_10H_ROOT@@/tools/mv_subset_score.py",
+      "template_sha256": "50a88f6d2484f324e0448eb7fbcfb0f595218a2d253edfcb40faf04e0fd0b009",
+      "original_sha256": "3ef8b3dad29dc546e8f3491f9bdf3ebb9e0266726dee685ebae52e0f58e1498b",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_ROOT",
+        "OURS_EVAL_HARNESS_ROOT"
+      ]
+    },
+    {
+      "template_path": "templates/eval_10h/tools/tap_subset_score.py",
+      "output_path": "baseline_assets/eval_10h_20261104/tools/tap_subset_score.py",
+      "logical_source": "@@EVAL_10H_ROOT@@/tools/tap_subset_score.py",
+      "template_sha256": "38cf1d77ac0ba6caba22425cb423b22c83895608b9e0474f0601c3ffefddc670",
+      "original_sha256": "cf2bae54c41482d8c80e425dbadd71c1b5c0c014526f2c0098b06ec78b21b913",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_ROOT",
+        "OURS_EVAL_HARNESS_ROOT"
+      ]
+    },
+    {
+      "template_path": "templates/eval_full/append_prepared.py",
+      "output_path": "baseline_assets/eval_full_20261105/append_prepared.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/append_prepared.py",
+      "template_sha256": "373f2dbd6ef6965ef4628325981447f0cd5ff11eb9b6fd050aa348cca57ac820",
+      "original_sha256": "d09a3314c3c64e007a0de02c19111b2a4a33a2dc281490ba5c2ba078585092d4",
+      "mode": 420,
+      "bindings": [
+        "BASELINE_ASSETS_ROOT",
+        "EVAL_FULL_ROOT",
+        "RELEASED_BASELINE_HARNESS_ROOT"
+      ]
+    },
+    {
+      "template_path": "templates/eval_full/bootstrap_panoptic.py",
+      "output_path": "baseline_assets/eval_full_20261105/bootstrap_panoptic.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/bootstrap_panoptic.py",
+      "template_sha256": "cc4a8ba3b629efffbbc1c3dea37bbbcae13f9b7ad3ac26cff61a8cbd50dd8647",
+      "original_sha256": "f094b608341d6164ab558da50b981e097b242f49c9166153679996ee661fc820",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_CASE_295F46DA82",
+        "BENCHMARK_ROOT",
+        "EVAL_FULL_ROOT",
+        "RELEASED_BASELINE_HARNESS_ROOT"
+      ]
+    },
+    {
+      "template_path": "templates/eval_full/full_runner.py",
+      "output_path": "baseline_assets/eval_full_20261105/full_runner.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/full_runner.py",
+      "template_sha256": "44757482fcd08aef6274beed3f0622d950d82b5c726709b902009a3e1f9a277b",
+      "original_sha256": "c791bd657c7fc6db09bb0035a615bc2fedfc6c3be16eb0b75eb8e3b29f31addb",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_ROOT",
+        "GPU3_UUID",
+        "GPU4_UUID"
+      ]
+    },
+    {
+      "template_path": "templates/eval_full/score_full.py",
+      "output_path": "baseline_assets/eval_full_20261105/score_full.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/score_full.py",
+      "template_sha256": "809d17ab0341bf49aea4e986f191ac59f6e3509e75abdaa18e169c8833454db8",
+      "original_sha256": "809d17ab0341bf49aea4e986f191ac59f6e3509e75abdaa18e169c8833454db8",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/eval_full/scripts/build_full_score_jobs.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/build_full_score_jobs.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/scripts/build_full_score_jobs.py",
+      "template_sha256": "cde1c8865dc2290d4a592c00972d7c1a8c4858ba50367163185ac361cfc69f8c",
+      "original_sha256": "313d4c6e711842c783838011ad088b0cf189815eac70b091b77a4eeda7ff5ad7",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_ROOT",
+        "EVAL_FULL_ROOT"
+      ]
+    },
+    {
+      "template_path": "templates/eval_full/scripts/build_ours_drive_recovery_score.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/build_ours_drive_recovery_score.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/scripts/build_ours_drive_recovery_score.py",
+      "template_sha256": "e8afcd4fcf9475753cc97f23315f965260defaf7b06913b3206cc294be26167b",
+      "original_sha256": "e8afcd4fcf9475753cc97f23315f965260defaf7b06913b3206cc294be26167b",
+      "mode": 420,
+      "bindings": [],
+      "linked_source_sha256": {
+        "9e513498d6da7d9b189b59dc64189c7f1a5ed59beca1827e4bb80a926b0fef9c": "baseline_assets/eval_full_20261105/scripts/score_full_v2.py",
+        "679ba91943a10714b819ea72f6e6c4a7268ea802ccc4ec37e7f94d44739ccd63": "baseline_assets/eval_full_20261105/scripts/route_ours_drive_lock.py"
+      }
+    },
+    {
+      "template_path": "templates/eval_full/scripts/native_display_metrics.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/native_display_metrics.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/scripts/native_display_metrics.py",
+      "template_sha256": "aaa5e12a24d47cd405177996924d4b0c9dffb2b93cd40c9817806380e837044a",
+      "original_sha256": "aaa5e12a24d47cd405177996924d4b0c9dffb2b93cd40c9817806380e837044a",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/eval_full/scripts/observe_mose.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/observe_mose.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/scripts/observe_mose.py",
+      "template_sha256": "7ba94bc42beb28543afda6377b6c90194457b93abca2a526ac4a78dd62f73519",
+      "original_sha256": "7ba94bc42beb28543afda6377b6c90194457b93abca2a526ac4a78dd62f73519",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/eval_full/scripts/ours_drive_oom_recovery_watch.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/ours_drive_oom_recovery_watch.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/scripts/ours_drive_oom_recovery_watch.py",
+      "template_sha256": "d7dec5578ade3be7da79e1f82c16ed56021efdb37c8df8679aa5149786434089",
+      "original_sha256": "128338cda7151041ce96ad24f6ce5d81e6bf97ed6d31a38f8052419d29f18b64",
+      "mode": 420,
+      "bindings": [
+        "RELEASED_BASELINE_HARNESS_ROOT"
+      ],
+      "linked_source_sha256": {
+        "c791bd657c7fc6db09bb0035a615bc2fedfc6c3be16eb0b75eb8e3b29f31addb": "baseline_assets/eval_full_20261105/full_runner.py",
+        "92e184b5dbaf1030ca1473291b6bd334dc1830e64e9820ade5def205759a4baa": "baseline_assets/eval_full_20261105/scripts/prepare_missing.py",
+        "679ba91943a10714b819ea72f6e6c4a7268ea802ccc4ec37e7f94d44739ccd63": "baseline_assets/eval_full_20261105/scripts/route_ours_drive_lock.py",
+        "345d50a1e0300f54a5e55ae7a82a572ff8d980ac1c72d718fb09456c3d5844bc": "benchmarks/evaluation/latest_checkpoint_134400_20261103/drivetrack_streamed/run_streamed_released_134400.py"
+      }
+    },
+    {
+      "template_path": "templates/eval_full/scripts/prepare_all_missing.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/prepare_all_missing.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/scripts/prepare_all_missing.py",
+      "template_sha256": "621449cfc8c1e3f31eb77ec45585e33c165c793cdd4943a368f923c1197bf73c",
+      "original_sha256": "ffb25fa6b34a55bb0b32bb0aa85e573dfdd0515a684bcb9dc10e887ff0a5db19",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_ROOT",
+        "EVAL_FULL_ROOT"
+      ],
+      "linked_source_sha256": {
+        "92e184b5dbaf1030ca1473291b6bd334dc1830e64e9820ade5def205759a4baa": "baseline_assets/eval_full_20261105/scripts/prepare_missing.py",
+        "679ba91943a10714b819ea72f6e6c4a7268ea802ccc4ec37e7f94d44739ccd63": "baseline_assets/eval_full_20261105/scripts/route_ours_drive_lock.py"
+      }
+    },
+    {
+      "template_path": "templates/eval_full/scripts/prepare_missing.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/prepare_missing.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/scripts/prepare_missing.py",
+      "template_sha256": "bcc1b80725a9d36a5079494dfe967dc605cdf33f11cf5d9e61250687374913de",
+      "original_sha256": "92e184b5dbaf1030ca1473291b6bd334dc1830e64e9820ade5def205759a4baa",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_SSH_HOST",
+        "RELEASED_BASELINE_HARNESS_ROOT"
+      ],
+      "linked_source_sha256": {
+        "679ba91943a10714b819ea72f6e6c4a7268ea802ccc4ec37e7f94d44739ccd63": "baseline_assets/eval_full_20261105/scripts/route_ours_drive_lock.py"
+      }
+    },
+    {
+      "template_path": "templates/eval_full/scripts/publish_split_tables.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/publish_split_tables.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/scripts/publish_split_tables.py",
+      "template_sha256": "9e5c1ee6d5bd56d3d5230faa62195d448e2f6f56c11dd6848e7c24fc9b30fd90",
+      "original_sha256": "9e5c1ee6d5bd56d3d5230faa62195d448e2f6f56c11dd6848e7c24fc9b30fd90",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/eval_full/scripts/report_full.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/report_full.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/scripts/report_full.py",
+      "template_sha256": "444c554f01dd97e32191668edc0ab76fc0592b1dc267160a6d38ac2b2e1f1cf8",
+      "original_sha256": "a09d1c25744a6eea8aa49c8ad2be5b57e062ad2820abb8648b63f3fb89f09a7b",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_CASE_4BC7D2E490"
+      ]
+    },
+    {
+      "template_path": "templates/eval_full/scripts/route_ours_drive_lock.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/route_ours_drive_lock.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/scripts/route_ours_drive_lock.py",
+      "template_sha256": "789c1aa65bf3c3f3003ecfc0f673bd2be25c14c2aa12de06824085d1ab318e4c",
+      "original_sha256": "679ba91943a10714b819ea72f6e6c4a7268ea802ccc4ec37e7f94d44739ccd63",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_ROOT",
+        "GPU3_UUID",
+        "GPU4_UUID",
+        "OURS_STREAMED_ROOT"
+      ],
+      "linked_source_sha256": {
+        "345d50a1e0300f54a5e55ae7a82a572ff8d980ac1c72d718fb09456c3d5844bc": "benchmarks/evaluation/latest_checkpoint_134400_20261103/drivetrack_streamed/run_streamed_released_134400.py"
+      }
+    },
+    {
+      "template_path": "templates/eval_full/scripts/score_full_v2.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/score_full_v2.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/scripts/score_full_v2.py",
+      "template_sha256": "9c68485697d136d94b35f4f5f4aeb6ae0a84a33fa8c4f923e753639aa67cd96c",
+      "original_sha256": "9e513498d6da7d9b189b59dc64189c7f1a5ed59beca1827e4bb80a926b0fef9c",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_CASE_4BC7D2E490"
+      ]
+    },
+    {
+      "template_path": "templates/eval_full/scripts/world_full_consumer.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/world_full_consumer.py",
+      "logical_source": "@@EVAL_FULL_ROOT@@/scripts/world_full_consumer.py",
+      "template_sha256": "b9bc2e3a773896a9b48e1dfa4567bf4b42922007c24bdbea42edf0790b2d3781",
+      "original_sha256": "b9bc2e3a773896a9b48e1dfa4567bf4b42922007c24bdbea42edf0790b2d3781",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/__init__.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/__init__.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/__init__.py",
+      "template_sha256": "10b1cb261877e68fcd2a1089c2a6a9d82a462fa0e4d8cb4acbd087214eeab859",
+      "original_sha256": "10b1cb261877e68fcd2a1089c2a6a9d82a462fa0e4d8cb4acbd087214eeab859",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/attention.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/attention.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/attention.py",
+      "template_sha256": "332ab4208101cf0754676fa408825076b545cdf918e750c955d4158ba905f5e5",
+      "original_sha256": "332ab4208101cf0754676fa408825076b545cdf918e750c955d4158ba905f5e5",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/benchmarks/__init__.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/benchmarks/__init__.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/benchmarks/__init__.py",
+      "template_sha256": "0f60f2b589e5e9bfc2d30194acb172655cce6e1614f966f3c19e527f6cf1b406",
+      "original_sha256": "0f60f2b589e5e9bfc2d30194acb172655cce6e1614f966f3c19e527f6cf1b406",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/benchmarks/official.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/benchmarks/official.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/benchmarks/official.py",
+      "template_sha256": "2e82e7b07910f815bba0b176bcb7a159d28010d99b0d9e01bca6d3eed3ddff89",
+      "original_sha256": "2e82e7b07910f815bba0b176bcb7a159d28010d99b0d9e01bca6d3eed3ddff89",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/benchmarks/protocols.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/benchmarks/protocols.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/benchmarks/protocols.py",
+      "template_sha256": "3152c890cbbfd2ab8ede05bdbfca08944f96cbc59488b11e66c66368a1234428",
+      "original_sha256": "3152c890cbbfd2ab8ede05bdbfca08944f96cbc59488b11e66c66368a1234428",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/benchmarks/refined_current.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/benchmarks/refined_current.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/benchmarks/refined_current.py",
+      "template_sha256": "98449dcb9c55852ac8c1233f3ff050123bcad7fb572505fbc74b95e8289043d7",
+      "original_sha256": "98449dcb9c55852ac8c1233f3ff050123bcad7fb572505fbc74b95e8289043d7",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/benchmarks/released_data.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/benchmarks/released_data.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/benchmarks/released_data.py",
+      "template_sha256": "a409c8c82d4c0fd41cfd6dcd0cc633fca8b915bd0b230e7278a7e01da37ad841",
+      "original_sha256": "a409c8c82d4c0fd41cfd6dcd0cc633fca8b915bd0b230e7278a7e01da37ad841",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/benchmarks/released_geometry.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/benchmarks/released_geometry.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/benchmarks/released_geometry.py",
+      "template_sha256": "18d388f71909288cd3572d2abbf8601e941ba9cabb6ec5b20f40f549cd5db8b0",
+      "original_sha256": "18d388f71909288cd3572d2abbf8601e941ba9cabb6ec5b20f40f549cd5db8b0",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/benchmarks/released_official.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/benchmarks/released_official.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/benchmarks/released_official.py",
+      "template_sha256": "beaff70d1185fb6fc206054f4a729c82f10b6a9a6f2d76ae3fdf001534a4d059",
+      "original_sha256": "beaff70d1185fb6fc206054f4a729c82f10b6a9a6f2d76ae3fdf001534a4d059",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/benchmarks/released_runner.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/benchmarks/released_runner.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/benchmarks/released_runner.py",
+      "template_sha256": "f8fc53f372820ce83c012d4cd396a19bfb990958effcb3bcbc006c5544c41456",
+      "original_sha256": "f8fc53f372820ce83c012d4cd396a19bfb990958effcb3bcbc006c5544c41456",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/benchmarks/tapvid_mv.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/benchmarks/tapvid_mv.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/benchmarks/tapvid_mv.py",
+      "template_sha256": "f6c1ec7a9fd3aff2650eca89d07b9b00c50f55c47ae0578921b68e9925c0117a",
+      "original_sha256": "f6c1ec7a9fd3aff2650eca89d07b9b00c50f55c47ae0578921b68e9925c0117a",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/checkpoint.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/checkpoint.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/checkpoint.py",
+      "template_sha256": "773ca8df59218a670bbdcf543105e307492dd2c70d80cfe70294a38921e16242",
+      "original_sha256": "773ca8df59218a670bbdcf543105e307492dd2c70d80cfe70294a38921e16242",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/config.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/config.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/config.py",
+      "template_sha256": "1fa8e9c030944d54cb6ca5716ba2e73e5548fd68ebe5daa59346f04516d72740",
+      "original_sha256": "1fa8e9c030944d54cb6ca5716ba2e73e5548fd68ebe5daa59346f04516d72740",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/embeddings.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/embeddings.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/embeddings.py",
+      "template_sha256": "cccb25133ccae6dece5267da444fc0ec5bb16f4ccf2775305f4ab939dc2c4378",
+      "original_sha256": "cccb25133ccae6dece5267da444fc0ec5bb16f4ccf2775305f4ab939dc2c4378",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/encoder.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/encoder.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/encoder.py",
+      "template_sha256": "12c8c7b27da1617e5cf24c233be6c75d19dc6aaf41800c7a52ecd302ef068822",
+      "original_sha256": "12c8c7b27da1617e5cf24c233be6c75d19dc6aaf41800c7a52ecd302ef068822",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/geometry.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/geometry.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/geometry.py",
+      "template_sha256": "60c3770552d9034720b9b1492411921f35519b976ff8ac37e481d00799df0cd3",
+      "original_sha256": "60c3770552d9034720b9b1492411921f35519b976ff8ac37e481d00799df0cd3",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/metadata.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/metadata.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/metadata.py",
+      "template_sha256": "a81c80b366b5e712fe3b430e08a22aba54341f3e70fe7e938a9ab08f54af9f88",
+      "original_sha256": "a81c80b366b5e712fe3b430e08a22aba54341f3e70fe7e938a9ab08f54af9f88",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/model.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/model.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/model.py",
+      "template_sha256": "e03b43285fa597787b74f690e5b52c5754fd9cf121a0c9873d53e5ac88b16e72",
+      "original_sha256": "e03b43285fa597787b74f690e5b52c5754fd9cf121a0c9873d53e5ac88b16e72",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/motion.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/motion.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/motion.py",
+      "template_sha256": "9d7adffaa0c21bf530b08fa282bd38a071e84f924424fa1014cbf67f161c27ab",
+      "original_sha256": "9d7adffaa0c21bf530b08fa282bd38a071e84f924424fa1014cbf67f161c27ab",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/__init__.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/__init__.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/__init__.py",
+      "template_sha256": "9dab461215d8fef7661dba4a9b056af755d938714d5c89eaacff77e4e98f3383",
+      "original_sha256": "9dab461215d8fef7661dba4a9b056af755d938714d5c89eaacff77e4e98f3383",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/dinov2/__init__.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/dinov2/__init__.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/__init__.py",
+      "template_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/dinov2/layers/__init__.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/dinov2/layers/__init__.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/__init__.py",
+      "template_sha256": "321a97ffc00375d6d48569cbc851a38e7d2dc8bbdbfcffbee722c6c27783acda",
+      "original_sha256": "321a97ffc00375d6d48569cbc851a38e7d2dc8bbdbfcffbee722c6c27783acda",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/dinov2/layers/attention.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/dinov2/layers/attention.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/attention.py",
+      "template_sha256": "90926957ea9c7ec8f4dcb98f848d71cfe8a5956d2b204c465ac2dbfbee13f74c",
+      "original_sha256": "90926957ea9c7ec8f4dcb98f848d71cfe8a5956d2b204c465ac2dbfbee13f74c",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/dinov2/layers/block.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/dinov2/layers/block.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/block.py",
+      "template_sha256": "9064e1750f46d110c05f76e3b9607fe54a8d30b27a8d11fa4340b5a2612a372c",
+      "original_sha256": "9064e1750f46d110c05f76e3b9607fe54a8d30b27a8d11fa4340b5a2612a372c",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/dinov2/layers/drop_path.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/dinov2/layers/drop_path.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/drop_path.py",
+      "template_sha256": "80b5cc50297f3049d313c5659c1244901407bdac80cf424c5d7ed64ae79cd141",
+      "original_sha256": "80b5cc50297f3049d313c5659c1244901407bdac80cf424c5d7ed64ae79cd141",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/dinov2/layers/layer_scale.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/dinov2/layers/layer_scale.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/layer_scale.py",
+      "template_sha256": "23aba2710d7d425b5abd50c006edef9c9224360d6499171b6c1ec18ef73c0b00",
+      "original_sha256": "23aba2710d7d425b5abd50c006edef9c9224360d6499171b6c1ec18ef73c0b00",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/dinov2/layers/mlp.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/dinov2/layers/mlp.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/mlp.py",
+      "template_sha256": "4f17c26120d04e4e4368b07a2396a977044b00d1dcbf1bbd1a9d3447be1aa6cf",
+      "original_sha256": "4f17c26120d04e4e4368b07a2396a977044b00d1dcbf1bbd1a9d3447be1aa6cf",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/dinov2/layers/patch_embed.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/dinov2/layers/patch_embed.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/patch_embed.py",
+      "template_sha256": "72f14d7b3daf3f545ba93c085b0a90f3b63efcf1a14f8d694dc77763c0607528",
+      "original_sha256": "72f14d7b3daf3f545ba93c085b0a90f3b63efcf1a14f8d694dc77763c0607528",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/dinov2/layers/rope.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/dinov2/layers/rope.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/rope.py",
+      "template_sha256": "dcd09808cf03ceae7abfdcbe6805ee36990412b5308b09a86c4b51a040cff38b",
+      "original_sha256": "dcd09808cf03ceae7abfdcbe6805ee36990412b5308b09a86c4b51a040cff38b",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/dinov2/layers/swiglu_ffn.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/dinov2/layers/swiglu_ffn.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/layers/swiglu_ffn.py",
+      "template_sha256": "f0e0bab6e9e835b81c53bd69616af43d254a91af4b119923160b7df1602b1562",
+      "original_sha256": "f0e0bab6e9e835b81c53bd69616af43d254a91af4b119923160b7df1602b1562",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/dinov2/vision_transformer.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/dinov2/vision_transformer.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/dinov2/vision_transformer.py",
+      "template_sha256": "1a41fc78cfbc8cf0709b5028757a71557e699e0a859fd4834e6360865430f63e",
+      "original_sha256": "1a41fc78cfbc8cf0709b5028757a71557e699e0a859fd4834e6360865430f63e",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/heads/__init__.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/heads/__init__.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/heads/__init__.py",
+      "template_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/heads/cam_dec.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/heads/cam_dec.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/heads/cam_dec.py",
+      "template_sha256": "f7bc81d846b786e314c03eaaf809126505fa0c82eb5177b95eadbfad5beefd63",
+      "original_sha256": "f7bc81d846b786e314c03eaaf809126505fa0c82eb5177b95eadbfad5beefd63",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/heads/dpt_head.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/heads/dpt_head.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/heads/dpt_head.py",
+      "template_sha256": "2665fa666abe6f6a3d5157d8d93fb7204c9edcad0d787b63328339626634f9ae",
+      "original_sha256": "2665fa666abe6f6a3d5157d8d93fb7204c9edcad0d787b63328339626634f9ae",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/heads/dualdpt.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/heads/dualdpt.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/heads/dualdpt.py",
+      "template_sha256": "93b1fb2e81fd9624749145cbb01fe6d64cb90fb6a445907203c11ea39aab8fd2",
+      "original_sha256": "93b1fb2e81fd9624749145cbb01fe6d64cb90fb6a445907203c11ea39aab8fd2",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/heads/head_act.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/heads/head_act.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/heads/head_act.py",
+      "template_sha256": "a6125296113ff97b8d7fc33a771429c786ef2300b277a14bb5a594b000f6fd17",
+      "original_sha256": "a6125296113ff97b8d7fc33a771429c786ef2300b277a14bb5a594b000f6fd17",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/heads/motiondecoder.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/heads/motiondecoder.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/heads/motiondecoder.py",
+      "template_sha256": "cfad1351800532029e55d1231ba659db113fca9e40517b0e171f53b6da894af0",
+      "original_sha256": "cfad1351800532029e55d1231ba659db113fca9e40517b0e171f53b6da894af0",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/heads/utils.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/heads/utils.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/heads/utils.py",
+      "template_sha256": "2dce4c0dca1974a5250cc5d5d95bd3417e3ba9494978437a12d5ab6bbff4d4df",
+      "original_sha256": "2dce4c0dca1974a5250cc5d5d95bd3417e3ba9494978437a12d5ab6bbff4d4df",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/layers/__init__.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/layers/__init__.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/layers/__init__.py",
+      "template_sha256": "e3c28c7b775165b6844000eb69f44d104d6c3803ac7da5d59f6ac3ecfb46d9d8",
+      "original_sha256": "e3c28c7b775165b6844000eb69f44d104d6c3803ac7da5d59f6ac3ecfb46d9d8",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/layers/attention.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/layers/attention.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/layers/attention.py",
+      "template_sha256": "b2357c24e0c76bb0fed1475f4543ed81653577007b6fc8cc583c5abd3179ec3a",
+      "original_sha256": "b2357c24e0c76bb0fed1475f4543ed81653577007b6fc8cc583c5abd3179ec3a",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/layers/block.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/layers/block.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/layers/block.py",
+      "template_sha256": "c7c0f4e58cf0907b0462c73b4505f69f877880131e77a56e19e1faef96664848",
+      "original_sha256": "c7c0f4e58cf0907b0462c73b4505f69f877880131e77a56e19e1faef96664848",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/layers/drop_path.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/layers/drop_path.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/layers/drop_path.py",
+      "template_sha256": "b9f8236e86054b9d9a71275efcad2a9ecaa1f86b529d4b8d6109ddb5e806f67a",
+      "original_sha256": "b9f8236e86054b9d9a71275efcad2a9ecaa1f86b529d4b8d6109ddb5e806f67a",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/layers/layer_scale.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/layers/layer_scale.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/layers/layer_scale.py",
+      "template_sha256": "abb7bbfae152a9de2e6d0961ab5e75c79428e849281bfe50dd07b66b54b485d1",
+      "original_sha256": "abb7bbfae152a9de2e6d0961ab5e75c79428e849281bfe50dd07b66b54b485d1",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/layers/mlp.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/layers/mlp.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/layers/mlp.py",
+      "template_sha256": "255825c73b60a916dd00eb1e38aacbcdbf316e40d6a005efb46e245b7edb43aa",
+      "original_sha256": "255825c73b60a916dd00eb1e38aacbcdbf316e40d6a005efb46e245b7edb43aa",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/layers/patch_embed.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/layers/patch_embed.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/layers/patch_embed.py",
+      "template_sha256": "40da6add3d811198ea3e17cb99cdd4e5cda59e369efbbe3d18d89308618cf142",
+      "original_sha256": "40da6add3d811198ea3e17cb99cdd4e5cda59e369efbbe3d18d89308618cf142",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/layers/rope.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/layers/rope.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/layers/rope.py",
+      "template_sha256": "d9a0b426d54328077853b46c832a6a44724b256fe19ef4eeaece93b284b97715",
+      "original_sha256": "d9a0b426d54328077853b46c832a6a44724b256fe19ef4eeaece93b284b97715",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/layers/swiglu_ffn.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/layers/swiglu_ffn.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/layers/swiglu_ffn.py",
+      "template_sha256": "7b4319195ff93393985291e06cd0aff4e207007547ed6c1c9d7ee58e194031c8",
+      "original_sha256": "7b4319195ff93393985291e06cd0aff4e207007547ed6c1c9d7ee58e194031c8",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/utils/__init__.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/utils/__init__.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/utils/__init__.py",
+      "template_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/vendor/utils/head_utils.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/vendor/utils/head_utils.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/vendor/utils/head_utils.py",
+      "template_sha256": "efed71ecd3b742d5969d1a938bbf34c9923d202dfd5232f204641c4674f0bd6b",
+      "original_sha256": "efed71ecd3b742d5969d1a938bbf34c9923d202dfd5232f204641c4674f0bd6b",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/multicamera4rc/visibility.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/multicamera4rc/visibility.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/multicamera4rc/visibility.py",
+      "template_sha256": "4f8ccfe6125420421eaa787464510099e46e96ed0440f10a870efea3c2b0959b",
+      "original_sha256": "4f8ccfe6125420421eaa787464510099e46e96ed0440f10a870efea3c2b0959b",
+      "mode": 436,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/ours_harness/scripts/run_released_tracking_benchmarks.py",
+      "output_path": "benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027/scripts/run_released_tracking_benchmarks.py",
+      "logical_source": "@@OURS_EVAL_HARNESS_ROOT@@/scripts/run_released_tracking_benchmarks.py",
+      "template_sha256": "a9feb7504eb431edfd43f435e8e523307c98f52539badedc6a5147ebe966340e",
+      "original_sha256": "a9feb7504eb431edfd43f435e8e523307c98f52539badedc6a5147ebe966340e",
+      "mode": 509,
+      "bindings": []
+    },
+    {
+      "logical_source": "@@BENCHMARK_ROOT@@/evaluation/eval_exact_v2_20261102/visibility.py",
+      "template_sha256": "9ab738ad0b0901b58b8a947009d0de009e8a16abcd28fa588e00ac0c9281d9a2",
+      "original_sha256": "9ab738ad0b0901b58b8a947009d0de009e8a16abcd28fa588e00ac0c9281d9a2",
+      "mode": 420,
+      "bindings": [],
+      "template_path": "templates/ours_stream_components/eval_exact_v2_20261102/visibility.py",
+      "output_path": "benchmarks/evaluation/eval_exact_v2_20261102/visibility.py"
+    },
+    {
+      "logical_source": "@@BENCHMARK_ROOT@@/evaluation/eval_exact_v9_fixed20_20261102/memory_exact.py",
+      "template_sha256": "6e74f41c34ac85b2507526a5fa003c659e16261d1eb647b17965377366050f18",
+      "original_sha256": "6e74f41c34ac85b2507526a5fa003c659e16261d1eb647b17965377366050f18",
+      "mode": 420,
+      "bindings": [],
+      "template_path": "templates/ours_stream_components/eval_exact_v9_fixed20_20261102/memory_exact.py",
+      "output_path": "benchmarks/evaluation/eval_exact_v9_fixed20_20261102/memory_exact.py"
+    },
+    {
+      "logical_source": "@@BENCHMARK_ROOT@@/evaluation/eval_streaming_candidate_20261102/model.py",
+      "template_sha256": "debd503a4ded8b3ba6a830c51513c7068e3352dda555660d566fdfa6556c456f",
+      "original_sha256": "debd503a4ded8b3ba6a830c51513c7068e3352dda555660d566fdfa6556c456f",
+      "mode": 420,
+      "bindings": [],
+      "template_path": "templates/ours_stream_components/eval_streaming_candidate_20261102/model.py",
+      "output_path": "benchmarks/evaluation/eval_streaming_candidate_20261102/model.py"
+    },
+    {
+      "logical_source": "@@BENCHMARK_ROOT@@/evaluation/eval_streaming_candidate_20261102/streaming.py",
+      "template_sha256": "056140d6c1bf53753592e359616f6fc806f43e8bb68e9633fb462082e541cc5b",
+      "original_sha256": "056140d6c1bf53753592e359616f6fc806f43e8bb68e9633fb462082e541cc5b",
+      "mode": 420,
+      "bindings": [],
+      "template_path": "templates/ours_stream_components/eval_streaming_candidate_20261102/streaming.py",
+      "output_path": "benchmarks/evaluation/eval_streaming_candidate_20261102/streaming.py"
+    },
+    {
+      "template_path": "templates/ours_streamed/run_streamed_released_134400.py",
+      "output_path": "benchmarks/evaluation/latest_checkpoint_134400_20261103/drivetrack_streamed/run_streamed_released_134400.py",
+      "logical_source": "@@OURS_STREAMED_ROOT@@/run_streamed_released_134400.py",
+      "template_sha256": "90e47c56b77e9af4b71885f4cf57f58a516be82a7cc50c1415a1cba2c4a9ecc5",
+      "original_sha256": "345d50a1e0300f54a5e55ae7a82a572ff8d980ac1c72d718fb09456c3d5844bc",
+      "mode": 436,
+      "bindings": [
+        "BENCHMARK_ROOT",
+        "OURS_EVAL_HARNESS_ROOT",
+        "OURS_STREAMED_ROOT",
+        "OURS_STREAM_COMPONENT_ROOT"
+      ]
+    },
+    {
+      "template_path": "templates/preparation_and_reporting/build_inventory.py",
+      "output_path": "preparation_and_reporting/build_inventory.py",
+      "logical_source": "@@LOCAL_RESEARCH_WORKSPACE@@/artifacts/eval_full_20261105/build_inventory.py",
+      "template_sha256": "c124de3619f1eab1d1a828b0762a9d861fe119c2cada84fc1404c647f049a59d",
+      "original_sha256": "d639294f76ee2077425bdeabe955692073b152dc54bb2be1736a84f1072a5174",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_ROOT"
+      ]
+    },
+    {
+      "template_path": "templates/preparation_and_reporting/collect_full_metadata.py",
+      "output_path": "preparation_and_reporting/collect_full_metadata.py",
+      "logical_source": "@@LOCAL_RESEARCH_WORKSPACE@@/artifacts/eval_full_20261105/collect_full_metadata.py",
+      "template_sha256": "5c863253c02285b4776ed088157edfb136bc5d776dd15b44fd6de0e8205f9c83",
+      "original_sha256": "48b87e924d71a8e3c5a291a83cee205a4b61574c11d8d3231978b34c117d65b0",
+      "mode": 420,
+      "bindings": [
+        "BASELINE_ASSETS_ROOT"
+      ]
+    },
+    {
+      "template_path": "templates/preparation_and_reporting/enrich_full_score_statistics.py",
+      "output_path": "preparation_and_reporting/enrich_full_score_statistics.py",
+      "logical_source": "@@LOCAL_RESEARCH_WORKSPACE@@/artifacts/eval_full_20261105/enrich_full_score_statistics.py",
+      "template_sha256": "a6567aa4d029147d47b45213e1417205620adab2ad5908bc6fc58e432b8b2cd3",
+      "original_sha256": "a6567aa4d029147d47b45213e1417205620adab2ad5908bc6fc58e432b8b2cd3",
+      "mode": 420,
+      "bindings": []
+    },
+    {
+      "template_path": "templates/preparation_and_reporting/refresh_snapshot.py",
+      "output_path": "preparation_and_reporting/refresh_snapshot.py",
+      "logical_source": "@@LOCAL_RESEARCH_WORKSPACE@@/artifacts/eval_full_20261105/refresh_snapshot.py",
+      "template_sha256": "c5a09b18d42daf87918741f7c1b9b605062a439ae9e935e7b112345dd3927aec",
+      "original_sha256": "2c0069e706a1627f9fe8f1a759c07008c77cc37a6badcb240f6d32711b400232",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_SSH_HOST",
+        "EVAL_FULL_ROOT"
+      ]
+    },
+    {
+      "template_path": "templates/preparation_and_reporting/register_existing_full_scores.py",
+      "output_path": "preparation_and_reporting/register_existing_full_scores.py",
+      "logical_source": "@@LOCAL_RESEARCH_WORKSPACE@@/artifacts/eval_full_20261105/register_existing_full_scores.py",
+      "template_sha256": "ebdaa32dd191ffc9058ff6bdabc9521348cb1846e85138c2fcdbb6ecbba464aa",
+      "original_sha256": "7ae4d38eb37490f6cc5466abb82bc3887cbd4d8d53af618d95eb2455cbc5a5b0",
+      "mode": 420,
+      "bindings": [
+        "BENCHMARK_ROOT",
+        "BENCHMARK_SSH_HOST",
+        "EVAL_FULL_ROOT"
+      ]
+    }
+  ],
+  "dynamic_stream_components_verified": 4,
+  "materialized_layout": {
+    "evaluation_roles_parent": "baseline_assets",
+    "old_scoring_sibling": "baseline_assets/eval_10h_20261104",
+    "benchmark_code_parent": "benchmarks/code",
+    "stream_component_root": "benchmarks/evaluation"
+  }
+}

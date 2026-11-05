@@ -1,0 +1,11 @@
+{
+  "files": [
+    {
+      "mode": "0644",
+      "original_sha256": "3da0e1fac7f20ff25ab9aec7cf2c90a29def7ab75d0674680450bae2a3078c7d",
+      "output_path": "activation_ready.json",
+      "template_path": "activation_ready.json.in",
+      "template_sha256": "20eccfb4d2668b1987bce6fd5bae26d4afc312aabfcfa81fcc47c6008d04f193"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "files": [
+    {
+      "mode": "0644",
+      "original_sha256": "6a25e219db1aafd2147e4bf4f66337fa04c692f1310ffe732ca5413ef4c172c3",
+      "output_path": "future_private_bootstrap.py",
+      "template_path": "future_private_bootstrap.py.in",
+      "template_sha256": "485fc1f5179f88d827c82bb621b214cf85f5fd299da58eb377b92d12ef1ee611"
+    },
+    {
+      "mode": "0755",
+      "original_sha256": "6dbe2708b563e01c5b46271f4e5c1692375c9c217535ac110560264a98dd8763",
+      "output_path": "private_python",
+      "template_path": "private_python.in",
+      "template_sha256": "d874600e533b7365f715526a30b05fc1a0c5e43f45ffeb444dc4db39c501ee77"
+    }
+  ]
+}

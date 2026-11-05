@@ -1,0 +1,18 @@
+{
+  "bindings": {
+    "BASELINE_ASSETS_ROOT": "${RUNTIME_ROOT}/baseline_assets",
+    "BENCHMARK_CASE_295F46DA82": "replace-with-private-canonical-case-id",
+    "BENCHMARK_CASE_4BC7D2E490": "replace-with-private-canonical-case-id",
+    "BENCHMARK_ROOT": "${RUNTIME_ROOT}/benchmarks",
+    "BENCHMARK_SSH_HOST": "benchmark-host-alias",
+    "EVAL_FULL_ROOT": "${RUNTIME_ROOT}/baseline_assets/eval_full_20261105",
+    "GPU3_UUID": "GPU-REPLACE-WITH-LOCAL-UUID",
+    "GPU4_UUID": "GPU-REPLACE-WITH-LOCAL-UUID",
+    "OURS_EVAL_HARNESS_ROOT": "${RUNTIME_ROOT}/benchmarks/code/my_dfrt_gpu3_resume_geometry_20261027",
+    "OURS_STREAMED_ROOT": "${RUNTIME_ROOT}/benchmarks/evaluation/latest_checkpoint_134400_20261103/drivetrack_streamed",
+    "RELEASED_BASELINE_HARNESS_ROOT": "${RUNTIME_ROOT}/benchmarks/code/released_baselines_v3_omnix_oomfix_20261027",
+    "OURS_STREAM_COMPONENT_ROOT": "${RUNTIME_ROOT}/benchmarks/evaluation",
+    "EVAL_10H_ROOT": "${RUNTIME_ROOT}/baseline_assets/eval_10h_20261104",
+    "ADAPTERS_ROOT": "${RUNTIME_ROOT}/baseline_assets/adapter_cpu_tests"
+  }
+}

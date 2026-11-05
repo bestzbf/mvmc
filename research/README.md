@@ -1,0 +1,24 @@
+# 当前训练与全量评估源码
+
+本目录保存当前实验使用的训练实现、step134400 冻结模型，以及全量评估的准备、推理、评分、恢复和报告代码。三个目录分别记录来源版本和文件哈希。
+
+| 目录 | 内容 |
+| --- | --- |
+| [training](training/README.md) | 六卡训练的基础提交 `069b1c2`、实际加载的 v22 源码覆盖、v23 训练控制器、启动与验证配置模板 |
+| [frozen_134400](frozen_134400/README.md) | `dd45a946` 的冻结模型源码、来源清单和独立的导出身份校验 |
+| [evaluation](evaluation/README.md) | 实际使用的评估调度、模型适配、评分、显存恢复和报告脚本，以及外部依赖版本 |
+
+## 使用研究代码
+
+从 `MultiD4RT` 的主分支检出源码。训练与冻结评估各自加载对应的 `multicamera4rc`，使用独立的 Python 进程和运行目录。上表中的入口说明列出所需 Python 环境、数据清单、模型权重和第三方源码版本。
+
+训练启动器与评估脚本的机器绑定通过 `materialize.py` 渲染。将对应的 `bindings.example.json` 复制到工作区外，填写本机路径和设备 UUID。绑定值使用无空格和引号的字面量。`${RUNTIME_ROOT}` 会展开为输出目录的绝对路径。
+
+```bash
+python research/materialize.py research/evaluation \
+  /work/multid4rt-bindings/evaluation.json /work/multid4rt-runtime/evaluation
+```
+
+渲染器校验模板哈希，按声明重新绑定脚本之间的源码哈希，并写出实际文件的哈希清单。训练模板的渲染顺序见[训练入口说明](training/README.md)。评估队列和评分配方根据绑定后的数据与预测来源重新生成。使用本仓库的冻结模型副本启动新评估时，按[冻结模型说明](frozen_134400/README.md)接入导出身份校验，并使用独立的预测目录。
+
+训练配置、完整代码身份和 GPU 运行环境共同决定能否继续已有训练状态。复用历史 checkpoint、预测和评分时，沿用原始记录要求的源码身份、数据绑定和校验清单。

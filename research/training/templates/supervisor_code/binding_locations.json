@@ -1,0 +1,35 @@
+{
+  "EVALUATION_GPU_LOCK_DIR": [
+    "evaluate_joint_checkpoint_v22.py"
+  ],
+  "FOREIGN_GPU_LEASE_PREFIX": [
+    "control_common.py"
+  ],
+  "FOREIGN_GPU_LOG_LEASE_PREFIX": [
+    "control_common.py"
+  ],
+  "TRAIN_GPU_0_UUID": [
+    "control_common.py",
+    "deployment/ordered_gpu_uuids/0"
+  ],
+  "TRAIN_GPU_1_UUID": [
+    "control_common.py",
+    "deployment/ordered_gpu_uuids/1"
+  ],
+  "TRAIN_GPU_2_UUID": [
+    "control_common.py",
+    "deployment/ordered_gpu_uuids/2"
+  ],
+  "TRAIN_GPU_5_UUID": [
+    "control_common.py",
+    "deployment/ordered_gpu_uuids/3"
+  ],
+  "TRAIN_GPU_6_UUID": [
+    "control_common.py",
+    "deployment/ordered_gpu_uuids/4"
+  ],
+  "TRAIN_GPU_7_UUID": [
+    "control_common.py",
+    "deployment/ordered_gpu_uuids/5"
+  ]
+}

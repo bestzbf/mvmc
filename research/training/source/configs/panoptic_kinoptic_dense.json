@@ -1,0 +1,74 @@
+{
+  "image_mode": "native",
+  "supervision": "dense",
+  "num_queries": 0,
+  "num_times": 4,
+  "epoch_size": 1000,
+  "seed": 49,
+  "sampling": "balanced_coverage",
+  "skip_invalid": true,
+  "invalid_log": "../outputs/kinoptic_invalid_clips.jsonl",
+  "sources": [
+    {
+      "name": "panoptic_kinoptic_geometry",
+      "adapter": "panoptic_kinoptic",
+      "root": "/data6/Panoptic/kinoptic_train",
+      "split": "train",
+      "cameras": 8,
+      "num_times": 4,
+      "weight": 1.0,
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 4,
+          "weight": 1
+        },
+        {
+          "cameras": 2,
+          "num_times": 4,
+          "weight": 2
+        },
+        {
+          "cameras": 4,
+          "num_times": 2,
+          "weight": 2
+        },
+        {
+          "cameras": 8,
+          "num_times": 1,
+          "weight": 1
+        }
+      ],
+      "options": {
+        "max_long_side": 960,
+        "strict": true,
+        "index_workers": 2,
+        "cache_dir": "../outputs/kinoptic_index",
+        "eligibility_manifest": "../multicamera4rc/audits/kinoptic_dynamic_20261025/qualified_eligibility_manifest.json",
+        "exclude_videos": [
+          "160906_band3/hdVideos/hd_00_03.mp4"
+        ],
+        "max_depth_delta_ms": 5.0,
+        "min_depth_nodes": 2,
+        "min_consistent_nodes": 2,
+        "agreement_radius_px": 1,
+        "min_depth_m": 0.5,
+        "max_depth_m": 4.5,
+        "occlusion_guard": true,
+        "occlusion_radius_px": 2,
+        "rgb_verification": "stereo",
+        "rgb_edge_guard": true,
+        "rgb_witnesses": 3,
+        "rgb_min_witnesses": 1,
+        "rgb_max_long_side": 640,
+        "rgb_num_disparities": 128
+      }
+    }
+  ]
+}

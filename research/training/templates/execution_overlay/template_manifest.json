@@ -1,0 +1,11 @@
+{
+  "files": [
+    {
+      "mode": "0644",
+      "original_sha256": "8006b19d435cbb8351bd19206010c3ac644f6319e0850056576798cad6126ddd",
+      "output_path": "multicamera4rc/training_execution_future.py",
+      "template_path": "training_execution_future.py.in",
+      "template_sha256": "f7bcf37f8727a586e4d9a84ac60632a59abd60dd93373e4d5794efb36aeb9d51"
+    }
+  ]
+}

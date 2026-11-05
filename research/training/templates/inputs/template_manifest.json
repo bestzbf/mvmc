@@ -1,0 +1,18 @@
+{
+  "files": [
+    {
+      "mode": "0644",
+      "original_sha256": "386ca0d24f99be20421f9288fd2de078831801ee41dce384da43f8bc640aba1c",
+      "output_path": "deployment.json",
+      "template_path": "deployment.json.in",
+      "template_sha256": "7ccfeb5e42712cd9e27ba4e6091614209190a4b85a4617b80f2087d347fa48a2"
+    },
+    {
+      "mode": "0644",
+      "original_sha256": "56e951f4add70977a7171aa1704254f862ca51e39922c54692d909e96904321d",
+      "output_path": "optional_long.json",
+      "template_path": "optional_long.json.in",
+      "template_sha256": "1d0f7fd06dd79c70d1c41d1f6974ed5e160219166f2d1010bf45a3644f8be247"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "multid4rt-frozen-134400-source-verification-v1",
+  "source_commit": "dd45a94604b20970b8d89cd177d614c3698fa8a9",
+  "source_tree": "d407a307313c9be838cfb75502371201f223b145",
+  "source_package_tree": "7e70902c3ff4ae0b6ee69bbf209fa7fc09ba55d7",
+  "source_manifest_sha256": "3008aacd4a077aa345c763d20cb0e2ebc826e23e846db81a17f98269dfb04ac6",
+  "portable_identity_py_sha256": "850f292fb76f906da9294075d811bdb769fe5bc753a3f6fe47166336a6ade178",
+  "overlay_patch_sha256": "6575926053dc234db3abc980e1dd41757c0f326600007d0697943077cc456a44",
+  "original_refined_current_py_sha256": "98449dcb9c55852ac8c1233f3ff050123bcad7fb572505fbc74b95e8289043d7",
+  "materialized_refined_current_py_sha256": "a2764491ba37377395481689aecedea86044165d0ae3cd70d9486f4305b7ec8e",
+  "original_runtime_tapvid_mv_py_sha256": "f6c1ec7a9fd3aff2650eca89d07b9b00c50f55c47ae0578921b68e9925c0117a",
+  "original_refined_current_path_substitutions": 0,
+  "reachable_python_modules": 42,
+  "exported_files": 53,
+  "original_git_blob_matches": 53,
+  "frozen_evaluation_checkout_byte_matches": 53,
+  "historical_runtime_manifest_source_hash_matches": 50,
+  "historical_full_tree_source_files_hashed": 956,
+  "verification": {
+    "snapshot_unit_tests_passed": 9,
+    "patch_applies_to_exact_original_harness_file": true,
+    "original_git_mode_matches_unpatched_behavior_on_clean_git_fixture": true,
+    "snapshot_activation_and_canonical_benchmark_reimport_match": true,
+    "imports_actual_tapvid_mv_runtime_source": true,
+    "tiny_refined_cpu_model_construction": true,
+    "snapshot_git_metadata_or_bytecode_created": false,
+    "checkpoint_loaded": false,
+    "gpu_used": false,
+    "scoring_executed": false
+  }
+}

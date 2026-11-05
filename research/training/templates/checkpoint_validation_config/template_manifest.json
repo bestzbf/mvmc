@@ -1,0 +1,11 @@
+{
+  "files": [
+    {
+      "mode": "0644",
+      "original_sha256": "d836ee02f45ee3ebd0570f8dd020ddebb15561cf36b014c5e46b149cb1df96f5",
+      "output_path": "checkpoint_validation_job.json",
+      "template_path": "checkpoint_validation_job.json.in",
+      "template_sha256": "fcaa2df7d8cbb151355e927f32b7ac74fb08300e67be159f9dafd9127b11a1fb"
+    }
+  ]
+}

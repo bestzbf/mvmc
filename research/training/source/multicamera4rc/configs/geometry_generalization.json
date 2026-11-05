@@ -1,0 +1,19 @@
+{
+  "schema": "geometry-generalization-preset-v1",
+  "description": "Combined continuation overlay; merge into the checkpoint loss configuration, never use as a standalone loss config.",
+  "loss_overrides": {
+    "depth_objective_options": {
+      "relative_weight": 0.05,
+      "log_bias_weight": 0.02,
+      "temporal_scale_weight": 0.01,
+      "diagnostics": true
+    },
+    "depth_gradient_scales": [1, 2, 4]
+  },
+  "c1_multiplier": 1.25,
+  "photometric_augmentation": "default_clip_shared",
+  "geometry_lr_multiplier": 2.0,
+  "geometry_lr_warmup_steps": 100,
+  "default_total_steps": 200000,
+  "max_monocular_times": null
+}

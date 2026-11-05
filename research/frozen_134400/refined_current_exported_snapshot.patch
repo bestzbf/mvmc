@@ -1,0 +1,20 @@
+--- a/multicamera4rc/benchmarks/refined_current.py
++++ b/multicamera4rc/benchmarks/refined_current.py
+@@ -44,6 +44,17 @@
+ 
+ def build_model_runtime_manifest(model_code_root, *, expected_revision=None):
+     """Require a clean external source tree and bind its actual source bytes."""
++    snapshot_manifest = os.environ.get("MULTID4RT_EXPORTED_MODEL_MANIFEST")
++    if snapshot_manifest is not None:
++        import importlib.util
++
++        identity_path = Path(__file__).with_name("portable_identity.py")
++        spec = importlib.util.spec_from_file_location("_multid4rt_portable_identity", identity_path)
++        identity = importlib.util.module_from_spec(spec)
++        spec.loader.exec_module(identity)
++        return identity.build_exported_model_runtime_manifest(
++            model_code_root, snapshot_manifest, expected_revision=expected_revision,
++        )
+     root = Path(model_code_root).resolve(strict=True)
+     package = root / "multicamera4rc"
+     for required in ("__init__.py", "model.py", "config.py", "checkpoint.py"):

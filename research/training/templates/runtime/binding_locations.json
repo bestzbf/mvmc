@@ -1,0 +1,20 @@
+{
+  "DATA_SITE_PACKAGES": [
+    "future_private_bootstrap.py"
+  ],
+  "DEPLOYMENT_JSON": [
+    "activation_ready/deployment/path",
+    "checkpoint_validation/eval_runtime_manifest",
+    "private_python"
+  ],
+  "PRIVATE_ENV": [
+    "future_private_bootstrap.py",
+    "private_python"
+  ],
+  "RUNTIME_BOOTSTRAP": [
+    "private_python"
+  ],
+  "SHARED_SITE_PACKAGES": [
+    "future_private_bootstrap.py"
+  ]
+}

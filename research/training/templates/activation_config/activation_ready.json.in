@@ -1,0 +1,69 @@
+{
+  "data_config": {
+    "path": "@@DATA_CONFIG@@",
+    "sha256": "@@DATA_CONFIG_SHA256@@"
+  },
+  "deployment": {
+    "path": "@@DEPLOYMENT_JSON@@",
+    "sha256": "@@DEPLOYMENT_JSON_SHA256@@"
+  },
+  "environment": {
+    "MKL_NUM_THREADS": "4",
+    "OMP_NUM_THREADS": "4",
+    "PYTORCH_ALLOC_CONF": "expandable_segments:True"
+  },
+  "evaluation": {
+    "module": "@@CHECKPOINT_VALIDATION_MODULE@@",
+    "module_sha256": "@@CHECKPOINT_VALIDATION_MODULE_SHA256@@",
+    "template": "@@CHECKPOINT_VALIDATION_TEMPLATE@@",
+    "template_sha256": "@@CHECKPOINT_VALIDATION_TEMPLATE_SHA256@@"
+  },
+  "gate_argv": [
+    "@@EXTERNAL_0_C4B17904AB@@",
+    "-B",
+    "@@EXTERNAL_2_7D57753BC8@@"
+  ],
+  "gate_cwd": "@@SOURCE_ROOT@@",
+  "loss_config": {
+    "path": "@@LOSS_CONFIG@@",
+    "sha256": "06de9fe919f5dcae350f11af376ea4d9e9df9bc29bda16a8bc9bca3d39e84a8a"
+  },
+  "native_launch_args": [
+    "--data-config",
+    "@@DATA_CONFIG@@",
+    "--loss-config",
+    "@@LOSS_CONFIG@@",
+    "--preset",
+    "giant",
+    "--batch-size",
+    "1",
+    "--gradient-accumulation",
+    "1",
+    "--source-count",
+    "4",
+    "--max-source-time-pairs",
+    "64",
+    "--prefer-motion-sources",
+    "--workers",
+    "2",
+    "--amp-dtype",
+    "bfloat16",
+    "--cpu-threads",
+    "4",
+    "--seed",
+    "49",
+    "--no-query-chunking",
+    "--decoder-memory",
+    "target_time",
+    "--no-reuse-decoder-kv",
+    "--no-reuse-shared-computation"
+  ],
+  "publisher_receipt": {
+    "path": "@@EXTERNAL_PATH_26E8FB6C55@@",
+    "sha256": "cd0521351ae877924a6b6e7025ed8a4cdb090bb70a7b25ca977fd01a9bd5b635"
+  },
+  "publisher_verify": {
+    "path": "@@EXTERNAL_PATH_796B5F20AD@@",
+    "sha256": "9c09ecf740041ca96bd00f61028c16b11e51d9f2bb9fc482abcc23caa8d4c421"
+  }
+}

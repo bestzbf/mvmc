@@ -1,0 +1,21 @@
+{
+  "activation_ready": "@@ACTIVATION_READY@@",
+  "activation_ready_sha256": "@@ACTIVATION_READY_SHA256@@",
+  "boot_checkpoint": "@@EXTERNAL_BOOT_CHECKPOINT_8DB43A7E94@@",
+  "boot_checkpoint_sha256": "d2cc61843c5b9cc7ae9839fb5bdea8b1e3e5b85fc6395af7e81a6c52a251decf",
+  "canonical_active_path": "@@EXTERNAL_CANONICAL_ACTIVE_PATH_2ED930AC5D@@",
+  "control_dir": "@@SUPERVISOR_STATE_DIR@@",
+  "evaluation_repo": "@@EVALUATION_CHECKOUT@@",
+  "format_version": 1,
+  "physical_gpus": [
+    0,
+    1,
+    2,
+    5,
+    6,
+    7
+  ],
+  "prior_control": "@@PRIOR_ACTIVATION_STATE_DIR@@",
+  "source_stopped": "@@EXTERNAL_SOURCE_STOPPED_D7F1D1BE6A@@",
+  "source_stopped_sha256": "eaa5f0d9f828de7df816864aaad6635feb022c5a9cf940acbeb84182ab73a0c8"
+}

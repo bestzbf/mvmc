@@ -1,0 +1,43 @@
+{
+  "CHECKPOINT_VALIDATION_MODULE": [
+    "activation_ready/evaluation/module",
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "CHECKPOINT_VALIDATION_MODULE_SHA256": [],
+  "CHECKPOINT_VALIDATION_TEMPLATE": [
+    "activation_ready/evaluation/template"
+  ],
+  "CHECKPOINT_VALIDATION_TEMPLATE_SHA256": [],
+  "DATA_CONFIG": [
+    "activation_ready/data_config/path",
+    "activation_ready/native_launch_args/1"
+  ],
+  "DATA_CONFIG_SHA256": [],
+  "DEPLOYMENT_JSON": [
+    "activation_ready/deployment/path",
+    "checkpoint_validation/eval_runtime_manifest",
+    "private_python"
+  ],
+  "DEPLOYMENT_JSON_SHA256": [],
+  "EXTERNAL_0_C4B17904AB": [
+    "activation_ready/gate_argv/0"
+  ],
+  "EXTERNAL_2_7D57753BC8": [
+    "activation_ready/gate_argv/2"
+  ],
+  "EXTERNAL_PATH_26E8FB6C55": [
+    "activation_ready/publisher_receipt/path"
+  ],
+  "EXTERNAL_PATH_796B5F20AD": [
+    "activation_ready/publisher_verify/path"
+  ],
+  "LOSS_CONFIG": [
+    "activation_ready/loss_config/path",
+    "activation_ready/native_launch_args/3"
+  ],
+  "SOURCE_ROOT": [
+    "activation_ready/gate_cwd",
+    "checkpoint_validation/repo",
+    "deployment/candidate_source"
+  ]
+}

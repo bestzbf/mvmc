@@ -1,0 +1,333 @@
+#!/usr/bin/env python3
+"""Independent native five-suite evaluation for admitted069 four-group saves.
+
+Only new queue/progress files are written. No training pointer/process is changed.
+The original complete GT plans, scorers, report checks and idle-device leases are
+reused. Execution is native SDPA; training FA4 hooks are not installed here.
+"""
+from __future__ import annotations
+from copy import deepcopy
+import argparse
+import fcntl
+import hashlib
+import importlib.util
+import json
+import math
+import os
+from pathlib import Path
+import subprocess
+import sys
+import uuid
+
+SCHEMA='joint069-native-evaluation-v22'
+COMMIT='069b1c28ce4763e2ac6a4f06dbc5b73c9ed3dc55'
+TRAIN_GPUS=[0,1,2,5,6,7]
+EVAL_GPUS=[3,4]
+GROUPS=['backbone','heads','refinement','geometry']
+FIXED_STATE=('world_size','batch_size','gradient_accumulation','effective_batch_size',
+    'sampler_kind','load_balancing','dataset_size','seed','source_count',
+    'max_source_time_pairs','prefer_motion_sources','supervision','scene_normalized',
+    'dense_target_version','kubric_background_policy','augmentation','photometric_augmentation',
+    'loss_config','loss_profile','lr_plan','geometry_lr_options','data_migration',
+    'data_config_sha256','amp_dtype','time_projection_reset_step')
+
+
+def digest(path):
+    result=hashlib.sha256()
+    with Path(path).open('rb') as stream:
+        for block in iter(lambda:stream.read(8<<20),b''):result.update(block)
+    return result.hexdigest()
+
+
+def canonical(value):return json.loads(json.dumps(value,allow_nan=False))
+
+
+def read(path):return json.loads(Path(path).read_text())
+
+
+def file_identity(path):
+    path=Path(path)
+    if path.is_symlink() or not path.is_file() or path.name.endswith('.tmp'):
+        raise ValueError('Require a completed regular checkpoint')
+    value=path.stat()
+    return dict(device=value.st_dev,inode=value.st_ino,size=value.st_size,mtime_ns=value.st_mtime_ns)
+
+
+def atomic_json(path,value,*,exclusive=False):
+    path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
+    temp=path.with_name('.'+path.name+'.'+uuid.uuid4().hex+'.tmp')
+    with temp.open('x') as stream:
+        json.dump(value,stream,indent=2,allow_nan=False);stream.write('\n');stream.flush();os.fsync(stream.fileno())
+    if exclusive:
+        try:os.link(temp,path)
+        except OSError:
+            if not path.is_file() or (path.stat().st_dev,path.stat().st_ino)!=(temp.stat().st_dev,temp.stat().st_ino):raise
+        temp.unlink()
+    else:os.replace(temp,path)
+    fd=os.open(path.parent,os.O_RDONLY|os.O_DIRECTORY)
+    try:os.fsync(fd)
+    finally:os.close(fd)
+
+
+def process_identity(pid):
+    try:
+        path=Path('/proc')/str(pid);fields=(path/'stat').read_text().rsplit(')',1)[1].split()
+        return dict(pid=pid,start=fields[19],uid=path.stat().st_uid,state=fields[0])
+    except (FileNotFoundError,PermissionError,ProcessLookupError):return None
+
+
+def exact_live(expected):
+    current=process_identity(expected.get('pid',-1)) if expected else None
+    return bool(current and current['state']!='Z' and current['uid']==os.getuid()
+        and all(str(current[k])==str(expected[k]) for k in ('pid','start','uid')))
+
+
+def verify_runtime(job):
+    path=Path(job['eval_runtime_manifest'])
+    if digest(path)!=job['eval_runtime_manifest_sha256']:
+        raise ValueError('Frozen22 evaluation deployment manifest changed')
+    manifest=read(path)
+    if manifest['source_base_commit']!=COMMIT or Path(manifest['candidate_source']).resolve()!=Path(job['repo']).resolve():
+        raise ValueError('Evaluation source differs from admitted22/069')
+    for file,expected in manifest['files'].items():
+        if digest(file)!=expected:raise ValueError('Frozen22 source changed: '+file)
+    if digest(__file__)!=job['eval_shim_sha256']:
+        raise ValueError('Independent evaluator shim changed')
+
+
+def validate_pool(job):
+    if (job['physical_gpus']!=TRAIN_GPUS or job['validation_gpus']!=EVAL_GPUS
+            or set(job['validation_gpu_uuids'])!={'3','4'} or job.get('allow_shared')):
+        raise ValueError('Evaluation is reserved exclusively for idle physical3/4')
+    for index in EVAL_GPUS:
+        required=f'@@EVALUATION_GPU_LOCK_DIR@@{index}_single_inference.lock'
+        if required not in job.get('cooperative_gpu_locks',{}).get(str(index),[]):
+            raise ValueError('Missing benchmark cooperative lock for evaluation GPU')
+
+
+def policy_identity(state):
+    identity=state.get('execution_optimizations',{}).get('identity',{})
+    return {key:identity.get(key) for key in ('mode','source_base_commit','implementation_sha256','runtime')}
+
+
+def semantic_admission(payload,job,step):
+    import torch
+    state=payload['training_state'];groups=payload['optimizer']['param_groups']
+    if (payload.get('architecture')!='multicamera4rc' or payload['step']!=step
+            or state.get('optimizer_updates')!=step or len(payload.get('rank_rng',[]))!=6
+            or (state.get('world_size'),state.get('batch_size'),state.get('gradient_accumulation'),
+                state.get('effective_batch_size'))!=(6,1,1,6)
+            or state.get('supervision')!='dense' or state.get('amp_dtype')!='bfloat16'
+            or [g.get('name') for g in groups]!=GROUPS or not payload['optimizer']['state']):
+        raise ValueError('Incomplete or incompatible native069 six-rank four-group checkpoint')
+    if state.get('data_config_sha256')!=job['admitted_training_data_sha256']:
+        raise ValueError('Checkpoint training mixture differs from admitted optional-long recipe')
+    loss=state['loss_config'];depth=loss.get('depth_objective_options',{})
+    if (any(depth.get(k)!=v for k,v in [('relative_weight',.05),('log_bias_weight',.02),('temporal_scale_weight',.01)])
+            or loss.get('depth_gradient_scales')!=[1,2,4]):
+        raise ValueError('Checkpoint lacks the admitted069 depth loss recipe')
+    options=state.get('geometry_lr_options',{})
+    plan=state['lr_plan'];geometry=(plan.get('group_multipliers') or {}).get('geometry',{})
+    migration=state.get('data_migration') or {}
+    if (options!={'multiplier':2.,'warmup_steps':100} or geometry.get('multiplier')!=2.
+            or geometry.get('warmup_steps')!=100 or geometry.get('start_step')!=migration.get('step')
+            or migration.get('cursor_policy')!='explicit_reset_once'
+            or migration.get('new_sha256')!=job['admitted_training_data_sha256']
+            or migration.get('model_optimizer_rng_lr_preserved') is not True):
+        raise ValueError('Geometry warmup or explicit new-stream admission changed')
+    config=payload['config']
+    if (canonical(config)!=canonical(job['model_config']) or config.get('reuse_decoder_kv') is not False
+            or config.get('reuse_shared_computation') is not False or config.get('decoder_kv_cache_limit_mb')!=8192):
+        raise ValueError('Model configuration or temporary cache state changed')
+    policy=policy_identity(state)
+    if (policy['mode']!='fa4_metadata_prepared_kv' or policy['source_base_commit']!=COMMIT
+            or policy['implementation_sha256']!=job['admitted_execution_implementation_sha256']
+            or (policy['runtime'] or {}).get('deployment_sha256')!=job['eval_runtime_manifest_sha256']):
+        raise ValueError('Checkpoint execution policy/runtime is not the admitted22 deployment')
+    last=state['execution_optimizations'].get('last_completed_update') or {}
+    if (last.get('aborted') is not False
+            or last.get('fa4',{}).get('restored_original_sdpa') is not True
+            or last.get('prepared_kv',{}).get('restored_original_config_object') is not True):
+        raise ValueError('Checkpoint was saved inside an unrestored execution scope')
+    names=[];ids=[]
+    for group in groups:
+        if len(group.get('param_names',[]))!=len(group['params']):raise ValueError('Incomplete named Adam inventory')
+        names+=group['param_names'];ids+=group['params']
+    if len(set(names))!=len(names) or len(set(ids))!=len(ids):raise ValueError('Duplicate Adam parameter inventory')
+    if any(not name.startswith(('head.','cam_dec.')) for name in groups[3]['param_names']):
+        raise ValueError('Geometry Adam group changed its admitted parameter family')
+    by_id=dict(zip(ids,names))
+    for key,adam in payload['optimizer']['state'].items():
+        if key not in by_id or not {'step','exp_avg','exp_avg_sq'}<=set(adam):
+            raise ValueError('Incomplete named Adam state')
+        parameter=payload['model'][by_id[key]]
+        if adam['exp_avg'].shape!=parameter.shape or adam['exp_avg_sq'].shape!=parameter.shape:
+            raise ValueError('Adam moment/model shape mismatch')
+    return state
+
+
+def make_contract(payload,job):
+    state=semantic_admission(payload,job,payload['step'])
+    original=job['expected_state']['lr_plan'];current=state['lr_plan']
+    for key,value in original.items():
+        actual=current[key][:3] if key=='base_lrs' else current[key]
+        if canonical(actual)!=canonical(value):raise ValueError('Original global LR phase changed: '+key)
+    return dict(schema=SCHEMA,expected_state={key:canonical(state.get(key)) for key in FIXED_STATE},
+        model_config=canonical(payload['config']),execution_policy=canonical(policy_identity(state)),
+        optimizer_groups=[{key:canonical(value) for key,value in group.items() if key not in ('params','lr')}
+                          for group in payload['optimizer']['param_groups']])
+
+
+def check_contract(payload,job,step):
+    state=semantic_admission(payload,job,step);contract=job['science_contract']
+    if contract['schema']!=SCHEMA:raise ValueError('Unknown scientific checkpoint contract')
+    for key,expected in contract['expected_state'].items():
+        if canonical(state.get(key))!=expected:raise ValueError('Admitted training state changed: '+key)
+    if canonical(policy_identity(state))!=contract['execution_policy']:
+        raise ValueError('Saved execution implementation/runtime changed')
+    groups=payload['optimizer']['param_groups']
+    for actual,expected in zip(groups,contract['optimizer_groups']):
+        if {key:canonical(value) for key,value in actual.items() if key not in ('params','lr')}!=expected:
+            raise ValueError('Named Adam group metadata changed')
+    # Native checkpoints store the LR last applied at logical step S-1.
+    path=Path(job['repo'])/'multicamera4rc/schedule.py'
+    spec=importlib.util.spec_from_file_location('_joint_eval_schedule22',path)
+    module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
+    from types import SimpleNamespace
+    expected=deepcopy(groups);module.LearningRatePlan(**state['lr_plan']).apply(SimpleNamespace(param_groups=expected),step-1)
+    if any(not math.isclose(float(a['lr']),float(b['lr']),rel_tol=1e-12,abs_tol=1e-20) for a,b in zip(groups,expected)):
+        raise ValueError('Saved Adam learning rates differ from the preserved global/geometry phase')
+    return state
+
+
+def worker_class(job):
+    sys.path.insert(0,job['repo'])
+    from scripts import independent_validation as original
+    class JointValidation(original.IndependentValidation):
+        def check(self,checkpoint,step):
+            import torch
+            before=file_identity(checkpoint)
+            payload=torch.load(checkpoint,map_location='cpu',mmap=True,weights_only=True)
+            state=check_contract(payload,self.job,step)
+            if before!=file_identity(checkpoint):raise ValueError('Checkpoint identity changed during admission')
+            return state
+        def _evaluate(self,pool):
+            validate_pool(self.job)
+            prior=original.clean_runtime
+            def pinned_runtime(root,commit):
+                if commit!=COMMIT or Path(root).resolve()!=Path(self.job['repo']).resolve():
+                    raise ValueError('Native evaluation source/commit changed')
+                verify_runtime(self.job)
+            original.clean_runtime=pinned_runtime
+            try:return super()._evaluate(pool)
+            finally:original.clean_runtime=prior
+    return JointValidation
+
+
+class EvaluationQueue:
+    """Durable independent jobs. Only this queue is polled; no external job edit."""
+    def __init__(self,template_path,control_dir):
+        self.template_path=Path(template_path);self.template=read(template_path)
+        self.control=Path(control_dir).absolute();self.root=self.control/'validation_queue'
+        self.root.mkdir(parents=True,exist_ok=True)
+        self.lock=(self.root/'manager.lock').open('a');fcntl.flock(self.lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        self.bound=self.root/'bound_template.json';self.children={}
+        validate_pool(self.template)
+        if self.template['eval_shim_sha256']!=digest(__file__):raise ValueError('Evaluation queue shim digest changed')
+        self.template_sha=digest(template_path)
+    def bind_checkpoint(self,path,sha256):
+        import torch
+        if self.bound.exists():
+            saved=read(self.bound)
+            if saved['science_reference_sha256']!=sha256 or saved['template_sha256']!=self.template_sha:
+                raise ValueError('Scientific queue contract cannot be silently rebound')
+            return saved['science_contract']
+        before=file_identity(path)
+        if digest(path)!=sha256:raise ValueError('Boot-admitted scientific reference SHA mismatch')
+        payload=torch.load(path,map_location='cpu',mmap=True,weights_only=True)
+        contract=make_contract(payload,self.template)
+        if before!=file_identity(path) or torch.cuda.is_initialized():raise ValueError('Reference changed or CPU binder initialized CUDA')
+        pin=self.root/'science_reference.pt'
+        try:os.link(path,pin)
+        except OSError:
+            if not pin.is_file() or file_identity(pin)!=before:raise
+        bound=deepcopy(self.template);bound.update(science_contract=contract,
+            science_reference=str(pin),science_reference_sha256=sha256,template_sha256=self.template_sha)
+        atomic_json(self.bound,bound,exclusive=True)
+        return contract
+    def enqueue(self,checkpoint,step):
+        if not self.bound.exists():raise ValueError('Bind an admitted four-group boot checkpoint before evaluation')
+        directory=self.root/f'step_{step:08d}';entry_path=directory/'entry.json'
+        before=file_identity(checkpoint)
+        if entry_path.exists():
+            entry=read(entry_path)
+            if entry['checkpoint_identity']!=before:raise ValueError('Duplicate validation step has a different checkpoint')
+            return entry
+        directory.mkdir(exist_ok=True);pin=directory/f'step_{step:08d}.pt'
+        try:os.link(checkpoint,pin)
+        except OSError:
+            if not pin.is_file() or file_identity(pin)!=before:raise
+        job=read(self.bound);job.update(control_dir=str(directory),output_root=str(self.control),
+            main_active_path=str(self.control/'unused_active_training.json'),
+            validation_checkpoint=str(pin),validation_step=step,validation_label='refinement_'+str(step),
+            checkpoint_identity=before)
+        atomic_json(directory/'job.json',job,exclusive=True)
+        entry=dict(step=step,checkpoint=str(pin),checkpoint_identity=before,status='pending',job=str(directory/'job.json'))
+        atomic_json(entry_path,entry,exclusive=True);return entry
+    def protected_paths(self):
+        return [row['checkpoint'] for path in sorted(self.root.glob('step_*/entry.json'))
+                if (row:=read(path))['status']!='completed']+[str(self.root/'science_reference.pt')]
+    def pending(self):
+        return [row for path in sorted(self.root.glob('step_*/entry.json'))
+                if (row:=read(path))['status']!='completed']
+    def poll(self):
+        completed=[];active=False
+        for path in sorted(self.root.glob('step_*/entry.json')):
+            entry=read(path);directory=path.parent
+            if entry['status']=='completed':continue
+            if entry['status']=='failed':raise RuntimeError('Independent evaluation failed: '+str(directory))
+            result_path=directory/'result.json'
+            if result_path.exists():
+                result=read(result_path);job=read(entry['job']);record=result['record']
+                if (result['checkpoint_identity']!=entry['checkpoint_identity']
+                        or record['step']!=entry['step'] or record['checkpoint']!=entry['checkpoint']
+                        or record['validation_contract']!=job['validation_contract']):
+                    raise ValueError('Independent result identity/GT contract changed')
+                entry.update(status='completed' if result['quality_passed'] else 'failed',result=str(result_path))
+                atomic_json(path,entry);completed.append(result)
+                if not result['quality_passed']:raise RuntimeError('Independent fixed-plan quality gate failed: '+str(result_path))
+                continue
+            process=self.children.get(entry['step'])
+            if process is not None:
+                code=process.poll()
+                if code is None:active=True;continue
+                entry.update(status='failed',exit_code=code);atomic_json(path,entry)
+                raise RuntimeError('Evaluation worker exited without a verified result: '+str(directory))
+            proof=read(directory/'worker_identity.json') if (directory/'worker_identity.json').exists() else entry.get('worker')
+            if exact_live(proof):active=True;continue
+            if entry['status']=='running':
+                entry.update(status='failed');atomic_json(path,entry)
+                raise RuntimeError('Recorded independent evaluation worker disappeared: '+str(directory))
+        if active:return completed
+        for path in sorted(self.root.glob('step_*/entry.json')):
+            entry=read(path)
+            if entry['status']!='pending':continue
+            job=read(entry['job']);environment={k:v for k,v in os.environ.items() if not k.startswith('DFRT_')}
+            environment.update(job['environment']);environment.update(CUDA_VISIBLE_DEVICES='',PYTHONDONTWRITEBYTECODE='1')
+            with (path.parent/'worker.log').open('x') as log:
+                child=subprocess.Popen([job['python'],'-B','-u',str(Path(__file__).resolve()),'--controller',entry['job']],
+                    cwd=job['repo'],env=environment,stdout=log,stderr=subprocess.STDOUT)
+            self.children[entry['step']]=child
+            entry.update(status='running',worker=process_identity(child.pid));atomic_json(path,entry);break
+        return completed
+
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--controller',required=True)
+    args=parser.parse_args();job=read(args.controller)
+    if os.environ.get('CUDA_VISIBLE_DEVICES')!='':raise ValueError('CPU evaluator parent must begin with empty CUDA mask')
+    validate_pool(job);verify_runtime(job)
+    worker_class(job)(args.controller).run()
+
+
+if __name__=='__main__':main()

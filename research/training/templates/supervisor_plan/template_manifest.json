@@ -1,0 +1,11 @@
+{
+  "files": [
+    {
+      "mode": "0644",
+      "original_sha256": "7c3f7426b656a7213589c9452120db56740f2e81eebc25ef566b6421f04d660c",
+      "output_path": "supervisor_plan.json",
+      "template_path": "supervisor_plan.json.in",
+      "template_sha256": "b192f52ab84537b54eacd9932e05eeb6a09e14cb8f3e82a47e8ad597286d7ddd"
+    }
+  ]
+}

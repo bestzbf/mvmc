@@ -1,0 +1,1522 @@
+{
+  "CHECKPOINT_VALIDATION_MODULE": [
+    "activation_ready/evaluation/module",
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "CHECKPOINT_VALIDATION_MODULE_SHA256": [],
+  "DEPLOYMENT_JSON": [
+    "activation_ready/deployment/path",
+    "checkpoint_validation/eval_runtime_manifest",
+    "private_python"
+  ],
+  "DEPLOYMENT_JSON_SHA256": [],
+  "EXTERNAL_0_0BDCBD624E": [
+    "checkpoint_validation/cooperative_gpu_locks/2/0"
+  ],
+  "EXTERNAL_0_249E05D658": [
+    "checkpoint_validation/cooperative_gpu_locks/0/0"
+  ],
+  "EXTERNAL_0_2F2D826314": [
+    "checkpoint_validation/cooperative_gpu_locks/3/0"
+  ],
+  "EXTERNAL_0_BB402ADE06": [
+    "checkpoint_validation/cooperative_gpu_locks/6/0"
+  ],
+  "EXTERNAL_0_C022288F82": [
+    "checkpoint_validation/cooperative_gpu_locks/5/0"
+  ],
+  "EXTERNAL_0_E43D7325F9": [
+    "checkpoint_validation/cooperative_gpu_locks/4/0"
+  ],
+  "EXTERNAL_0_E6FB1371AA": [
+    "checkpoint_validation/cooperative_gpu_locks/1/0"
+  ],
+  "EXTERNAL_0_F2EF34F85E": [
+    "checkpoint_validation/cooperative_gpu_locks/7/0"
+  ],
+  "EXTERNAL_1_353D1EAC54": [
+    "checkpoint_validation/cooperative_gpu_locks/1/1"
+  ],
+  "EXTERNAL_1_5F804778CA": [
+    "checkpoint_validation/cooperative_gpu_locks/7/1"
+  ],
+  "EXTERNAL_1_721FB46E2B": [
+    "checkpoint_validation/cooperative_gpu_locks/2/1"
+  ],
+  "EXTERNAL_1_8AD906D18F": [
+    "checkpoint_validation/cooperative_gpu_locks/5/1"
+  ],
+  "EXTERNAL_1_C3378C4A1D": [
+    "checkpoint_validation/cooperative_gpu_locks/4/1"
+  ],
+  "EXTERNAL_1_D825D415BC": [
+    "checkpoint_validation/cooperative_gpu_locks/0/1"
+  ],
+  "EXTERNAL_1_DD395BD5EB": [
+    "checkpoint_validation/cooperative_gpu_locks/6/1"
+  ],
+  "EXTERNAL_1_E97D4228F1": [
+    "checkpoint_validation/cooperative_gpu_locks/3/1"
+  ],
+  "EXTERNAL_2_1BB8AF5E52": [
+    "checkpoint_validation/cooperative_gpu_locks/4/2"
+  ],
+  "EXTERNAL_2_CE63255BCF": [
+    "checkpoint_validation/cooperative_gpu_locks/3/2"
+  ],
+  "EXTERNAL_ADMISSION_OUTPUT_ROOT_927D6C4388": [
+    "checkpoint_validation/admission_output_root"
+  ],
+  "EXTERNAL_CHECKPOINT_36DA4E4382": [
+    "checkpoint_validation/inherited_baseline/checkpoint"
+  ],
+  "EXTERNAL_CHECKPOINT_4D41DB7358": [
+    "checkpoint_validation/inherited_best/checkpoint"
+  ],
+  "EXTERNAL_GPU_UUID_6E4408475A": [
+    "checkpoint_validation/validation_gpu_uuids/3"
+  ],
+  "EXTERNAL_GPU_UUID_D8AB2B800A": [
+    "checkpoint_validation/validation_gpu_uuids/4"
+  ],
+  "EXTERNAL_GT_PROOF_BEFC45C74A": [
+    "checkpoint_validation/gt_proof"
+  ],
+  "EXTERNAL_KUBRIC_5A550E4B68": [
+    "checkpoint_validation/inherited_best/reports/kubric"
+  ],
+  "EXTERNAL_KUBRIC_9C6CA52EEF": [
+    "checkpoint_validation/inherited_baseline/reports/kubric"
+  ],
+  "EXTERNAL_KUBRIC_CONFIG_A2650AF1C8": [
+    "checkpoint_validation/evaluation/kubric_config"
+  ],
+  "EXTERNAL_KUBRIC_PLAN_AE5DF61D18": [
+    "checkpoint_validation/evaluation/kubric_plan"
+  ],
+  "EXTERNAL_MAPPING_KEY_003A0C08D9": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_00BE05E1CE": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_01872A8CF3": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_02C19C9F2B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_03928E7216": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0393CCE7C2": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_03A6A9E969": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_03CC90DE40": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0490B7FF2C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0599359F56": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_059EC5F157": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_05A505F791": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_05BC9B9E28": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_062604B553": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_06450369BD": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_06BBA6D279": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0742DB76FE": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0787BA26DF": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_07C6B0897B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_08D399A78B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_08D7DA0970": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_09995724EC": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_09AA6A14E9": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0AE00D08AF": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0B7F2FFAF1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0BA71C4869": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0BDC796E90": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0C33120529": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0D387921D0": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0E3D443FD1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0E5E74EFEE": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0EBF7DB98C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0EC408D182": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_0F43E57D18": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_10B2FF3E67": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_10B9952186": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_11C5338C3C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_11C946280B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_13347A5187": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_133F6B3DCC": [
+    "checkpoint_validation/admitted_execution_implementation_sha256/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_13CEDC3F7C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_144723552A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_1460D13B62": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_1496AC656E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_15091C2BE0": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_173D3D2065": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_177BE45F48": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_18A33A5016": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_194B3E71C5": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_1ADB8FBB8A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_1B547D0395": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_1B5B27008E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_1C3F0C45B3": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_1CCA9FC9F0": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_1D097199EB": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_1F1616C688": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_1F48CA6C8F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_1F5D794B65": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_1F995DC0E0": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2004899EBD": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_20B55F37B6": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_20B7AB9EC1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_211976E95A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_22E2DE7832": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_231FB78993": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_235D76E173": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2447A2879D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2494857EB3": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_269C52E4EE": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2727BF0417": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2847F23BCB": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_28C7EF48E7": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2930B9EB1E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2A8525F757": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2A9EE0658F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2B5D79DAFC": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2B6EA03773": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2B8F683833": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2CA44964EE": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2CBE473BEA": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2D70597030": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2DE0279D1D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2E027A1F27": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2E429E6D77": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_2F11588BD8": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_3040722F1C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_30FBD47F12": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_3113ABD0B0": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_31EAAA88B9": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_3241A41FF3": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_32F42E7FD4": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_32F4B0FAA0": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_3364DBC05B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_337AC28142": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_3575762868": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_378A242C17": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_37DD934A61": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_382F5B7717": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_38CCA97189": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_38D773C444": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_3A94FA40BA": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_3B9AF30794": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_3C25159919": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_3CA52AD5D1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_3D2401F952": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_40104EFE90": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_405910A001": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_409FF30B33": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_40F0B0C445": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4229825451": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_423A103EDC": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_43924AFC4B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_43DD132F27": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_44FF133660": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_452DDDEA65": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_45B580E0E1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4651D69692": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_47352CF979": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_47D5E60842": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4801E14569": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4857082DD2": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_48C745AB25": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_48DA983EC1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4BCC306C24": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4C246BC291": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4C71BB4775": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4CD0FCF7DE": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4D09A6D67F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4D699B2A2F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4DACFA1B5D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4DB8585BF0": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4EB972854F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4F1E38E179": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_4F594B1E0D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_50071BCCCD": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_501E4481B4": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_5061717D21": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_508366C75D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_52057BACC1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_526656672E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_52E1842F0E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_535F26EF20": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_54076DE012": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_544472EF7A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_545E2BC696": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_54C5ADFAAE": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_5587707894": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_567F9E667C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_56BDF9E523": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_5771236E2C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_59274F6F35": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_59687058F1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_5AAE8A8B50": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_5B14074621": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_5B366ACC1B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_5BB3943BDB": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_5D1688E04B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_5DD5AE21BC": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_5E26D2F647": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_5EB60D29F3": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_5EE39BD25B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_5F41D6B365": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_60344B53A1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_61A984742D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_61FD1CA01F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_6369A7B597": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_6386A67F6F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_66478A9AE4": [
+    "checkpoint_validation/admitted_execution_implementation_sha256/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_668380CA76": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_67060A05F8": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_67B59EE99E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_67C888AA5C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_67CE927A4E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_67FF09EF3C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_688950C1E7": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_68CE0E1374": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_6940A18AC5": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_69AB56E538": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_6AD1A1B4BD": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_6B94A4B239": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_6C16E963DA": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_6D49E9E3A0": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_6E3E2C736A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_6ED40E9F40": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_6F221F9367": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_6F71500B01": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_70817E343C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7155CD0B07": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_71CA8E9130": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_72263560AA": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7236A73CEA": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_724D0BE62A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_72D5602DFB": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_73337C357E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7366B78D6E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_73B89ED11E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_748BE63BC8": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_776D4E9F37": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_77DAC73EE1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_79200888EF": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7926A8F99B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7962051D76": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_79F993914A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7A1868A32A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7AFF54DEB9": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7BC059842F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7C39DD58E1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7C6D024CED": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7CE827DF9E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7CEB0A32B5": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7DC4E02CE8": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7F3C627A38": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_7F6F89AA6B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_80BF96319C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_80DE1AA65E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_8117BF4537": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_81FFF6F3D6": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_8225E17276": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_829F246DBD": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_835501CCFF": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_86925C3714": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_88421288CB": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_88689102B2": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_886A28D11D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_88E21245C2": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_896FC86A87": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_8A17AA2649": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_8AB3599604": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_8C05C37B7C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_8D22F102A5": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_8E92C612D0": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_8F24B35351": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9096FC82A5": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_90D115DEE2": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_90DC573779": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9166FD8A60": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_91CB4409B1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_91EBF02FA6": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_926D6DA7BB": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_926F923734": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_927BA451C0": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_92C376F7FB": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_93CB7E95B1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_94AD6C3840": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_95D938BBF0": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_95E09A5679": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9659CEEA56": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9661941B51": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_96777963DD": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_971B9C9A3A": [
+    "checkpoint_validation/admitted_execution_implementation_sha256/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_97591DA04D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_976975C528": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_97907E4002": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_97A8A52DCC": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_97B63D58A2": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9845172622": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_987B98F971": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9AEF1DB8E4": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9AFF653945": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9B349F2736": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9C6CA52EEF": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9C8102D6E5": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9D54D77D8F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9D7F2083AF": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9DEC1C38FF": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9F2827B1EC": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9F5FD793EF": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9F6D1A0897": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9F79585081": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_9FF89470BD": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_A007578DC6": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_A06797C3E2": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_A154729D24": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_A2650AF1C8": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_A4B9E173DA": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_A67A6151EA": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_A71A76B50B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_A7BEAD917B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_A87A3B5E10": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_A90122E9E3": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_A941DB5E34": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_A9F95F6DFF": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_AB6A7EB7FB": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_AB791CC962": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_ABF23BA57F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_ABF81680E6": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_AC6CFB5F6C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_ACEAD29669": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_AE5DF61D18": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_AEA7AD8C9C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_AF779B92DD": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_B05EEF3B98": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_B1977101F4": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_B27641747E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_B3165F3D51": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_B4DF6DDB9A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_B599FDEC08": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_B7839265CC": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_B7D8FBC02A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_B85056AB5F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_B8757A5564": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_BA4D0CC59F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_BB065FDF4C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_BB0F83771C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_BB703ECBB1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_BC3B53F5EE": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_BD24689B29": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_BD93DC5FFB": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_BDA58913F2": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_BDCDA757B9": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_BDEC0C48E7": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_BE159B023A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_BE57FBFB3D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_BEFC45C74A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_BFA6A027DD": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C07EF12905": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C0D83C6EFA": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C0E0499998": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C1054F1514": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C10683C3FB": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C1442AA038": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C244FA05CC": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C2A2D89153": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C32B87ED72": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C390D12B8F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C3B46AC265": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C425B17EE1": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C436AFF483": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C4900B3E72": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C4CBC0C906": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C5E59C2BFD": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C70286CF40": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C7D952D2D9": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C7EEB176DB": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C841D0B642": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C8C896266C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C8E28695A6": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_C96C9ED983": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_CA29E52146": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_CA88584349": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_CADB5F1451": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_CBCCB6604A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_CBDE9F30E2": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_CBE7DEF499": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_CC003D8428": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_CC947604D6": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_CD25DEF6F8": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_CDB49B438D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_CE7AD55C5B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_CE87D9C0DF": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D15BACBD2A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D179FDE5E4": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D1936151D9": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D1CDEFF79C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D431D9C21F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D4591F5F32": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D52D054848": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D5F40996EE": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D6140B115D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D61F76FA7B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D7555A5269": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D758A7EA8D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D7DBE18D2E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D80A191435": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D814BDED9A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D8CB8007E4": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D8E1CB1DC6": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D912BDD85A": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D96F260487": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_D9BB604DA9": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_DA61B21672": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_DA65872137": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_DCF47900B7": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_DD23EEE81F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_DD8FB749EB": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_DDB04FF941": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_DEC19C8E7D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_DECFAE39CC": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_DEE7A86D5D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_DFD1A8240E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_DFD585F7E0": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_DFF617CF00": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E00D9B8B35": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E0AEEC747F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E0C97381C7": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E0DF3382A8": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E189CAC012": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E1BE83F924": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E1C26B1A78": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E1F51B5218": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E2217E1213": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E23D6EAF0E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E25933FEE2": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E287E133CD": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E2F649FD40": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E34D480CFF": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E38A7B7F37": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E38F00C311": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E395C9A677": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E40D7F68DA": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E541308795": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E673B2C25D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E7894526A2": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E789E4850B": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E7E29AF884": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E8BF3A46DC": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E9A0F3B783": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_E9CAE11E75": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_EAC7F832E4": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_EAE8DEA8C4": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_EB6D690B95": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_EC231894A7": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_EC80DBBF6C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_EC834EF16C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_EC84953DC9": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_ED27A8AA75": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_EDAE3205AD": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_EE4D6834EA": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_EE866F5C16": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_EE8865C181": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F0B2BBE645": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F0EBA36937": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F1CEC6FB27": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F1CFB0F692": [
+    "checkpoint_validation/admitted_execution_implementation_sha256/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F1D5E22212": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F22FA409F4": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F2F0CBEC0C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F2FC6B9450": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F354FC250C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F38D0025A8": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F413BA3C33": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F5271EEEFF": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F55AED0F60": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F5C9F67375": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F5E18CC99F": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F63942A58D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F6921C7CEA": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F7693EEC6C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F7CDD9DA7C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F7EA509A58": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F8ACAF38C5": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F917DFAC62": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_F91C00E00D": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_FA007960D6": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_FA7084F6A7": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_FA7D3ECECC": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_FA95E5C960": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_FAEE5AA2EB": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_FB4432E9E7": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_FBEA389B66": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_FDEF550095": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_FE4257322C": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_FE5A394228": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_FEEA5BDF8E": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_MAPPING_KEY_FF936F1845": [
+    "checkpoint_validation/protected_files/<mapping-key>"
+  ],
+  "EXTERNAL_NATIVE_CONFIG_B85056AB5F": [
+    "checkpoint_validation/evaluation/native_config"
+  ],
+  "EXTERNAL_NATIVE_DYNAMIC_748BE63BC8": [
+    "checkpoint_validation/inherited_baseline/reports/native_dynamic"
+  ],
+  "EXTERNAL_NATIVE_DYNAMIC_A4FF794DD6": [
+    "checkpoint_validation/inherited_best/reports/native_dynamic"
+  ],
+  "EXTERNAL_NATIVE_PLAN_D9BB604DA9": [
+    "checkpoint_validation/evaluation/native_plan"
+  ],
+  "EXTERNAL_PYTHON_C4B17904AB": [
+    "checkpoint_validation/python"
+  ],
+  "EXTERNAL_STATIC_545E2BC696": [
+    "checkpoint_validation/inherited_baseline/reports/static"
+  ],
+  "EXTERNAL_STATIC_58B040E45F": [
+    "checkpoint_validation/inherited_best/reports/static"
+  ],
+  "EXTERNAL_STATIC_CONFIG_C0D83C6EFA": [
+    "checkpoint_validation/evaluation/static_config"
+  ],
+  "EXTERNAL_STATIC_PLAN_D431D9C21F": [
+    "checkpoint_validation/evaluation/static_plan"
+  ],
+  "EXTERNAL_SYN4D_93755EE2E5": [
+    "checkpoint_validation/inherited_best/reports/syn4d"
+  ],
+  "EXTERNAL_SYN4D_D7DBE18D2E": [
+    "checkpoint_validation/inherited_baseline/reports/syn4d"
+  ],
+  "EXTERNAL_SYN4D_EVAL_CONFIG_829F246DBD": [
+    "checkpoint_validation/syn4d_eval_config"
+  ],
+  "EXTERNAL_SYN4D_EVAL_PLAN_9F2827B1EC": [
+    "checkpoint_validation/syn4d_eval_plan"
+  ],
+  "EXTERNAL_VARIABLE_2B43537BEC": [
+    "checkpoint_validation/inherited_best/reports/variable"
+  ],
+  "EXTERNAL_VARIABLE_4651D69692": [
+    "checkpoint_validation/inherited_baseline/reports/variable"
+  ],
+  "EXTERNAL_VARIABLE_CONFIG_1CCA9FC9F0": [
+    "checkpoint_validation/evaluation/variable_config"
+  ],
+  "EXTERNAL_VARIABLE_PLAN_0490B7FF2C": [
+    "checkpoint_validation/evaluation/variable_plan"
+  ],
+  "PRIOR_ACTIVATION_STATE_DIR": [
+    "checkpoint_validation/output_root",
+    "supervisor_plan/prior_control"
+  ],
+  "SOURCE_ROOT": [
+    "activation_ready/gate_cwd",
+    "checkpoint_validation/repo",
+    "deployment/candidate_source"
+  ]
+}

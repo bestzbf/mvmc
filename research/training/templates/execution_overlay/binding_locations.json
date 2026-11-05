@@ -1,0 +1,5 @@
+{
+  "PRIVATE_ENV": [
+    "multicamera4rc/training_execution_future.py:resolved execution environment guard"
+  ]
+}

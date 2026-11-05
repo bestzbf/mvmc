@@ -92,7 +92,8 @@ def test_readme_python_example_runs_with_documented_shapes():
 
     root = Path(__file__).resolve().parents[2]
     readme = (root / 'README.md').read_text()
-    snippet = readme.split('```python\n', 1)[1].split('```', 1)[0]
+    python_section = readme.split('\n## Python 接口\n', 1)[1].split('\n## ', 1)[0]
+    snippet = python_section.split('```python\n', 1)[1].split('```', 1)[0]
     torch.set_num_threads(1)
     namespace = {}
     exec(compile(ast.parse(snippet), 'README.md example', 'exec'), namespace)

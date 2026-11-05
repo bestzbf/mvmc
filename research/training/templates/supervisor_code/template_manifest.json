@@ -1,0 +1,18 @@
+{
+  "files": [
+    {
+      "mode": "0644",
+      "original_sha256": "856a2115c09e202dc5d035dfc771dd581fc2b22a5b8c27caab1c31354e8d1e13",
+      "output_path": "control_common.py",
+      "template_path": "control_common.py.in",
+      "template_sha256": "0a60187b9b141b5d84759b614de476c88a1845b43fabf10edd3c1c88d33f1d55"
+    },
+    {
+      "mode": "0644",
+      "original_sha256": "778f7da329b8164a586e81835af3942f4ce2c61244509a31725feaf66ebd5f03",
+      "output_path": "evaluate_joint_checkpoint_v22.py",
+      "template_path": "evaluate_joint_checkpoint_v22.py.in",
+      "template_sha256": "8932a82bcdcb7730cf813d13e0df33d38590f759ea7558018fb76088783e81e6"
+    }
+  ]
+}

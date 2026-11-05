@@ -1,0 +1,139 @@
+"""Small process/resource primitives; import performs no process/GPU action."""
+from contextlib import ExitStack
+import csv
+import fcntl
+import hashlib
+import json
+import os
+from pathlib import Path
+import signal
+import subprocess
+import time
+
+GPUS={0:'@@TRAIN_GPU_0_UUID@@',1:'@@TRAIN_GPU_1_UUID@@',2:'@@TRAIN_GPU_2_UUID@@',5:'@@TRAIN_GPU_5_UUID@@',6:'@@TRAIN_GPU_6_UUID@@',7:'@@TRAIN_GPU_7_UUID@@'}
+
+def read(path):return json.loads(Path(path).read_text())
+def sha(path):
+    h=hashlib.sha256()
+    with Path(path).open('rb') as stream:
+        for block in iter(lambda:stream.read(8*2**20),b''):h.update(block)
+    return h.hexdigest()
+def atomic(path,value):
+    path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
+    temp=path.with_name(path.name+'.'+str(os.getpid())+'.tmp')
+    with temp.open('x') as stream:
+        json.dump(value,stream,indent=2,allow_nan=False);stream.write('\n');stream.flush();os.fsync(stream.fileno())
+    os.replace(temp,path)
+def pinned(path,digest):
+    path=Path(path)
+    if path.is_symlink() or not path.is_file() or sha(path)!=digest:raise ValueError('Pinned file mismatch: '+str(path))
+    return read(path)
+def proc(pid):
+    path=Path('/proc')/str(pid)
+    try:
+        fields=(path/'stat').read_text().rsplit(')',1)[1].split()
+        return dict(pid=int(pid),ppid=int(fields[1]),pgid=int(fields[2]),sid=int(fields[3]),state=fields[0],start=fields[19],uid=path.stat().st_uid,cmd=(path/'cmdline').read_bytes().replace(b'\0',b' ').decode(errors='replace'))
+    except (FileNotFoundError,ProcessLookupError,PermissionError):return None
+def alive(record):
+    now=proc(record['pid'])
+    return bool(now and now['start']==record['start'] and now['uid']==record['uid'] and now['state']!='Z')
+def process_table():return [p for d in Path('/proc').iterdir() if d.name.isdigit() and (p:=proc(int(d.name)))]
+def descendants(record):
+    if not alive(record):return []
+    table=process_table();tree={record['pid']:record}
+    while True:
+        extra=[p for p in table if p['ppid'] in tree and p['pid'] not in tree]
+        if not extra:break
+        tree.update((p['pid'],p) for p in extra)
+    if any(p['uid']!=os.getuid() for p in tree.values()):raise RuntimeError('Foreign UID inside expected training tree')
+    return list(tree.values())
+def locks(index,uuid):
+    return [f'/tmp/multicamera4rc_{uuid}.lock',f'@@FOREIGN_GPU_LEASE_PREFIX@@{index}.training.lock',f'@@FOREIGN_GPU_LOG_LEASE_PREFIX@@{index}.training.lock']
+def gpu_snapshot():
+    devices=subprocess.check_output(['nvidia-smi','--query-gpu=index,uuid,memory.used','--format=csv,noheader,nounits'],text=True)
+    apps=subprocess.check_output(['nvidia-smi','--query-compute-apps=gpu_uuid,pid','--format=csv,noheader,nounits'],text=True)
+    inventory={int(r[0]):dict(uuid=r[1].strip(),memory_mib=int(r[2])) for r in csv.reader(devices.splitlines()) if r}
+    applications=[dict(uuid=r[0].strip(),pid=int(r[1])) for r in csv.reader(apps.splitlines()) if len(r)==2 and r[1].strip().isdigit()]
+    for i,u in GPUS.items():
+        if i not in inventory or inventory[i]['uuid']!=u:raise RuntimeError('Physical GPU UUID changed')
+    return inventory,applications
+class Leases:
+    def __init__(self):self.stack=ExitStack();self.handles=[]
+    def acquire(self):
+        try:
+            for i,u in GPUS.items():
+                for n,path in enumerate(locks(i,u)):
+                    handle=self.stack.enter_context(open(path,'a' if n==0 else 'rb'))
+                    fcntl.flock(handle,fcntl.LOCK_EX|fcntl.LOCK_NB)
+                    a,b=os.fstat(handle.fileno()),os.stat(path)
+                    if (a.st_dev,a.st_ino)!=(b.st_dev,b.st_ino):raise RuntimeError('GPU lease inode changed')
+                    self.handles.append((path,handle))
+            return self
+        except BaseException:self.close();raise
+    @property
+    def fds(self):return tuple(h.fileno() for _,h in self.handles)
+    def receipt(self):return [dict(path=p,fd=h.fileno(),device=os.fstat(h.fileno()).st_dev,inode=os.fstat(h.fileno()).st_ino) for p,h in self.handles]
+    def close(self):self.stack.close();self.handles=[]
+def open_pidfd(pid):
+    if hasattr(os,'pidfd_open'):return os.pidfd_open(pid,0)
+    # Actual B300 host /usr/include/x86_64-linux-gnu/asm/unistd_64.h:
+    # __NR_pidfd_open=434. Conda Python3.10 omits os.pidfd_open, while
+    # signal.pidfd_send_signal exists; keep the real kernel identity handle.
+    import ctypes,platform
+    if platform.machine()!='x86_64':raise RuntimeError('Unverified pidfd syscall architecture')
+    libc=ctypes.CDLL(None,use_errno=True);libc.syscall.restype=ctypes.c_long
+    fd=libc.syscall(ctypes.c_long(434),ctypes.c_int(pid),ctypes.c_uint(0))
+    if fd<0:
+        error=ctypes.get_errno();raise OSError(error,os.strerror(error))
+    return int(fd)
+def send_owned(record,sig):
+    if not alive(record):return
+    if not hasattr(signal,'pidfd_send_signal'):raise RuntimeError('Identity-safe Linux pidfd signaling is required')
+    try:fd=open_pidfd(record['pid'])
+    except ProcessLookupError:return
+    try:
+        if alive(record):signal.pidfd_send_signal(fd,sig,None,0)
+    except ProcessLookupError:pass
+    finally:os.close(fd)
+def stop_records(known,protected=()):
+    """Verified same-UID ancestry records; independent sessions included."""
+    records={(p['pid'],p['start']):p for p in known}
+    forbidden={(p['pid'],p['start']) for p in protected}
+    if any(p['uid']!=os.getuid() for p in records.values()) or forbidden & records.keys():
+        raise RuntimeError('Foreign/protected process in requested stop records')
+    # Stop parents before final descendant capture, preventing new subprocess
+    # creation while retaining every separately-sessioned torchrun/rank record.
+    for _ in range(4):
+        for parent in list(records.values()):
+            if alive(parent):
+                for row in descendants(parent):records[(row['pid'],row['start'])]=row
+        if forbidden & records.keys():raise RuntimeError('Protected evaluation entered training ancestry')
+        before=len(records)
+        for row in list(records.values()):send_owned(row,signal.SIGSTOP)
+        for parent in list(records.values()):
+            if alive(parent):
+                for row in descendants(parent):records[(row['pid'],row['start'])]=row
+        if len(records)==before:break
+    else:raise RuntimeError('Owned process tree did not quiesce')
+    known[:]=list(records.values())
+    for row in known:send_owned(row,signal.SIGTERM)
+    for row in known:send_owned(row,signal.SIGCONT)
+    deadline=time.monotonic()+30
+    while any(alive(row) for row in known) and time.monotonic()<deadline:time.sleep(.25)
+    for row in known:send_owned(row,signal.SIGKILL)
+    if any(alive(row) for row in known):raise RuntimeError('Owned training descendants remain')
+def stop_owned(child,identity,known):
+    if not any(p['pid']==identity['pid'] and p['start']==identity['start'] for p in known):known.append(identity)
+    stop_records(known)
+    try:child.wait(timeout=10)
+    except subprocess.TimeoutExpired:raise RuntimeError('Owned child failed to exit')
+def checkpoint(path,world):
+    import torch
+    path=Path(path);before=path.stat()
+    data=torch.load(path,map_location='cpu',mmap=True,weights_only=True);s=data['training_state'];step=int(data['step'])
+    if (data.get('architecture')!='multicamera4rc' or s['world_size']!=world or s['batch_size']!=1 or s['gradient_accumulation']!=1 or s['optimizer_updates']!=step or len(data.get('rank_rng',[]))!=world or not data['optimizer']['state']):raise ValueError('Incomplete native checkpoint')
+    after=path.stat()
+    if (before.st_ino,before.st_size,before.st_mtime_ns)!=(after.st_ino,after.st_size,after.st_mtime_ns):raise ValueError('Checkpoint changed during validation')
+    balance=s.get('load_balancing') or {};size=s.get('dataset_size')
+    ledger=None if size is None else balance.get('historical_padding_sample_offset',0)+s['data_epoch']*((size+world-1)//world)*world+s['batches_consumed']*world
+    return dict(path=str(path.resolve()),step=step,bytes=before.st_size,world_size=world,optimizer_groups=[g.get('name') for g in data['optimizer']['param_groups']],training_state=s,model_config=data['config'],old_stream_global_consumed_ledger=ledger)

@@ -1,0 +1,134 @@
+"""Explicit opt-in private runtime for future native launcher/torchrun ranks."""
+import hashlib
+import importlib.machinery
+import json
+import os
+from pathlib import Path
+import runpy
+import sys
+import types
+
+ENV=Path('@@PRIVATE_ENV@@')
+SHARED=Path('@@SHARED_SITE_PACKAGES@@')
+DATA=Path('@@DATA_SITE_PACKAGES@@')
+MODE='fa4_metadata_prepared_kv'
+
+
+def activate(manifest_path):
+    path=Path(manifest_path)
+    digest=hashlib.sha256(path.read_bytes()).hexdigest()
+    if os.environ.get('DFRT_FUTURE_DEPLOYMENT_SHA256')!=digest:
+        raise ValueError('Require the explicitly pinned independent deployment manifest')
+    manifest=json.loads(path.read_text())
+    if Path(sys.prefix).resolve()!=ENV or sys.version_info[:2]!=(3,10):
+        raise ValueError('Require exact private Python3.10 environment')
+    if os.environ.get('DFRT_TRAIN_EXECUTION')!=MODE:
+        raise ValueError('Future private wrapper requires explicit execution opt-in')
+    mask=os.environ.get('CUDA_VISIBLE_DEVICES')
+    if mask not in ('','0,1,2,5,6,7',','.join(manifest['ordered_gpu_uuids'])):
+        raise ValueError('Allow CPU preflight or the explicitly planned ordered six-card mask only')
+    os.environ['PYTHONDONTWRITEBYTECODE']='1'
+    for file,digest in manifest['files'].items():
+        if hashlib.sha256(Path(file).read_bytes()).hexdigest()!=digest:
+            raise ValueError('Independent deployment changed: '+file)
+    # Append explicit read-only dependencies, never execute shared/data .pth.
+    private_site=ENV/'lib/python3.10/site-packages'
+    sys.path=[p for p in sys.path if p and ('site-packages' not in p or Path(p).is_relative_to(ENV))]
+    sys.path.insert(0,manifest['candidate_source'])
+    sys.path.append(str(SHARED))
+    for name in ('torch','triton','numpy','flash_attn','cuda','nvidia','quack','cutlass'):
+        if (DATA/name).exists() or (DATA/(name+'.py')).exists():
+            raise ValueError('Read-only data site unexpectedly supplies kernel dependency '+name)
+    sys.path.append(str(DATA))
+    if any(name=='flash_attn' or name.startswith('flash_attn.') for name in sys.modules):
+        raise ValueError('FA2/FA4 parent imported before private namespace activation')
+    parent=types.ModuleType('flash_attn');parent.__package__='flash_attn'
+    parent.__path__=[str(private_site/'flash_attn')]
+    parent.__spec__=importlib.machinery.ModuleSpec('flash_attn',loader=None,is_package=True)
+    parent.__fa4_private_parent__=True
+    sys.modules['flash_attn']=parent
+    os.environ['PYTHON_EXEC']=manifest['python_wrapper']
+    import torch,OpenEXR,Imath
+    import flash_attn.cute.interface as fa4
+    if (torch.__version__!='2.10.0+cu128' or torch.version.cuda!='12.8'
+            or not Path(torch.__file__).resolve().is_relative_to(SHARED/'torch')
+            or not Path(fa4.__file__).resolve().is_relative_to(private_site/'flash_attn')
+            or Path(OpenEXR.__file__).resolve().parent!=DATA.resolve()
+            or not Path(Imath.__file__).resolve().is_relative_to(DATA)):
+        raise ValueError('Private Torch/FA4/data runtime origin mismatch')
+    return manifest,{'torch':str(torch.__version__),'torch_file':torch.__file__,
+        'fa4_file':fa4.__file__,'OpenEXR_file':OpenEXR.__file__,'Imath_file':Imath.__file__,
+        'OpenEXR_sha256':hashlib.sha256(Path(OpenEXR.__file__).read_bytes()).hexdigest(),
+        'python_wrapper':manifest['python_wrapper'],'PYTHON_EXEC':os.environ['PYTHON_EXEC']}
+
+
+def main():
+    args=sys.argv[1:]
+    if len(args)<2 or args[0]!='--deployment':raise ValueError('Require fixed deployment path')
+    manifest,identity=activate(args[1]);args=args[2:]
+    while args and args[0] in ('-u','-B','-s'):args=args[1:]
+    if args[:1]==['--preflight']:
+        if os.environ.get('CUDA_VISIBLE_DEVICES')!='' or len(args)!=3 or args[1]!='--exr':
+            raise ValueError('CPU preflight requires explicit empty CUDA and one real EXR')
+        import torch,numpy as np
+        from multicamera4rc.datasets.adapters.syn4d_geometry import read_depth
+        depth=read_depth(Path(args[2]))
+        if not np.isfinite(depth).any() or not (depth>0).any() or torch.cuda.is_initialized():
+            raise ValueError('Real native EXR decode failed or CUDA initialized')
+        # Exercise the real controller's checkpoint metadata and safe loader;
+        # TorchVersion subclasses str but is not safe in weights_only loads.
+        import io
+        from multicamera4rc.training_execution_future import (TrainingExecution,
+            execution_scope,validate_resume_mode,validate_resume_identity)
+        @execution_scope
+        def metadata_roundtrip():
+            model=torch.nn.Module()
+            model.config=types.SimpleNamespace(reuse_decoder_kv=False)
+            saved=TrainingExecution(model,MODE).checkpoint_metadata()
+            buffer=io.BytesIO();torch.save({'training_state':{'execution_optimizations':saved}},buffer)
+            buffer.seek(0)
+            restored=torch.load(buffer,map_location='cpu',weights_only=True)['training_state']['execution_optimizations']
+            if saved!=restored:raise ValueError('Execution metadata safe roundtrip changed')
+            validate_resume_mode(restored,MODE);validate_resume_identity(restored,saved['identity'])
+            rejected=[]
+            for label,check in (
+                    ('silent_native',lambda:validate_resume_mode(restored,'native')),
+                    ('changed_helper',lambda:validate_resume_identity(restored,{
+                        **saved['identity'],'implementation_sha256':{'changed':'bad'}})),
+                    ('changed_runtime',lambda:validate_resume_identity(restored,{
+                        **saved['identity'],'runtime':{'changed':'bad'}}))):
+                try:check()
+                except ValueError:rejected.append(label)
+                else:raise ValueError('Missing execution resume rejection: '+label)
+            return {'weights_only_true_roundtrip_exact':True,'rejected':rejected,
+                'explicit_initial_opt_in':validate_resume_mode({},MODE)['explicit_initial_opt_in'],
+                'actual_controller_identity':saved['identity']}
+        identity['execution_metadata_preflight']=metadata_roundtrip()
+        if torch.cuda.is_initialized():raise ValueError('CPU metadata preflight initialized CUDA')
+        identity.update(native_EXR_path=args[2],native_EXR_shape=list(depth.shape),
+            finite_pixels=int(np.isfinite(depth).sum()),positive_pixels=int((depth>0).sum()),
+            cuda_initialized=False,source_base_commit=manifest['source_base_commit'])
+        print(json.dumps(identity),flush=True);return
+    if len(args)<2 or args[0]!='-m' or args[1] not in (
+            'multicamera4rc.launch','multicamera4rc.train','torch.distributed.run'):
+        raise ValueError('Private wrapper accepts only reviewed native training modules')
+    module,args=args[1],args[2:]
+    if module=='multicamera4rc.launch':
+        if '--allow-shared' in args or '--gpus' not in args or args[args.index('--gpus')+1]!='0,1,2,5,6,7':
+            raise ValueError('Future launcher requires the exact six-card selection and forbids shared occupancy')
+        if '--python' not in args:args+=['--python',manifest['python_wrapper']]
+        elif args[args.index('--python')+1]!=manifest['python_wrapper']:raise ValueError('Rank Python changed')
+    if module=='multicamera4rc.train':
+        if os.environ.get('CUDA_VISIBLE_DEVICES'):
+            if (int(os.environ.get('WORLD_SIZE','0'))!=6
+                    or int(os.environ.get('LOCAL_WORLD_SIZE','0'))!=6
+                    or int(os.environ.get('LOCAL_RANK','-1')) not in range(6)
+                    or int(os.environ.get('RANK','-1'))!=int(os.environ.get('LOCAL_RANK','-2'))):
+                raise ValueError('Future CUDA trainer entry must be a six-rank native torchrun child')
+        if '--execution-optimizations' not in args:args+=['--execution-optimizations',MODE]
+        elif args[args.index('--execution-optimizations')+1]!=MODE:raise ValueError('Rank execution mode changed')
+    sys.argv=[module]+args
+    runpy.run_module(module,run_name='__main__',alter_sys=True)
+
+
+if __name__=='__main__':main()

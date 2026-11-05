@@ -1,0 +1,326 @@
+{
+  "schema": "multid4rt-evaluation-external-source-pins-v1",
+  "author_checkouts": [
+    {
+      "name": "arrow",
+      "repository": "https://github.com/ifradlin/arrow",
+      "commit": "ed126d105c4d6f5b855a5e40c67675e86495d84b",
+      "tracked_diff_count": 0,
+      "included_as": "external pinned checkout"
+    },
+    {
+      "name": "mose3",
+      "repository": "https://github.com/mose3-tracker/MoSE3",
+      "commit": "bfd2ab3dbda6b2808473855567137d37cd6413d4",
+      "tracked_diff_count": 0,
+      "included_as": "external pinned checkout"
+    },
+    {
+      "name": "point4d",
+      "repository": "https://github.com/point-4d/Point4D",
+      "commit": "4da8153711a4d37afbdea9cdc789db20ac9d3f4a",
+      "tracked_diff_count": 0,
+      "included_as": "external pinned checkout"
+    },
+    {
+      "name": "trackeverything",
+      "repository": "https://github.com/ayushjain1144/trackeverything",
+      "commit": "dfb29b505cf2ea954f8697fb612c2429668dd3a0",
+      "tracked_diff_count": 0,
+      "included_as": "external pinned checkout"
+    },
+    {
+      "name": "uniquery4r",
+      "repository": "https://github.com/KosmoResearch/UniQuery4R",
+      "commit": "95119742e61c64c27b09349035019c8cd7b41e62",
+      "tracked_diff_count": 0,
+      "included_as": "external pinned checkout"
+    },
+    {
+      "name": "relift",
+      "repository": "https://github.com/ReLift3D/ReLift",
+      "commit": "98b042546e13ee3abfc0ce366b0dc44cc05c0ab8",
+      "tracked_diff_count": 0,
+      "included_as": "external pinned checkout"
+    },
+    {
+      "name": "relift/4RC",
+      "repository": "https://github.com/Luo-Yihang/4RC",
+      "commit": "a08ca0a5394c7c5f6a2a3423223cb98f85f84e6a",
+      "included_as": "external pinned Git submodule"
+    },
+    {
+      "name": "relift/alltracker",
+      "repository": "https://github.com/aharley/alltracker",
+      "commit": "c1ed462b7cfe9b4c6d07d8880ae5ed103b0848e0",
+      "included_as": "external pinned Git submodule"
+    },
+    {
+      "name": "relift/Depth-Anything-3",
+      "repository": "https://github.com/ByteDance-Seed/Depth-Anything-3",
+      "commit": "41736238f5bced4debf3f2a12375d2466874866d",
+      "included_as": "external pinned Git submodule"
+    },
+    {
+      "name": "relift/cowtracker",
+      "repository": "https://github.com/facebookresearch/cowtracker",
+      "commit": "1454f20045d3b514e5b8417907152677f3dba621",
+      "included_as": "external pinned Git submodule"
+    },
+    {
+      "name": "relift/vggt-omega",
+      "repository": "https://github.com/facebookresearch/vggt-omega",
+      "commit": "39a0cb8af88554f15ddcb5354cd52bde588fa014",
+      "included_as": "external pinned Git submodule"
+    },
+    {
+      "name": "DA3",
+      "commit": "41736238f5bced4debf3f2a12375d2466874866d",
+      "included_as": "external ReLift provider implementation, pin checked by the deployed adapter"
+    },
+    {
+      "name": "ALLTRACKER",
+      "commit": "c1ed462b7cfe9b4c6d07d8880ae5ed103b0848e0",
+      "included_as": "external ReLift provider implementation, pin checked by the deployed adapter"
+    }
+  ],
+  "official_scoring": {
+    "adt_minival": {
+      "repository": "https://github.com/google-deepmind/tapnet",
+      "commit": "730cda1c730877cfedbe01bf87fb1cadb78a565d",
+      "sha256": {
+        "tapnet/tapvid3d/evaluation/metrics.py": "f83836ce6e6abc91c1902d9069eb63f9059d7f1e9dc220278bec386a319fbd30",
+        "tapnet/tapvid3d/evaluation/evaluate_model.py": "13763ad46d4ffb2bb014c61c6ec7f908a2e6e278cfaa91d9c6849f5c176eaa38",
+        "tapnet/tapvid3d/splits/tapvid3d_splits.py": "d2b9e5b9fd8a8442038cd8c56938d20b9264dca6cbbc33ff4c4e1f4f02ff94df"
+      }
+    },
+    "drivetrack_minival": {
+      "repository": "https://github.com/google-deepmind/tapnet",
+      "commit": "730cda1c730877cfedbe01bf87fb1cadb78a565d",
+      "sha256": {
+        "tapnet/tapvid3d/evaluation/metrics.py": "f83836ce6e6abc91c1902d9069eb63f9059d7f1e9dc220278bec386a319fbd30",
+        "tapnet/tapvid3d/evaluation/evaluate_model.py": "13763ad46d4ffb2bb014c61c6ec7f908a2e6e278cfaa91d9c6849f5c176eaa38",
+        "tapnet/tapvid3d/splits/tapvid3d_splits.py": "d2b9e5b9fd8a8442038cd8c56938d20b9264dca6cbbc33ff4c4e1f4f02ff94df"
+      }
+    },
+    "pstudio_minival": {
+      "repository": "https://github.com/google-deepmind/tapnet",
+      "commit": "730cda1c730877cfedbe01bf87fb1cadb78a565d",
+      "sha256": {
+        "tapnet/tapvid3d/evaluation/metrics.py": "f83836ce6e6abc91c1902d9069eb63f9059d7f1e9dc220278bec386a319fbd30",
+        "tapnet/tapvid3d/evaluation/evaluate_model.py": "13763ad46d4ffb2bb014c61c6ec7f908a2e6e278cfaa91d9c6849f5c176eaa38",
+        "tapnet/tapvid3d/splits/tapvid3d_splits.py": "d2b9e5b9fd8a8442038cd8c56938d20b9264dca6cbbc33ff4c4e1f4f02ff94df"
+      }
+    },
+    "dexycb": {
+      "repository": "https://github.com/ethz-vlg/mvtracker",
+      "commit": "ceea8ad2af77ed9b44148ef8e9eeba4ea3c3f072",
+      "sha256": {
+        "mvtracker/evaluation/metrics.py": "eeb5fb78ad60045a1a6f94e0916e3a7d44dd3dfc22340fbc7c2ae3812929b0e7",
+        "mvtracker/evaluation/evaluator_3dpt.py": "17a4c4a5b04c25f9c0d8f513d074dcd616875c61167c001df1f8331074aa09fb",
+        "mvtracker/datasets/utils.py": "a29403690d5d493c28a4e50ae047dbf5a4f4c6822573afaaed83d891888c0892",
+        "mvtracker/datasets/panoptic_studio_multiview_dataset.py": "3a4bf92350fc19d68fdf899d36fde39142c502080fc50728efe8ed856732ed55",
+        "mvtracker/datasets/dexycb_multiview_dataset.py": "81da5927b9b046a00b8228b3e2c0a8f75f1f21f20b5740034db43d48a0aee8e7",
+        "mvtracker/datasets/kubric_multiview_dataset.py": "669e0015db04150363cd9b233399c49a5f93468a48e82fe71efb53ad9d8b1a1e",
+        "mvtracker/utils/basic.py": "fca94d66d2a4dc3742485342af223999c56413fd8ad8a2e82171bc32139fb63f"
+      },
+      "aggregation": {
+        "repository": "https://github.com/ethz-vlg/mvtracker",
+        "commit": "ceea8ad2af77ed9b44148ef8e9eeba4ea3c3f072",
+        "sha256": {
+          "mvtracker/cli/train.py": "42f80ffe34ea357219e2d04f4aa300a3a654e6da55a8d2d5582eb06ae65b17fa"
+        }
+      }
+    },
+    "panoptic": {
+      "repository": "https://github.com/ethz-vlg/mvtracker",
+      "commit": "ceea8ad2af77ed9b44148ef8e9eeba4ea3c3f072",
+      "sha256": {
+        "mvtracker/evaluation/metrics.py": "eeb5fb78ad60045a1a6f94e0916e3a7d44dd3dfc22340fbc7c2ae3812929b0e7",
+        "mvtracker/evaluation/evaluator_3dpt.py": "17a4c4a5b04c25f9c0d8f513d074dcd616875c61167c001df1f8331074aa09fb",
+        "mvtracker/datasets/utils.py": "a29403690d5d493c28a4e50ae047dbf5a4f4c6822573afaaed83d891888c0892",
+        "mvtracker/datasets/panoptic_studio_multiview_dataset.py": "3a4bf92350fc19d68fdf899d36fde39142c502080fc50728efe8ed856732ed55",
+        "mvtracker/datasets/dexycb_multiview_dataset.py": "81da5927b9b046a00b8228b3e2c0a8f75f1f21f20b5740034db43d48a0aee8e7",
+        "mvtracker/datasets/kubric_multiview_dataset.py": "669e0015db04150363cd9b233399c49a5f93468a48e82fe71efb53ad9d8b1a1e",
+        "mvtracker/utils/basic.py": "fca94d66d2a4dc3742485342af223999c56413fd8ad8a2e82171bc32139fb63f"
+      },
+      "aggregation": {
+        "repository": "https://github.com/ethz-vlg/mvtracker",
+        "commit": "ceea8ad2af77ed9b44148ef8e9eeba4ea3c3f072",
+        "sha256": {
+          "mvtracker/cli/train.py": "42f80ffe34ea357219e2d04f4aa300a3a654e6da55a8d2d5582eb06ae65b17fa"
+        }
+      }
+    },
+    "mv-kubric": {
+      "repository": "https://github.com/ethz-vlg/mvtracker",
+      "commit": "ceea8ad2af77ed9b44148ef8e9eeba4ea3c3f072",
+      "sha256": {
+        "mvtracker/evaluation/metrics.py": "eeb5fb78ad60045a1a6f94e0916e3a7d44dd3dfc22340fbc7c2ae3812929b0e7",
+        "mvtracker/evaluation/evaluator_3dpt.py": "17a4c4a5b04c25f9c0d8f513d074dcd616875c61167c001df1f8331074aa09fb",
+        "mvtracker/datasets/utils.py": "a29403690d5d493c28a4e50ae047dbf5a4f4c6822573afaaed83d891888c0892",
+        "mvtracker/datasets/panoptic_studio_multiview_dataset.py": "3a4bf92350fc19d68fdf899d36fde39142c502080fc50728efe8ed856732ed55",
+        "mvtracker/datasets/dexycb_multiview_dataset.py": "81da5927b9b046a00b8228b3e2c0a8f75f1f21f20b5740034db43d48a0aee8e7",
+        "mvtracker/datasets/kubric_multiview_dataset.py": "669e0015db04150363cd9b233399c49a5f93468a48e82fe71efb53ad9d8b1a1e",
+        "mvtracker/utils/basic.py": "fca94d66d2a4dc3742485342af223999c56413fd8ad8a2e82171bc32139fb63f"
+      },
+      "aggregation": {
+        "repository": "https://github.com/ethz-vlg/mvtracker",
+        "commit": "ceea8ad2af77ed9b44148ef8e9eeba4ea3c3f072",
+        "sha256": {
+          "mvtracker/cli/train.py": "42f80ffe34ea357219e2d04f4aa300a3a654e6da55a8d2d5582eb06ae65b17fa"
+        }
+      }
+    },
+    "trajectory_adt_mini": {
+      "repository": "https://github.com/HavenFeng/St4RTrack",
+      "commit": "0f9a3f44a7ebac76600cd31ec9eea5228ad7db91",
+      "sha256": {
+        "dust3r/track_eval.py": "e47d8bac055f45409a821c87de21879aae2a3bdfc00713a8ef94e0e8b33db2e0",
+        "dust3r/track_eval_util.py": "1ad2458140f2a9adde5f155cc4e53295d9cb55df93e407c56b676caf0393de0e",
+        "dust3r/datasets/tapvid3d.py": "e31182f86c78d4757b6025392b26dfad779689b2fd83c795cca3a1575b47eb32",
+        "scripts_run/eval.sh": "d21d984eb8240a4e6adc525e8e92a80daacad95481fe125a2d3b4c5707dfccfb"
+      }
+    },
+    "trajectory_pstudio_mini": {
+      "repository": "https://github.com/HavenFeng/St4RTrack",
+      "commit": "0f9a3f44a7ebac76600cd31ec9eea5228ad7db91",
+      "sha256": {
+        "dust3r/track_eval.py": "e47d8bac055f45409a821c87de21879aae2a3bdfc00713a8ef94e0e8b33db2e0",
+        "dust3r/track_eval_util.py": "1ad2458140f2a9adde5f155cc4e53295d9cb55df93e407c56b676caf0393de0e",
+        "dust3r/datasets/tapvid3d.py": "e31182f86c78d4757b6025392b26dfad779689b2fd83c795cca3a1575b47eb32",
+        "scripts_run/eval.sh": "d21d984eb8240a4e6adc525e8e92a80daacad95481fe125a2d3b4c5707dfccfb"
+      }
+    },
+    "trajectory_po_mini": {
+      "repository": "https://github.com/HavenFeng/St4RTrack",
+      "commit": "0f9a3f44a7ebac76600cd31ec9eea5228ad7db91",
+      "sha256": {
+        "dust3r/track_eval.py": "e47d8bac055f45409a821c87de21879aae2a3bdfc00713a8ef94e0e8b33db2e0",
+        "dust3r/track_eval_util.py": "1ad2458140f2a9adde5f155cc4e53295d9cb55df93e407c56b676caf0393de0e",
+        "dust3r/datasets/tapvid3d.py": "e31182f86c78d4757b6025392b26dfad779689b2fd83c795cca3a1575b47eb32",
+        "scripts_run/eval.sh": "d21d984eb8240a4e6adc525e8e92a80daacad95481fe125a2d3b4c5707dfccfb"
+      }
+    },
+    "trajectory_ds_mini": {
+      "repository": "https://github.com/HavenFeng/St4RTrack",
+      "commit": "0f9a3f44a7ebac76600cd31ec9eea5228ad7db91",
+      "sha256": {
+        "dust3r/track_eval.py": "e47d8bac055f45409a821c87de21879aae2a3bdfc00713a8ef94e0e8b33db2e0",
+        "dust3r/track_eval_util.py": "1ad2458140f2a9adde5f155cc4e53295d9cb55df93e407c56b676caf0393de0e",
+        "dust3r/datasets/tapvid3d.py": "e31182f86c78d4757b6025392b26dfad779689b2fd83c795cca3a1575b47eb32",
+        "scripts_run/eval.sh": "d21d984eb8240a4e6adc525e8e92a80daacad95481fe125a2d3b4c5707dfccfb"
+      }
+    },
+    "reconstruction_tum": {
+      "repository": "https://github.com/HavenFeng/St4RTrack",
+      "commit": "0f9a3f44a7ebac76600cd31ec9eea5228ad7db91",
+      "sha256": {
+        "dust3r/track_eval.py": "e47d8bac055f45409a821c87de21879aae2a3bdfc00713a8ef94e0e8b33db2e0",
+        "dust3r/track_eval_util.py": "1ad2458140f2a9adde5f155cc4e53295d9cb55df93e407c56b676caf0393de0e",
+        "dust3r/datasets/tapvid3d.py": "e31182f86c78d4757b6025392b26dfad779689b2fd83c795cca3a1575b47eb32",
+        "scripts_run/eval.sh": "d21d984eb8240a4e6adc525e8e92a80daacad95481fe125a2d3b4c5707dfccfb"
+      }
+    },
+    "reconstruction_po_mini": {
+      "repository": "https://github.com/HavenFeng/St4RTrack",
+      "commit": "0f9a3f44a7ebac76600cd31ec9eea5228ad7db91",
+      "sha256": {
+        "dust3r/track_eval.py": "e47d8bac055f45409a821c87de21879aae2a3bdfc00713a8ef94e0e8b33db2e0",
+        "dust3r/track_eval_util.py": "1ad2458140f2a9adde5f155cc4e53295d9cb55df93e407c56b676caf0393de0e",
+        "dust3r/datasets/tapvid3d.py": "e31182f86c78d4757b6025392b26dfad779689b2fd83c795cca3a1575b47eb32",
+        "scripts_run/eval.sh": "d21d984eb8240a4e6adc525e8e92a80daacad95481fe125a2d3b4c5707dfccfb"
+      }
+    }
+  },
+  "observed_runtime_versions": {
+    "ARROW": [
+      {
+        "torch": "2.14.1+cu130",
+        "numpy": "2.5.3",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0",
+        "scipy": "1.18.1",
+        "torchvision": "0.29.1",
+        "opencv-python-headless": "5.0.0.93"
+      }
+    ],
+    "VGGT-Omega-1B-512+TrackEverything": [
+      {
+        "torch": "2.11.0+cu128",
+        "numpy": "1.26.4",
+        "einops": "0.8.2",
+        "Pillow": "9.2.0",
+        "scipy": "1.13.1",
+        "pandas": "1.5.3",
+        "torchvision": "0.26.0+cu128",
+        "kornia": "0.7.3",
+        "natsort": "8.4.0"
+      }
+    ],
+    "Ours134400": [
+      {
+        "torch": "2.11.0+cu128",
+        "numpy": "1.26.4",
+        "einops": "0.8.2",
+        "Pillow": "9.2.0",
+        "scipy": "1.13.1",
+        "pandas": "1.5.3",
+        "torchvision": "0.26.0+cu128",
+        "kornia": "0.7.3",
+        "natsort": "8.4.0"
+      }
+    ],
+    "MoSE3": [
+      {
+        "torch": "2.14.1+cu130",
+        "numpy": "2.5.3",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0",
+        "scipy": "1.18.1",
+        "torchvision": "0.29.1",
+        "opencv-python-headless": "5.0.0.93"
+      }
+    ],
+    "UniQuery4R": [
+      {
+        "torch": "2.14.1+cu130",
+        "numpy": "2.5.3",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0",
+        "scipy": "1.18.1",
+        "torchvision": "0.29.1",
+        "opencv-python-headless": "5.0.0.93"
+      }
+    ],
+    "ReLift+AllTracker+DA3": [
+      {
+        "torch": "2.14.1+cu130",
+        "numpy": "2.5.3",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0",
+        "scipy": "1.18.1",
+        "torchvision": "0.29.1",
+        "opencv-python-headless": "5.0.0.93",
+        "natsort": "8.4.0"
+      }
+    ],
+    "Point4D-direct-query": [
+      {
+        "torch": "2.11.0+cu128",
+        "numpy": "1.26.4",
+        "einops": "0.8.2",
+        "Pillow": "9.2.0",
+        "scipy": "1.13.1",
+        "pandas": "1.5.3",
+        "torchvision": "0.26.0+cu128",
+        "kornia": "0.7.3",
+        "natsort": "8.4.0"
+      }
+    ]
+  },
+  "ours_frozen_model": {
+    "repository": "https://github.com/bestzbf/my_dfrt",
+    "commit": "dd45a94604b20970b8d89cd177d614c3698fa8a9"
+  }
+}

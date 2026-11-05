@@ -1,0 +1,25 @@
+{
+  "ACTIVATION_READY": [
+    "supervisor_plan/activation_ready"
+  ],
+  "ACTIVATION_READY_SHA256": [],
+  "EVALUATION_CHECKOUT": [
+    "supervisor_plan/evaluation_repo"
+  ],
+  "EXTERNAL_BOOT_CHECKPOINT_8DB43A7E94": [
+    "supervisor_plan/boot_checkpoint"
+  ],
+  "EXTERNAL_CANONICAL_ACTIVE_PATH_2ED930AC5D": [
+    "supervisor_plan/canonical_active_path"
+  ],
+  "EXTERNAL_SOURCE_STOPPED_D7F1D1BE6A": [
+    "supervisor_plan/source_stopped"
+  ],
+  "PRIOR_ACTIVATION_STATE_DIR": [
+    "checkpoint_validation/output_root",
+    "supervisor_plan/prior_control"
+  ],
+  "SUPERVISOR_STATE_DIR": [
+    "supervisor_plan/control_dir"
+  ]
+}

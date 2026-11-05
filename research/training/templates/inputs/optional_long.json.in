@@ -1,0 +1,1594 @@
+{
+  "epoch_size": 100000,
+  "image_mode": "native",
+  "include_visibility": true,
+  "invalid_log": "@@EXTERNAL_INVALID_LOG_A51D140C62@@",
+  "kubric_background_policy": "objects_ground",
+  "num_queries": 0,
+  "num_times": 8,
+  "photometric_augmentation": {
+    "blur_kernel_size": 5,
+    "blur_probability": 0.1,
+    "blur_sigma": [
+      0.1,
+      1.0
+    ],
+    "brightness": 0.2,
+    "contrast": 0.2,
+    "grayscale_probability": 0.05,
+    "probability": 0.8,
+    "saturation": 0.2
+  },
+  "sampling": "balanced_coverage",
+  "seed": 49,
+  "skip_invalid": true,
+  "sources": [
+    {
+      "adapter": "kubric_multicam",
+      "cameras": 10,
+      "dense_kind": "kubric",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 8,
+          "weight": 0.00920245398773006
+        },
+        {
+          "cameras": 1,
+          "num_times": 12,
+          "weight": 0.013803680981595089
+        },
+        {
+          "cameras": 1,
+          "num_times": 16,
+          "weight": 0.023006134969325152
+        },
+        {
+          "cameras": 1,
+          "num_times": 24,
+          "weight": 0.027607361963190177
+        },
+        {
+          "cameras": 1,
+          "num_times": 32,
+          "weight": 0.01840490797546012
+        },
+        {
+          "cameras": 2,
+          "num_times": 6,
+          "weight": 0.008343558282208589
+        },
+        {
+          "cameras": 2,
+          "num_times": 8,
+          "weight": 0.016687116564417178
+        },
+        {
+          "cameras": 2,
+          "num_times": 12,
+          "weight": 0.1886298568507157
+        },
+        {
+          "cameras": 2,
+          "num_times": 16,
+          "weight": 0.02085889570552147
+        },
+        {
+          "cameras": 2,
+          "num_times": 24,
+          "weight": 0.012515337423312883
+        },
+        {
+          "cameras": 3,
+          "num_times": 4,
+          "weight": 0.0068711656441717795
+        },
+        {
+          "cameras": 3,
+          "num_times": 8,
+          "weight": 0.18421267893660528
+        },
+        {
+          "cameras": 3,
+          "num_times": 12,
+          "weight": 0.024049079754601226
+        },
+        {
+          "cameras": 3,
+          "num_times": 16,
+          "weight": 0.017177914110429446
+        },
+        {
+          "cameras": 4,
+          "num_times": 4,
+          "weight": 0.008834355828220857
+        },
+        {
+          "cameras": 4,
+          "num_times": 6,
+          "weight": 0.1856850715746421
+        },
+        {
+          "cameras": 4,
+          "num_times": 8,
+          "weight": 0.030920245398773003
+        },
+        {
+          "cameras": 4,
+          "num_times": 12,
+          "weight": 0.026503067484662572
+        },
+        {
+          "cameras": 5,
+          "num_times": 2,
+          "weight": 0.0029447852760736194
+        },
+        {
+          "cameras": 5,
+          "num_times": 4,
+          "weight": 0.013251533742331286
+        },
+        {
+          "cameras": 5,
+          "num_times": 6,
+          "weight": 0.013251533742331286
+        },
+        {
+          "cameras": 6,
+          "num_times": 2,
+          "weight": 0.0034355828220858898
+        },
+        {
+          "cameras": 6,
+          "num_times": 4,
+          "weight": 0.015460122699386505
+        },
+        {
+          "cameras": 6,
+          "num_times": 6,
+          "weight": 0.015460122699386505
+        },
+        {
+          "cameras": 7,
+          "num_times": 2,
+          "weight": 0.0029447852760736194
+        },
+        {
+          "cameras": 7,
+          "num_times": 4,
+          "weight": 0.016196319018404907
+        },
+        {
+          "cameras": 7,
+          "num_times": 6,
+          "weight": 0.010306748466257667
+        },
+        {
+          "cameras": 8,
+          "num_times": 2,
+          "weight": 0.0034355828220858898
+        },
+        {
+          "cameras": 8,
+          "num_times": 4,
+          "weight": 0.018895705521472395
+        },
+        {
+          "cameras": 8,
+          "num_times": 6,
+          "weight": 0.012024539877300613
+        },
+        {
+          "cameras": 9,
+          "num_times": 2,
+          "weight": 0.003680981595092024
+        },
+        {
+          "cameras": 9,
+          "num_times": 4,
+          "weight": 0.02085889570552147
+        },
+        {
+          "cameras": 10,
+          "num_times": 2,
+          "weight": 0.003680981595092024
+        },
+        {
+          "cameras": 10,
+          "num_times": 4,
+          "weight": 0.02085889570552147
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_EA0AD03C97@@",
+      "name": "kubric_variable",
+      "num_times": 32,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6E2078DBE@@",
+        "depth_is_ray_distance": true,
+        "extrinsics_are_opengl": false,
+        "index_workers": 4,
+        "min_validation_revision": 4,
+        "random_cameras": true,
+        "require_depth": true,
+        "require_native_tracks": true,
+        "require_validation_stamp": true,
+        "required_schema_version": "movi_tracking_v3",
+        "split_strategy": "variant_balanced",
+        "val_ratio": 0.05,
+        "validation_stamp_dir": "@@EXTERNAL_VALIDATION_STAMP_DIR_7A1FAC1E22@@",
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_8973E74912@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.15067204806715645
+    },
+    {
+      "adapter": "dynamic_replica",
+      "cameras": 1,
+      "dense_kind": "replica_flow",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 8,
+          "weight": 0.1
+        },
+        {
+          "cameras": 1,
+          "num_times": 12,
+          "weight": 0.15
+        },
+        {
+          "cameras": 1,
+          "num_times": 16,
+          "weight": 0.75
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_96862EFBD2@@",
+      "name": "dynamic_replica_left",
+      "num_times": 16,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6E2078DBE@@",
+        "cameras": "both",
+        "index_workers": 2,
+        "load_trajectories": false,
+        "pixel_coordinates": "array_index_v1",
+        "rgb_from_trajectory": false,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_79AB0AFDE8@@",
+      "split": "train",
+      "strides": [
+        1
+      ],
+      "weight": 0.06932762947875297
+    },
+    {
+      "adapter": "dynamic_replica",
+      "cameras": 1,
+      "dense_kind": "replica_flow",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 8,
+          "weight": 0.1
+        },
+        {
+          "cameras": 1,
+          "num_times": 12,
+          "weight": 0.15
+        },
+        {
+          "cameras": 1,
+          "num_times": 16,
+          "weight": 0.75
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_6E4C8A38D8@@",
+      "name": "dynamic_replica_right",
+      "num_times": 16,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6E2078DBE@@",
+        "cameras": "both",
+        "depth_validity_manifest_sha256": "3cef0f9b03f3b209d4cf3a00e048d76da70544a870400f449e440ddf6fd6586a",
+        "depth_validity_mask_root": "@@EXTERNAL_DEPTH_VALIDITY_MASK_ROOT_EE350154D0@@",
+        "index_workers": 2,
+        "load_trajectories": false,
+        "pixel_coordinates": "array_index_v1",
+        "rgb_from_trajectory": false,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_79AB0AFDE8@@",
+      "split": "train",
+      "strides": [
+        1
+      ],
+      "weight": 0.02310920982625099
+    },
+    {
+      "adapter": "pointodyssey_tracks",
+      "cameras": 1,
+      "dense_kind": "pointodyssey_tracks",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 8,
+          "weight": 0.06666666666666667
+        },
+        {
+          "cameras": 1,
+          "num_times": 12,
+          "weight": 0.09999999999999999
+        },
+        {
+          "cameras": 1,
+          "num_times": 16,
+          "weight": 0.16666666666666666
+        },
+        {
+          "cameras": 1,
+          "num_times": 24,
+          "weight": 0.6666666666666667
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_A507230A8F@@",
+      "name": "pointodyssey",
+      "num_times": 24,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6E2078DBE@@",
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_372AEB5E18@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.11554604913125495
+    },
+    {
+      "adapter": "vkitti2",
+      "cameras": 1,
+      "dense_kind": "vkitti_scene_flow",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 8,
+          "weight": 0.06666666666666667
+        },
+        {
+          "cameras": 1,
+          "num_times": 12,
+          "weight": 0.09999999999999999
+        },
+        {
+          "cameras": 1,
+          "num_times": 16,
+          "weight": 0.16666666666666666
+        },
+        {
+          "cameras": 1,
+          "num_times": 24,
+          "weight": 0.6666666666666667
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_8CAAB7914D@@",
+      "name": "vkitti2_Camera_0",
+      "num_times": 24,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6E2078DBE@@",
+        "camera": "Camera_0",
+        "load_flow": false,
+        "load_normals": false,
+        "load_precomputed": false,
+        "strict_calibration": true,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_6D60549443@@",
+      "split": "train",
+      "strides": [
+        1
+      ],
+      "weight": 0.011554604913125495
+    },
+    {
+      "adapter": "vkitti2",
+      "cameras": 1,
+      "dense_kind": "vkitti_scene_flow",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 8,
+          "weight": 0.06666666666666667
+        },
+        {
+          "cameras": 1,
+          "num_times": 12,
+          "weight": 0.09999999999999999
+        },
+        {
+          "cameras": 1,
+          "num_times": 16,
+          "weight": 0.16666666666666666
+        },
+        {
+          "cameras": 1,
+          "num_times": 24,
+          "weight": 0.6666666666666667
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_639D356E76@@",
+      "name": "vkitti2_Camera_1",
+      "num_times": 24,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6E2078DBE@@",
+        "camera": "Camera_1",
+        "load_flow": false,
+        "load_normals": false,
+        "load_precomputed": false,
+        "strict_calibration": true,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_6D60549443@@",
+      "split": "train",
+      "strides": [
+        1
+      ],
+      "weight": 0.011554604913125495
+    },
+    {
+      "adapter": "tartanair_v1_zip",
+      "cameras": 1,
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 8,
+          "weight": 0.06666666666666667
+        },
+        {
+          "cameras": 1,
+          "num_times": 12,
+          "weight": 0.09999999999999999
+        },
+        {
+          "cameras": 1,
+          "num_times": 16,
+          "weight": 0.16666666666666666
+        },
+        {
+          "cameras": 1,
+          "num_times": 24,
+          "weight": 0.39999999999999997
+        },
+        {
+          "cameras": 1,
+          "num_times": 32,
+          "weight": 0.2666666666666667
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_A188E6AB14@@",
+      "name": "tartanair_left",
+      "num_times": 32,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6E2078DBE@@",
+        "camera": "left",
+        "depth_max": 200.0,
+        "depth_percentile": 98.0,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_C893AB7EF1@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.0058823443194093465
+    },
+    {
+      "adapter": "tartanair_v1_zip",
+      "cameras": 1,
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 8,
+          "weight": 0.06666666666666667
+        },
+        {
+          "cameras": 1,
+          "num_times": 12,
+          "weight": 0.09999999999999999
+        },
+        {
+          "cameras": 1,
+          "num_times": 16,
+          "weight": 0.16666666666666666
+        },
+        {
+          "cameras": 1,
+          "num_times": 24,
+          "weight": 0.39999999999999997
+        },
+        {
+          "cameras": 1,
+          "num_times": 32,
+          "weight": 0.2666666666666667
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_79775838F7@@",
+      "name": "tartanair_right",
+      "num_times": 32,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6E2078DBE@@",
+        "camera": "right",
+        "depth_max": 200.0,
+        "depth_percentile": 98.0,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_C893AB7EF1@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.0058823443194093465
+    },
+    {
+      "adapter": "hypersim_zip",
+      "cameras": [
+        2,
+        4
+      ],
+      "dense_kind": "geometry",
+      "manifest": "@@EXTERNAL_MANIFEST_38202855E0@@",
+      "name": "hypersim",
+      "num_times": 1,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6E2078DBE@@",
+        "camera_metadata": "@@EXTERNAL_CAMERA_METADATA_698C76334A@@",
+        "split_metadata": "@@EXTERNAL_SPLIT_METADATA_766991A61A@@",
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_45ADC004E7@@",
+      "split": "train",
+      "strides": [
+        1
+      ],
+      "view_mode": "static_multiview",
+      "weight": 0.024764474157991774
+    },
+    {
+      "adapter": "mugen_h5",
+      "cameras": 1,
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 8,
+          "weight": 0.06666666666666667
+        },
+        {
+          "cameras": 1,
+          "num_times": 12,
+          "weight": 0.09999999999999999
+        },
+        {
+          "cameras": 1,
+          "num_times": 16,
+          "weight": 0.16666666666666666
+        },
+        {
+          "cameras": 1,
+          "num_times": 24,
+          "weight": 0.39999999999999997
+        },
+        {
+          "cameras": 1,
+          "num_times": 32,
+          "weight": 0.2666666666666667
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_11BB0E2B6F@@",
+      "name": "scannet",
+      "num_times": 32,
+      "options": {
+        "assume_static_scene": false,
+        "dataset_name": "scannet",
+        "generate_static_tracks": false,
+        "prefer_precomputed_tracks": false,
+        "require_generated_tracks": false,
+        "strip_padding": true,
+        "train_only_val_ratio": 0.0,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_0517BD8285@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.023216694523117285
+    },
+    {
+      "adapter": "mugen_h5",
+      "cameras": 1,
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 8,
+          "weight": 0.06666666666666667
+        },
+        {
+          "cameras": 1,
+          "num_times": 12,
+          "weight": 0.09999999999999999
+        },
+        {
+          "cameras": 1,
+          "num_times": 16,
+          "weight": 0.16666666666666666
+        },
+        {
+          "cameras": 1,
+          "num_times": 24,
+          "weight": 0.39999999999999997
+        },
+        {
+          "cameras": 1,
+          "num_times": 32,
+          "weight": 0.2666666666666667
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_DCA9AE0049@@",
+      "name": "scannetpp",
+      "num_times": 32,
+      "options": {
+        "assume_static_scene": false,
+        "dataset_name": "scannetpp",
+        "generate_static_tracks": false,
+        "prefer_precomputed_tracks": false,
+        "require_generated_tracks": false,
+        "strip_padding": true,
+        "train_only_val_ratio": 0.0,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_22AF505E7E@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.023216694523117285
+    },
+    {
+      "adapter": "mugen_h5",
+      "cameras": 1,
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 8,
+          "weight": 0.06666666666666667
+        },
+        {
+          "cameras": 1,
+          "num_times": 12,
+          "weight": 0.09999999999999999
+        },
+        {
+          "cameras": 1,
+          "num_times": 16,
+          "weight": 0.16666666666666666
+        },
+        {
+          "cameras": 1,
+          "num_times": 24,
+          "weight": 0.39999999999999997
+        },
+        {
+          "cameras": 1,
+          "num_times": 32,
+          "weight": 0.2666666666666667
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_6A1CCDA865@@",
+      "name": "wildrgbd",
+      "num_times": 32,
+      "options": {
+        "assume_static_scene": false,
+        "dataset_name": "wildrgbd",
+        "generate_static_tracks": false,
+        "prefer_precomputed_tracks": false,
+        "require_generated_tracks": false,
+        "strip_padding": true,
+        "train_only_val_ratio": 0.0,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_B24698D41D@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.023216694523117285
+    },
+    {
+      "adapter": "mugen_h5",
+      "cameras": [
+        4,
+        8
+      ],
+      "dense_kind": "geometry",
+      "manifest": "@@EXTERNAL_MANIFEST_C134391CA4@@",
+      "name": "blended",
+      "num_times": 1,
+      "options": {
+        "assume_static_scene": false,
+        "dataset_name": "blended",
+        "generate_static_tracks": false,
+        "prefer_precomputed_tracks": false,
+        "require_generated_tracks": false,
+        "strip_padding": true,
+        "train_only_val_ratio": 0.0,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_6AEFC1288E@@",
+      "split": "train",
+      "strides": [
+        1
+      ],
+      "view_mode": "static_multiview",
+      "weight": 0.055032164795537256
+    },
+    {
+      "adapter": "mugen_h5",
+      "cameras": [
+        4,
+        8
+      ],
+      "dense_kind": "geometry",
+      "manifest": "@@EXTERNAL_MANIFEST_6ABE52100E@@",
+      "name": "taskonomy",
+      "num_times": 1,
+      "options": {
+        "assume_static_scene": false,
+        "dataset_name": "taskonomy",
+        "generate_static_tracks": false,
+        "prefer_precomputed_tracks": false,
+        "require_generated_tracks": false,
+        "strip_padding": true,
+        "train_only_val_ratio": 0.0,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_F4E841F5E6@@",
+      "split": "train",
+      "strides": [
+        1
+      ],
+      "view_mode": "static_multiview",
+      "weight": 0.012382237078995887
+    },
+    {
+      "adapter": "vkitti2_stereo",
+      "cameras": 2,
+      "dense_kind": "vkitti_scene_flow",
+      "layouts": [
+        {
+          "cameras": 2,
+          "num_times": 4,
+          "weight": 0.15
+        },
+        {
+          "cameras": 2,
+          "num_times": 6,
+          "weight": 0.2
+        },
+        {
+          "cameras": 2,
+          "num_times": 8,
+          "weight": 0.35
+        },
+        {
+          "cameras": 2,
+          "num_times": 12,
+          "weight": 0.3
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_3F0DB712E9@@",
+      "name": "vkitti2_stereo",
+      "num_times": 12,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6579970CB@@",
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_6D60549443@@",
+      "split": "train",
+      "strides": [
+        1
+      ],
+      "weight": 0.07394947144400317
+    },
+    {
+      "adapter": "tartanair_v1_stereo",
+      "cameras": 2,
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 2,
+          "num_times": 4,
+          "weight": 0.15
+        },
+        {
+          "cameras": 2,
+          "num_times": 6,
+          "weight": 0.2
+        },
+        {
+          "cameras": 2,
+          "num_times": 8,
+          "weight": 0.35
+        },
+        {
+          "cameras": 2,
+          "num_times": 12,
+          "weight": 0.3
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_8CFC41DA98@@",
+      "name": "tartanair_v1_stereo",
+      "num_times": 12,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6579970CB@@",
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_C893AB7EF1@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.014117626366582429
+    },
+    {
+      "adapter": "tartanair_v2_zip",
+      "cameras": 2,
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 2,
+          "num_times": 4,
+          "weight": 0.15
+        },
+        {
+          "cameras": 2,
+          "num_times": 6,
+          "weight": 0.2
+        },
+        {
+          "cameras": 2,
+          "num_times": 8,
+          "weight": 0.35
+        },
+        {
+          "cameras": 2,
+          "num_times": 12,
+          "weight": 0.3
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_0B832B2C62@@",
+      "name": "tartanair_v2_front",
+      "num_times": 12,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6579970CB@@",
+        "depth_max": 200.0,
+        "depth_percentile": 98.0,
+        "direction": "front",
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_0EE9591136@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.006176461535379814
+    },
+    {
+      "adapter": "tartanair_v2_zip",
+      "cameras": 2,
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 2,
+          "num_times": 4,
+          "weight": 0.15
+        },
+        {
+          "cameras": 2,
+          "num_times": 6,
+          "weight": 0.2
+        },
+        {
+          "cameras": 2,
+          "num_times": 8,
+          "weight": 0.35
+        },
+        {
+          "cameras": 2,
+          "num_times": 12,
+          "weight": 0.3
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_F2BC1BAB62@@",
+      "name": "tartanair_v2_back",
+      "num_times": 12,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6579970CB@@",
+        "depth_max": 200.0,
+        "depth_percentile": 98.0,
+        "direction": "back",
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_0EE9591136@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.006176461535379814
+    },
+    {
+      "adapter": "tartanair_v2_zip",
+      "cameras": 2,
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 2,
+          "num_times": 4,
+          "weight": 0.15
+        },
+        {
+          "cameras": 2,
+          "num_times": 6,
+          "weight": 0.2
+        },
+        {
+          "cameras": 2,
+          "num_times": 8,
+          "weight": 0.35
+        },
+        {
+          "cameras": 2,
+          "num_times": 12,
+          "weight": 0.3
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_7C51BF9CBC@@",
+      "name": "tartanair_v2_left",
+      "num_times": 12,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6579970CB@@",
+        "depth_max": 200.0,
+        "depth_percentile": 98.0,
+        "direction": "left",
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_0EE9591136@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.006176461535379814
+    },
+    {
+      "adapter": "tartanair_v2_zip",
+      "cameras": 2,
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 2,
+          "num_times": 4,
+          "weight": 0.15
+        },
+        {
+          "cameras": 2,
+          "num_times": 6,
+          "weight": 0.2
+        },
+        {
+          "cameras": 2,
+          "num_times": 8,
+          "weight": 0.35
+        },
+        {
+          "cameras": 2,
+          "num_times": 12,
+          "weight": 0.3
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_FDA3371EDA@@",
+      "name": "tartanair_v2_right",
+      "num_times": 12,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6579970CB@@",
+        "depth_max": 200.0,
+        "depth_percentile": 98.0,
+        "direction": "right",
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_0EE9591136@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.006176461535379814
+    },
+    {
+      "adapter": "tartanair_v2_zip",
+      "cameras": 2,
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 2,
+          "num_times": 4,
+          "weight": 0.15
+        },
+        {
+          "cameras": 2,
+          "num_times": 6,
+          "weight": 0.2
+        },
+        {
+          "cameras": 2,
+          "num_times": 8,
+          "weight": 0.35
+        },
+        {
+          "cameras": 2,
+          "num_times": 12,
+          "weight": 0.3
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_CBE637CD0A@@",
+      "name": "tartanair_v2_top",
+      "num_times": 12,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6579970CB@@",
+        "depth_max": 200.0,
+        "depth_percentile": 98.0,
+        "direction": "top",
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_0EE9591136@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.006176461535379814
+    },
+    {
+      "adapter": "tartanair_v2_zip",
+      "cameras": 2,
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 2,
+          "num_times": 4,
+          "weight": 0.15
+        },
+        {
+          "cameras": 2,
+          "num_times": 6,
+          "weight": 0.2
+        },
+        {
+          "cameras": 2,
+          "num_times": 8,
+          "weight": 0.35
+        },
+        {
+          "cameras": 2,
+          "num_times": 12,
+          "weight": 0.3
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_CD395A9B5F@@",
+      "name": "tartanair_v2_bottom",
+      "num_times": 12,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6579970CB@@",
+        "depth_max": 200.0,
+        "depth_percentile": 98.0,
+        "direction": "bottom",
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_0EE9591136@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.006176461535379814
+    },
+    {
+      "adapter": "tartanair_v2_zip",
+      "cameras": 1,
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 8,
+          "weight": 0.06666666666666667
+        },
+        {
+          "cameras": 1,
+          "num_times": 12,
+          "weight": 0.09999999999999999
+        },
+        {
+          "cameras": 1,
+          "num_times": 16,
+          "weight": 0.16666666666666666
+        },
+        {
+          "cameras": 1,
+          "num_times": 24,
+          "weight": 0.39999999999999997
+        },
+        {
+          "cameras": 1,
+          "num_times": 32,
+          "weight": 0.2666666666666667
+        }
+      ],
+      "manifest": "@@EXTERNAL_MANIFEST_F649504EA5@@",
+      "name": "tartanair_v2_front_mono",
+      "num_times": 32,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_F6579970CB@@",
+        "camera": "lcam",
+        "depth_max": 200.0,
+        "depth_percentile": 98.0,
+        "direction": "front",
+        "stereo": false,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_0EE9591136@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.0051470512794831785
+    },
+    {
+      "adapter": "syn4d",
+      "dense_kind": "syn4d",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 16,
+          "weight": 0.23809523809523814
+        },
+        {
+          "cameras": 2,
+          "num_times": 8,
+          "weight": 0.38095238095238104
+        },
+        {
+          "cameras": 4,
+          "num_times": 4,
+          "weight": 0.28571428571428575
+        },
+        {
+          "cameras": 8,
+          "num_times": 2,
+          "weight": 0.09523809523809526
+        }
+      ],
+      "name": "syn4d_v1",
+      "options": {
+        "frame_policy": "all",
+        "missing_mesh": "mask",
+        "require_human_meshes": true,
+        "scenes": [
+          "arena",
+          "bigoffice_v1",
+          "brushify_bald",
+          "castle",
+          "cave_group",
+          "countryside",
+          "cyber_bald",
+          "desert_bald",
+          "downtown_bald",
+          "flying_group",
+          "genshin_group",
+          "hallway",
+          "hospital",
+          "japenese_bald",
+          "lab_bald",
+          "middleeast_bald",
+          "office_bald",
+          "planet_bald",
+          "post_bald",
+          "scifiroom_bald",
+          "soul_bald",
+          "soviet_group",
+          "space_bald",
+          "temple_group",
+          "train_group",
+          "village",
+          "warehouse_group_static",
+          "winter",
+          "winter_group_static"
+        ],
+        "subsets": [
+          "syn4d_v1_stride_1"
+        ]
+      },
+      "root": "@@EXTERNAL_ROOT_DABF26D7FD@@",
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        5
+      ],
+      "weight": 0.0582352087621525
+    },
+    {
+      "adapter": "syn4d",
+      "dense_kind": "syn4d",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 16,
+          "weight": 0.23809523809523814
+        },
+        {
+          "cameras": 2,
+          "num_times": 8,
+          "weight": 0.42857142857142866
+        },
+        {
+          "cameras": 4,
+          "num_times": 4,
+          "weight": 0.33333333333333337
+        }
+      ],
+      "name": "syn4d_sim",
+      "options": {
+        "frame_policy": "reference",
+        "missing_mesh": "mask",
+        "scenes": [
+          "cave_sim",
+          "downtown_sim",
+          "japanese_sim",
+          "post_sim",
+          "space_sim",
+          "temple_sim",
+          "train_sim",
+          "winter_sim"
+        ],
+        "subsets": [
+          "syn4d_sim"
+        ]
+      },
+      "root": "@@EXTERNAL_ROOT_DABF26D7FD@@",
+      "split": "train",
+      "strides": [
+        1
+      ],
+      "weight": 0.0582352087621525
+    },
+    {
+      "adapter": "mv_kubric",
+      "cameras": 10,
+      "dense_kind": "kubric",
+      "layouts": [
+        {
+          "cameras": 1,
+          "num_times": 24,
+          "weight": 1.222222222222222
+        },
+        {
+          "cameras": 2,
+          "num_times": 12,
+          "weight": 1.9555555555555555
+        },
+        {
+          "cameras": 3,
+          "num_times": 8,
+          "weight": 1.9555555555555555
+        },
+        {
+          "cameras": 4,
+          "num_times": 6,
+          "weight": 2.933333333333333
+        },
+        {
+          "cameras": 6,
+          "num_times": 4,
+          "weight": 0.9777777777777777
+        },
+        {
+          "cameras": 8,
+          "num_times": 3,
+          "weight": 0.9777777777777777
+        },
+        {
+          "cameras": 10,
+          "num_times": 2,
+          "weight": 0.9777777777777777
+        }
+      ],
+      "name": "mv_kubric_official",
+      "num_times": 24,
+      "options": {
+        "index_workers": 2,
+        "random_cameras": true,
+        "require_full_conversion": true,
+        "split_strategy": "tail",
+        "val_ratio": 0.05,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_48ED6F7B6E@@",
+      "split": "train",
+      "strides": [
+        1,
+        2
+      ],
+      "weight": 0.17016781781148455
+    },
+    {
+      "adapter": "panoptic_kinoptic",
+      "cameras": 8,
+      "dense_kind": "geometry",
+      "layouts": [
+        {
+          "cameras": 2,
+          "num_times": 4,
+          "weight": 1
+        },
+        {
+          "cameras": 4,
+          "num_times": 2,
+          "weight": 2
+        },
+        {
+          "cameras": 8,
+          "num_times": 1,
+          "weight": 1
+        }
+      ],
+      "name": "panoptic_calibration_kinoptic_geometry",
+      "num_times": 4,
+      "options": {
+        "agreement_radius_px": 1,
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_6EEB665BBA@@",
+        "eligibility_manifest": "@@EXTERNAL_ELIGIBILITY_MANIFEST_47D5E60842@@",
+        "exclude_sequences": [
+          "160226_haggling1",
+          "160226_mafia2",
+          "160226_ultimatum1",
+          "160401_ian1",
+          "160401_ian2",
+          "160401_ian3",
+          "160422_haggling1",
+          "160422_mafia2",
+          "160906_band1",
+          "160906_ian1",
+          "161029_flute1",
+          "161029_piano1",
+          "161029_piano3",
+          "161029_piano4",
+          "170221_haggling_b1",
+          "170221_haggling_m1",
+          "170221_haggling_m2",
+          "170224_haggling_a1",
+          "170224_haggling_a3",
+          "170224_haggling_b3",
+          "170228_haggling_b3",
+          "170307_dance2",
+          "170307_dance3",
+          "170307_dance4",
+          "170307_dance5",
+          "170307_dance6",
+          "170404_haggling_a2",
+          "170407_haggling_b2",
+          "170407_haggling_b3",
+          "170407_office2",
+          "170915_toddler2",
+          "170915_toddler3",
+          "170915_toddler4",
+          "171026_cello1",
+          "171026_cello2",
+          "171026_cello3",
+          "171026_pose2",
+          "171026_pose3",
+          "171204_pose2",
+          "171204_pose4",
+          "171204_pose6"
+        ],
+        "exclude_videos": [
+          "160906_band3/hdVideos/hd_00_03.mp4"
+        ],
+        "index_workers": 2,
+        "max_depth_delta_ms": 5.0,
+        "max_depth_m": 4.5,
+        "max_long_side": 960,
+        "min_consistent_nodes": 2,
+        "min_depth_m": 0.5,
+        "min_depth_nodes": 2,
+        "occlusion_guard": true,
+        "occlusion_radius_px": 2,
+        "rgb_edge_guard": true,
+        "rgb_max_long_side": 640,
+        "rgb_min_witnesses": 1,
+        "rgb_num_disparities": 128,
+        "rgb_verification": "stereo",
+        "rgb_witnesses": 3,
+        "strict": true,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_77250FD343@@",
+      "sequences": [
+        "160224_haggling1",
+        "160224_mafia1",
+        "160224_mafia2",
+        "160224_ultimatum1",
+        "160224_ultimatum2",
+        "160226_mafia1",
+        "160422_ultimatum1",
+        "160906_band2",
+        "160906_band3",
+        "160906_ian2",
+        "160906_ian3",
+        "160906_ian5",
+        "160906_pizza1",
+        "161029_piano2",
+        "170221_haggling_b2",
+        "170221_haggling_b3",
+        "170221_haggling_m3",
+        "170224_haggling_a2",
+        "170224_haggling_b1",
+        "170224_haggling_b2",
+        "170228_haggling_a1",
+        "170228_haggling_a2",
+        "170228_haggling_a3",
+        "170228_haggling_b1",
+        "170228_haggling_b2",
+        "170307_dance1",
+        "170404_haggling_a1",
+        "170404_haggling_a3",
+        "170404_haggling_b1",
+        "170404_haggling_b2",
+        "170404_haggling_b3",
+        "170407_haggling_a1",
+        "170407_haggling_a2",
+        "170407_haggling_a3",
+        "170407_haggling_b1",
+        "170915_office1",
+        "171026_pose1",
+        "171204_pose1",
+        "171204_pose3",
+        "171204_pose5"
+      ],
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.01369434656370429
+    },
+    {
+      "adapter": "panoptic",
+      "cameras": 8,
+      "dense_kind": "camera_only",
+      "layouts": [
+        {
+          "cameras": 2,
+          "num_times": 4,
+          "weight": 1
+        },
+        {
+          "cameras": 4,
+          "num_times": 2,
+          "weight": 2
+        },
+        {
+          "cameras": 8,
+          "num_times": 1,
+          "weight": 1
+        }
+      ],
+      "name": "panoptic_calibration",
+      "num_times": 4,
+      "options": {
+        "cache_dir": "@@EXTERNAL_CACHE_DIR_773CB897AE@@",
+        "exclude_videos": [
+          "160906_band3/hdVideos/hd_00_03.mp4"
+        ],
+        "index_workers": 2,
+        "max_long_side": 960,
+        "strict": true,
+        "verbose": false
+      },
+      "root": "@@EXTERNAL_ROOT_CF1371BA97@@",
+      "sequences": [
+        "160226_haggling1",
+        "160226_mafia2",
+        "160226_ultimatum1",
+        "160401_ian1",
+        "160401_ian2",
+        "160401_ian3",
+        "160422_haggling1",
+        "160422_mafia2",
+        "160906_band1",
+        "160906_ian1",
+        "161029_flute1",
+        "161029_piano1",
+        "161029_piano3",
+        "161029_piano4",
+        "170221_haggling_b1",
+        "170221_haggling_m1",
+        "170221_haggling_m2",
+        "170224_haggling_a1",
+        "170224_haggling_a3",
+        "170224_haggling_b3",
+        "170228_haggling_b3",
+        "170307_dance2",
+        "170307_dance3",
+        "170307_dance4",
+        "170307_dance5",
+        "170307_dance6",
+        "170404_haggling_a2",
+        "170407_haggling_b2",
+        "170407_haggling_b3",
+        "170407_office2",
+        "170915_toddler2",
+        "170915_toddler3",
+        "170915_toddler4",
+        "171026_cello1",
+        "171026_cello2",
+        "171026_cello3",
+        "171026_pose2",
+        "171026_pose3",
+        "171204_pose2",
+        "171204_pose4",
+        "171204_pose6"
+      ],
+      "split": "train",
+      "strides": [
+        1,
+        2,
+        4
+      ],
+      "weight": 0.014036705227796898
+    }
+  ],
+  "supervision": "dense"
+}
