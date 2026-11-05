@@ -8,6 +8,8 @@ MultiD4RT 从同步多相机 RGB 序列重建随时间变化的三维场景，�
 
 当前实验的训练入口、全量评估流程和 step134400 冻结模型源码随主分支提供。研究入口、源码版本及部署配置见[训练与评估说明](research/README.md)。
 
+评估结果分别记录在[子集评估表](research/results/subset.md)和[全量评估表](research/results/full.md)。
+
 ## 安装
 
 ```bash

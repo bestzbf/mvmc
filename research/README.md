@@ -8,6 +8,8 @@
 | [frozen_134400](frozen_134400/README.md) | `dd45a946` 的冻结模型源码、来源清单和独立的导出身份校验 |
 | [evaluation](evaluation/README.md) | 实际使用的评估调度、模型适配、评分、显存恢复和报告脚本，以及外部依赖版本 |
 
+数据范围和指标说明见[评估结果索引](results/README.md)。
+
 ## 使用研究代码
 
 从 `MultiD4RT` 的主分支检出源码。训练与冻结评估各自加载对应的 `multicamera4rc`，使用独立的 Python 进程和运行目录。上表中的入口说明列出所需 Python 环境、数据清单、模型权重和第三方源码版本。
