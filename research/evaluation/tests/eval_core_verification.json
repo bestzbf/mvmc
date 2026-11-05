@@ -1,0 +1,143 @@
+{
+  "schema": "multid4rt-evaluation-core-test-provenance-v1",
+  "files": [
+    {
+      "file": "test_full_runner.py",
+      "original_source": "artifacts/eval_full_20261105/test_full_runner.py",
+      "original_sha256": "8ea1014ecf712e35eb66bd7ab1aee2ebb6f2dcb5990e93b434d00c33506c889a",
+      "adapted_sha256": "8ea1014ecf712e35eb66bd7ab1aee2ebb6f2dcb5990e93b434d00c33506c889a",
+      "changes": "Unchanged source bytes",
+      "assertion_AST_preserved": true
+    },
+    {
+      "file": "test_full_scorer.py",
+      "original_source": "artifacts/eval_full_20261105/test_full_scorer.py",
+      "original_sha256": "5fb377e6ebc3b25b496e3cd4ab59b76ca28cb512ccb3bd95894ef94db70f920d",
+      "adapted_sha256": "3efa0bc758aec2b40e0cfcf32cb78c703fb126f47375e5dd7a32eedb86633411",
+      "changes": "Two relative loader paths follow the materialized sibling topology",
+      "assertion_AST_preserved": true
+    },
+    {
+      "file": "test_prepare_missing.py",
+      "original_source": "artifacts/eval_full_20261105/test_prepare_missing.py",
+      "original_sha256": "ddb90dc10c0980c2b873ebf4be1e70eb498e12af3bc9484ff3df85c7ba928725",
+      "adapted_sha256": "ddb90dc10c0980c2b873ebf4be1e70eb498e12af3bc9484ff3df85c7ba928725",
+      "changes": "Unchanged source bytes",
+      "assertion_AST_preserved": true
+    },
+    {
+      "file": "test_tap_subset_score.py",
+      "original_source": "artifacts/eval_10h_20261104/test_tap_subset_score.py",
+      "original_sha256": "9ac7713873b6ac15e51fca6d6c657c72fcda495b3fc9f04df6242c1c80817509",
+      "adapted_sha256": "9ac7713873b6ac15e51fca6d6c657c72fcda495b3fc9f04df6242c1c80817509",
+      "changes": "Unchanged source bytes",
+      "assertion_AST_preserved": true
+    },
+    {
+      "file": "test_world_subset_score.py",
+      "original_source": "artifacts/eval_10h_20261104/test_world_subset_score.py",
+      "original_sha256": "118900485c8f84a03ca15e74efefd966cd708ee974f7b3bcace50018714412ea",
+      "adapted_sha256": "118900485c8f84a03ca15e74efefd966cd708ee974f7b3bcace50018714412ea",
+      "changes": "Unchanged source bytes",
+      "assertion_AST_preserved": true
+    },
+    {
+      "file": "test_observe_mose.py",
+      "original_source": "artifacts/eval_full_20261105/test_observe_mose.py",
+      "original_sha256": "48e7511dd90b6e86278d65fc2a4ea117f638db54f3f5c141d182b6ea6dcecc2f",
+      "adapted_sha256": "48e7511dd90b6e86278d65fc2a4ea117f638db54f3f5c141d182b6ea6dcecc2f",
+      "changes": "Unchanged source bytes",
+      "assertion_AST_preserved": true
+    }
+  ],
+  "portable_CPU_test_run": {
+    "source_commit": "7f7e1fc49ce0515f636e39af6f1ad13bbd7809e6",
+    "materializer_source_sha256": "a790c5cb3ec2473e42ab19d96fc0ffdb89274d2b3826de445e88057bd4e39fb2",
+    "environment": {
+      "Python": "3.12.14",
+      "pytest": "9.1.1",
+      "numpy": "2.5.3"
+    },
+    "passed": 71,
+    "failed": 0,
+    "per_file": {
+      "test_full_runner.py": 20,
+      "test_full_scorer.py": 25,
+      "test_prepare_missing.py": 3,
+      "test_tap_subset_score.py": 9,
+      "test_world_subset_score.py": 12,
+      "test_observe_mose.py": 2
+    },
+    "tested_rendered_source_sha256": {
+      "baseline_assets/eval_full_20261105/full_runner.py": "345a1f36394bf6bfe0a80f0e02628471e5b6d4766c9afa7135e301e9903586a2",
+      "baseline_assets/eval_full_20261105/scripts/score_full_v2.py": "d987950be742b191f81643d9efb9673fd59fda4cccc8a65d5d67486fce5e4e01",
+      "baseline_assets/eval_full_20261105/scripts/world_full_consumer.py": "b9bc2e3a773896a9b48e1dfa4567bf4b42922007c24bdbea42edf0790b2d3781",
+      "baseline_assets/eval_full_20261105/scripts/prepare_missing.py": "fcdd13b685af37ddc41e5ac0da09f0074c9ae7113e097521948dd4859837cf98",
+      "baseline_assets/eval_full_20261105/scripts/observe_mose.py": "7ba94bc42beb28543afda6377b6c90194457b93abca2a526ac4a78dd62f73519",
+      "baseline_assets/eval_10h_20261104/tools/tap_subset_score.py": "74a7b149a2da730b4aa1efce61901226082ba515fb8b363cc197413770904a82",
+      "baseline_assets/eval_10h_20261104/tools/mv_subset_score.py": "8f627d1789c13a355b8dbaa0e7cecda35886aed52ac5ae6883162783f3b173b2",
+      "baseline_assets/eval_10h_20261104/scripts/world_subset_score.py": "a2421aa88d4e3d302b2d5c3c47a4e744797ab1f3757ef9e96195acbb474e0f3a"
+    },
+    "renderer_scope": "Fresh temporary runtime from immutable Git archive; rendered hashes depend on the runtime path and are recorded for this run only.",
+    "GPU_enabled": false
+  },
+  "historical_CPU_and_cache_regression_evidence": {
+    "runner": {
+      "record": "full_runner_review.json",
+      "record_sha256": "82d8a79d980866e7d2dcef549c441ad5d9607476a23b499acbcc1c9b3856958e",
+      "schema": "full-runner-cpu-mock-review-v1",
+      "status": "PASS",
+      "sha256": "c791bd657c7fc6db09bb0035a615bc2fedfc6c3be16eb0b75eb8e3b29f31addb",
+      "original_runtime_sha_matches_published": true,
+      "historical_CPU_passed": 20
+    },
+    "full_scorer": {
+      "record": "full_scorer_review.json",
+      "record_sha256": "936aef1669a837c96ff794c93c6b062de7813e78b4b23f72c9a7dec79596585d",
+      "schema": "full-scorer-independent-review-v2",
+      "status": "PASS",
+      "historical_CPU_passed": 25
+    },
+    "preparation": {
+      "record": "full_inventory_and_preparation_audit.json",
+      "record_sha256": "22d0770e4c15c9bc0410231ed4307cde6276540e14cf0386f197ede2f8cde02d",
+      "status": "PASS",
+      "CPU_tests_passed": 22,
+      "test_count_scope": "Combined preparation and routing suites in the original audit."
+    },
+    "old_world": {
+      "record": "world_regression_report.json",
+      "record_sha256": "e473e8ea289de5f5554b7adae78fbbeece9a8ee67e6bf2ad03c7b21dee74389d",
+      "status": "PASS",
+      "negative_tests_passed": 12
+    },
+    "old_TAP_cache_replay": {
+      "record": "scorer_regression.json",
+      "record_sha256": "cae3bb9f463515c576091249347793186e0eb133aa2a537bd315dbd51adedcb7",
+      "schema": "eval10h-tap-subset-scorer-regression-v1",
+      "status": "PASS",
+      "scorer_sha256": "cf2bae54c41482d8c80e425dbadd71c1b5c0c014526f2c0098b06ec78b21b913",
+      "method_case_pairs": 18,
+      "MoSE3_and_TE_full_same3_metric_dicts_exact": true,
+      "gpu_started": false,
+      "original_runtime_sha_matches_published": true
+    },
+    "old_MV_cache_replay": {
+      "record": "mv_scorer_regression.json",
+      "record_sha256": "94fd443faa14d302d46caec1c7c2120067a60400bfa3e3797f7d26095264f51f",
+      "schema": "eval10h-mv-subset-scorer-regression-v1",
+      "status": "PASS",
+      "case_count": 5,
+      "aligned_metric_scalar_comparisons": 503,
+      "aligned_per_case_max_abs_difference": 0.0,
+      "unaligned_per_case_max_abs_difference": 0.0,
+      "all_alignment_record_dicts_exact": true,
+      "aggregate_dict_exactly_matches_previous_frozen_same5_official_average": true,
+      "scorer_sha256": "3ef8b3dad29dc546e8f3491f9bdf3ebb9e0266726dee685ebae52e0f58e1498b",
+      "cache_helper_sha256": "cf2bae54c41482d8c80e425dbadd71c1b5c0c014526f2c0098b06ec78b21b913",
+      "new_gpu_inference": false,
+      "original_runtime_sha_matches_published": true
+    }
+  },
+  "evidence_scope": "Original data-backed regression records are referenced by digest and summarized. The portable CPU test run uses only generated fixtures."
+}

@@ -1,0 +1,119 @@
+{
+  "schema": "multid4rt-evaluation-test-layout-v1",
+  "files": [
+    {
+      "source": "test_arrow_adapter.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/arrow_20261103/test_arrow_adapter.py",
+      "original_sha256": "1211691f3bc76c11f443c53cb2b7a2b85d160acd2abab054aca36f9b377e4244",
+      "source_scope": "arrow_20261103"
+    },
+    {
+      "source": "test_arrow_rgbfix_adapter.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/arrow_rgbfix_20261103/test_arrow_rgbfix_adapter.py",
+      "original_sha256": "36ca52b727803e88e9215695871e2cbd436bf4826b192e102b323a3c2759393f",
+      "source_scope": "arrow_rgbfix_20261103"
+    },
+    {
+      "source": "test_predict_mose3.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/mose3_20261104/test_predict_mose3.py",
+      "original_sha256": "744f3021db3005fe39a17e2dec4c65ebcb32964b934ef101da6c26215120d290",
+      "source_scope": "mose3_20261104"
+    },
+    {
+      "source": "test_predict_point4d.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/point4d_20261104/test_predict_point4d.py",
+      "original_sha256": "781135a3280b4eddd4556df4553e932a6256623e59eb269b3a92909093333a9c",
+      "source_scope": "point4d_20261104"
+    },
+    {
+      "source": "test_predict_relift.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/relift_20261104/test_predict_relift.py",
+      "original_sha256": "7c1994af21b33f1356d3aca630c946fd44f5435c11af179888d3b6df209de925",
+      "source_scope": "relift_20261104"
+    },
+    {
+      "source": "test_predict_trackeverything.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/trackeverything_20261104/test_predict_trackeverything.py",
+      "original_sha256": "4dcba5ceb514654a11025fadd9639cc886cd64938907f1109c16b05376e0d9cf",
+      "source_scope": "trackeverything_20261104"
+    },
+    {
+      "source": "test_predict_uniquery4r.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/uniquery4r_20261104/test_predict_uniquery4r.py",
+      "original_sha256": "15125a820594ffd50b62ec2879df7361aa017e72bb92e21efc1208ef396778b6",
+      "source_scope": "uniquery4r_20261104"
+    },
+    {
+      "source": "legacy_comparison_identity.py",
+      "output_path": "baseline_assets/adapter_cpu_tests/legacy_comparison_identity.py",
+      "collect": false,
+      "original_sha256": "757697ee83de9ffcc53a99690601268fff54420a7dd0f1afe60bd3a85cf18f78",
+      "source_scope": "legacy comparison runner identity definitions"
+    },
+    {
+      "source": "test_full_runner.py",
+      "output_path": "baseline_assets/eval_full_20261105/test_full_runner.py",
+      "collect": true,
+      "original_sha256": "8ea1014ecf712e35eb66bd7ab1aee2ebb6f2dcb5990e93b434d00c33506c889a"
+    },
+    {
+      "source": "test_full_scorer.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/test_full_scorer.py",
+      "collect": true,
+      "original_sha256": "5fb377e6ebc3b25b496e3cd4ab59b76ca28cb512ccb3bd95894ef94db70f920d"
+    },
+    {
+      "source": "test_prepare_missing.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/test_prepare_missing.py",
+      "collect": true,
+      "original_sha256": "ddb90dc10c0980c2b873ebf4be1e70eb498e12af3bc9484ff3df85c7ba928725"
+    },
+    {
+      "source": "test_tap_subset_score.py",
+      "output_path": "baseline_assets/eval_10h_20261104/tools/test_tap_subset_score.py",
+      "collect": true,
+      "original_sha256": "9ac7713873b6ac15e51fca6d6c657c72fcda495b3fc9f04df6242c1c80817509"
+    },
+    {
+      "source": "test_world_subset_score.py",
+      "output_path": "baseline_assets/eval_10h_20261104/scripts/test_world_subset_score.py",
+      "collect": true,
+      "original_sha256": "118900485c8f84a03ca15e74efefd966cd708ee974f7b3bcace50018714412ea"
+    },
+    {
+      "source": "test_observe_mose.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/test_observe_mose.py",
+      "collect": true,
+      "original_sha256": "48e7511dd90b6e86278d65fc2a4ea117f638db54f3f5c141d182b6ea6dcecc2f"
+    },
+    {
+      "source": "test_build_ours_drive_recovery_score.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/test_build_ours_drive_recovery_score.py",
+      "original_sha256": "2ef709a72567d13fd30a39cb0f8b094bdf2b05f550c05ec581440f5ba0c506ec"
+    },
+    {
+      "source": "test_materialized_ours_drive_linkage.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/test_materialized_ours_drive_linkage.py"
+    },
+    {
+      "source": "test_native_display_metrics.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/test_native_display_metrics.py",
+      "original_sha256": "70db4e9f9aee7063a4816cb42b959084e1050fec87a4323b6800bb429445d34e"
+    },
+    {
+      "source": "test_ours_drive_oom_recovery_watch.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/test_ours_drive_oom_recovery_watch.py",
+      "original_sha256": "83edacdb7ef91307af78511a82bf91e637778bb3f689493f50d9887628337abd"
+    },
+    {
+      "source": "test_report_full.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/test_report_full.py",
+      "original_sha256": "40897fc6f565069f7b6358a45dc45c942edb60f7248b8af4d2b15df68ca16d14"
+    },
+    {
+      "source": "test_route_ours_drive_lock.py",
+      "output_path": "baseline_assets/eval_full_20261105/scripts/test_route_ours_drive_lock.py",
+      "original_sha256": "dddfc6fc2fe18d767b334b80584c973fd9b678d82517d9ef188bbd7e25352e54"
+    }
+  ]
+}

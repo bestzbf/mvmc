@@ -1,0 +1,152 @@
+{
+  "base_commit": "069b1c28ce4763e2ac6a4f06dbc5b73c9ed3dc55",
+  "files": {
+    "source/scripts/build_monocular_generalization_config.py": {
+      "origin": "baseline_checkout/scripts/build_monocular_generalization_config.py",
+      "original_sha256": "9405bb57bb7bc537e57f644c759c8d7ca263dddb96eb5a42a9ee956b9a2e4680",
+      "staged_sha256": "9405bb57bb7bc537e57f644c759c8d7ca263dddb96eb5a42a9ee956b9a2e4680"
+    },
+    "source/scripts/evaluate_monocular.py": {
+      "origin": "baseline_checkout/scripts/evaluate_monocular.py",
+      "original_sha256": "79f56104aad045726d5a863ac390af997d53e1693bfaf93e6939fe939c016e31",
+      "staged_sha256": "79f56104aad045726d5a863ac390af997d53e1693bfaf93e6939fe939c016e31"
+    },
+    "source/scripts/geometry_diagnostics.py": {
+      "origin": "baseline_checkout/scripts/geometry_diagnostics.py",
+      "original_sha256": "d02a5d934e46927f6dc0163f64c17378f13789d02609e63f5cc3c6c729ee4aa4",
+      "staged_sha256": "d02a5d934e46927f6dc0163f64c17378f13789d02609e63f5cc3c6c729ee4aa4"
+    },
+    "source/scripts/monocular_protocol.py": {
+      "origin": "baseline_checkout/scripts/monocular_protocol.py",
+      "original_sha256": "723b2741e826b314f08a4c94dbba8f3fe96cc95d29d8c6b559acacd1cf3f0e74",
+      "staged_sha256": "723b2741e826b314f08a4c94dbba8f3fe96cc95d29d8c6b559acacd1cf3f0e74"
+    },
+    "source/scripts/prepare_geometry_generalization.py": {
+      "origin": "baseline_checkout/scripts/prepare_geometry_generalization.py",
+      "original_sha256": "fb5db9e237669eebb84bc4c294f8a190573bee586c5bfdd01504d6c009fab8a2",
+      "staged_sha256": "fb5db9e237669eebb84bc4c294f8a190573bee586c5bfdd01504d6c009fab8a2"
+    },
+    "source/tests/multicamera4rc/test_depth_generalization_objectives.py": {
+      "origin": "baseline_checkout/tests/multicamera4rc/test_depth_generalization_objectives.py",
+      "original_sha256": "5d95aa1a814b93b6d7273c589452a74d4bd7768e5382f48dc305c0a2f7ce785d",
+      "staged_sha256": "5d95aa1a814b93b6d7273c589452a74d4bd7768e5382f48dc305c0a2f7ce785d"
+    },
+    "source/tests/multicamera4rc/test_generalization_evaluation_integration.py": {
+      "origin": "baseline_checkout/tests/multicamera4rc/test_generalization_evaluation_integration.py",
+      "original_sha256": "f1df1aedde80d938ff0ba9805ea095b8e538e364839636d86722816b6443d8f6",
+      "staged_sha256": "f1df1aedde80d938ff0ba9805ea095b8e538e364839636d86722816b6443d8f6"
+    },
+    "source/tests/multicamera4rc/test_geometry_diagnostics.py": {
+      "origin": "baseline_checkout/tests/multicamera4rc/test_geometry_diagnostics.py",
+      "original_sha256": "ed2cfb0919657961182ba77f26e4fd21bef39b524005ffd8ff6ad8053ef0ee01",
+      "staged_sha256": "ed2cfb0919657961182ba77f26e4fd21bef39b524005ffd8ff6ad8053ef0ee01"
+    },
+    "source/tests/multicamera4rc/test_geometry_generalization_ddp.py": {
+      "origin": "baseline_checkout/tests/multicamera4rc/test_geometry_generalization_ddp.py",
+      "original_sha256": "04cbf9de1e63ce8e8e6b6b52761748a25a5ec08adfc9f7ea675b51bae0d4b13f",
+      "staged_sha256": "04cbf9de1e63ce8e8e6b6b52761748a25a5ec08adfc9f7ea675b51bae0d4b13f"
+    },
+    "source/tests/multicamera4rc/test_geometry_generalization_integration.py": {
+      "origin": "baseline_checkout/tests/multicamera4rc/test_geometry_generalization_integration.py",
+      "original_sha256": "cf9b2d79840818940ec88a45e47a5b6af76a52b9f7b3ba264a9f04775317d6d3",
+      "staged_sha256": "cf9b2d79840818940ec88a45e47a5b6af76a52b9f7b3ba264a9f04775317d6d3"
+    },
+    "source/tests/multicamera4rc/test_geometry_lr_training_resume.py": {
+      "origin": "baseline_checkout/tests/multicamera4rc/test_geometry_lr_training_resume.py",
+      "original_sha256": "dafdb4cdfea27ec81d436c3218324bd65c8d47cb6cf746faf41ee9cab9b69b02",
+      "staged_sha256": "dafdb4cdfea27ec81d436c3218324bd65c8d47cb6cf746faf41ee9cab9b69b02"
+    },
+    "source/tests/multicamera4rc/test_geometry_optimizer_migration.py": {
+      "origin": "baseline_checkout/tests/multicamera4rc/test_geometry_optimizer_migration.py",
+      "original_sha256": "3a541f031383bca2d1c54a65b5d58a197aad2bf289741dfbccf037bc9b578704",
+      "staged_sha256": "3a541f031383bca2d1c54a65b5d58a197aad2bf289741dfbccf037bc9b578704"
+    },
+    "source/tests/multicamera4rc/test_monocular_benchmark.py": {
+      "origin": "baseline_checkout/tests/multicamera4rc/test_monocular_benchmark.py",
+      "original_sha256": "5645b5dad52e563f7c1523a3958c8e94e6a9431d54917c207fcdb194ab9b6a9e",
+      "staged_sha256": "5645b5dad52e563f7c1523a3958c8e94e6a9431d54917c207fcdb194ab9b6a9e",
+      "use": "Fixture source imported by an admitted regression module."
+    },
+    "source/tests/multicamera4rc/test_monocular_generalization_config.py": {
+      "origin": "baseline_checkout/tests/multicamera4rc/test_monocular_generalization_config.py",
+      "original_sha256": "e550f0cb082a62b89fba33f7fefeefaf6a12e8921cb1eed970f26f2c24a425b3",
+      "staged_sha256": "e550f0cb082a62b89fba33f7fefeefaf6a12e8921cb1eed970f26f2c24a425b3"
+    },
+    "source/tests/multicamera4rc/test_native_loaders.py": {
+      "origin": "baseline_checkout/tests/multicamera4rc/test_native_loaders.py",
+      "original_sha256": "4af4dfcb91058024cf1bc171140eb254ad5dd1443ce52350e710b13cff33ed95",
+      "staged_sha256": "4af4dfcb91058024cf1bc171140eb254ad5dd1443ce52350e710b13cff33ed95",
+      "use": "Fixture source imported by an admitted regression module."
+    },
+    "source/tests/multicamera4rc/test_photometric_generalization.py": {
+      "origin": "baseline_checkout/tests/multicamera4rc/test_photometric_generalization.py",
+      "original_sha256": "a955cb5ab9d143ac62d48235d12d2a45d269c4d05d5b6da2268aefe5638bfb1d",
+      "staged_sha256": "a955cb5ab9d143ac62d48235d12d2a45d269c4d05d5b6da2268aefe5638bfb1d"
+    },
+    "source/tests/multicamera4rc/test_prepare_geometry_generalization.py": {
+      "origin": "baseline_checkout/tests/multicamera4rc/test_prepare_geometry_generalization.py",
+      "original_sha256": "0a6f8e75c3c00102c3d20c99d5e81bf01cc43fd86f3fdffb5c40c04690a1fb5d",
+      "staged_sha256": "0a6f8e75c3c00102c3d20c99d5e81bf01cc43fd86f3fdffb5c40c04690a1fb5d"
+    },
+    "tests/activation/make_checkpoint_validation_fixture.py": {
+      "origin": "synthetic_fixture_generator",
+      "staged_sha256": "8f9f5676d8c8b00fc21be4be1db69fb2e35a6d8307eafeea03e07194c57b3c05"
+    },
+    "tests/activation/observe_old_main.py": {
+      "origin": "six_gpu_coordinator_v22_cpu/observe_old_main.py",
+      "original_sha256": "b3a7e21825d600c91f561096e88d6585c46db9f1b0ba24ed95e8d4a8355ef111",
+      "staged_sha256": "b3a7e21825d600c91f561096e88d6585c46db9f1b0ba24ed95e8d4a8355ef111"
+    },
+    "tests/activation/publisher/expand_checkpoint_v14.py": {
+      "adaptation": "Use the same synthetic GPU UUID in the checkpoint identity verifier and its fixture.",
+      "origin": "checkpoint_publisher_v21/expand_checkpoint_v14.py",
+      "original_sha256": "2aba4802c3a6ffa0aaeb85126f6f30885af3cc264f77002184116110fd98371d",
+      "staged_sha256": "3975ebec67cc0eb8f8406e020adff94edd9029e8d063ee763db2d67d3af80c29"
+    },
+    "tests/activation/publisher/publish_expanded_checkpoint_v21.py": {
+      "adaptation": "Pin the exported fixture verifier after substituting its synthetic device identity.",
+      "origin": "checkpoint_publisher_v21/publish_expanded_checkpoint_v21.py",
+      "original_sha256": "9887766f7d66228f414b8d0f820e7ea3f6621d61af17e3c5a95a0454de7a9aa8",
+      "staged_sha256": "0a9608bb8fe823294a56fa005b7a9a8d01838af2a2dbbb5700c72b515cab346b"
+    },
+    "tests/activation/publisher/test_expand_checkpoint_v14.py": {
+      "adaptation": "Use the same synthetic GPU UUID in the checkpoint identity verifier and its fixture.",
+      "origin": "checkpoint_publisher_v21/test_expand_checkpoint_v14.py",
+      "original_sha256": "5d35b3f319c839991e2b441f12e8d8bbe5cd19de8b40455cbec69c2d86442fac",
+      "staged_sha256": "e752b901e359c275bd7aa5a2bd07221cd1c7b9a5fb3e9b53cf7b718bf46a0b57"
+    },
+    "tests/activation/publisher/test_publish_expanded_checkpoint_v21.py": {
+      "origin": "checkpoint_publisher_v21/test_publish_expanded_checkpoint_v21.py",
+      "original_sha256": "978ad83d5fc67005947af0d935454ea32b24654e9b08ac5f4b81a691d84099c6",
+      "staged_sha256": "978ad83d5fc67005947af0d935454ea32b24654e9b08ac5f4b81a691d84099c6"
+    },
+    "tests/activation/supervisor.py": {
+      "origin": "six_gpu_coordinator_v22_cpu/supervisor.py",
+      "original_sha256": "76cfdc40720836b8f9a0e7e28b87b61c1073816462bb6642c41150c6dcd98860",
+      "staged_sha256": "76cfdc40720836b8f9a0e7e28b87b61c1073816462bb6642c41150c6dcd98860"
+    },
+    "tests/activation/test_control_cpu.py": {
+      "origin": "six_gpu_coordinator_v22_cpu/test_control_cpu.py",
+      "original_sha256": "c75d6d10db7f3b4623e02945b4c6b4d1fdf2009fed22de913b693f4f23b85a43",
+      "staged_sha256": "c75d6d10db7f3b4623e02945b4c6b4d1fdf2009fed22de913b693f4f23b85a43"
+    },
+    "tests/activation/test_evaluate_joint_checkpoint_v22.py": {
+      "origin": "eval_admission_v22/test_evaluate_joint_checkpoint_v22.py",
+      "original_sha256": "02475d08f8751a1bd053f6c463ff0d5acf48d393dd1bb23a087102e2cffb2804",
+      "staged_sha256": "02475d08f8751a1bd053f6c463ff0d5acf48d393dd1bb23a087102e2cffb2804"
+    },
+    "tests/activation/test_native_update_audit_v23.py": {
+      "adaptation": "Use a synthetic native log with the same nested-step parser regression and six-rank update assertions.",
+      "origin": "six_gpu_coordinator_v22_cpu/test_native_update_audit_v23.py",
+      "original_sha256": "c38d5459d4c3dc6cb9f28f92850cd6ed0b0e346a9fc4f5cf28ee22249e25de7e",
+      "staged_sha256": "2a324da702bae9f3c35a4f35961a95fb35acea100692bb1700006ebb3c5e05c9"
+    },
+    "tests/activation/test_six_rank_gate_v22.py": {
+      "adaptation": "Import the existing SHA-identical deployed gate and FA4 modules from the public package.",
+      "origin": "six_rank_gate_cpu_v22/test_six_rank_gate_v22.py",
+      "original_sha256": "16295ec93cadfe6ac1dad5c876920e40b7ca9173f1acc589db88957383a5f8cb",
+      "staged_sha256": "085682d7b259a17431b0635ff7366dfd398ad6806692a4592e868ce07bcdda41"
+    }
+  },
+  "schema": "multid4rt-activation-regression-source-v1"
+}

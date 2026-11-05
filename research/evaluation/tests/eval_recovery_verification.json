@@ -1,0 +1,29 @@
+{
+  "schema": "multid4rt-portable-eval-recovery-tests-v1",
+  "source_commit_tested": "7f7e1fc",
+  "evaluated_using_published_materializer": true,
+  "materialized_source_count": 154,
+  "environment": "Python 3.12 and pytest on CPU, CUDA_VISIBLE_DEVICES empty",
+  "passing_tests": 49,
+  "failed_tests": 0,
+  "known_warnings": "Production router accesses deprecated Python co_lnotab when asserting code metadata equality",
+  "test_counts": {
+    "test_build_ours_drive_recovery_score.py": 8,
+    "test_materialized_ours_drive_linkage.py": 1,
+    "test_native_display_metrics.py": 6,
+    "test_ours_drive_oom_recovery_watch.py": 11,
+    "test_report_full.py": 4,
+    "test_route_ours_drive_lock.py": 19
+  },
+  "portability_adaptations": [
+    "Sibling paths point to published, materialized sources",
+    "Synthetic metric aggregates, cached per-case values, example identifiers, OOM status, proof and queue files replace private test artifacts",
+    "Full reporter checks JSON and Markdown exist before handing off to a fixture split publisher",
+    "Routing uses synthetic UUIDs and mocked kernel fdinfo; the linked provenance test reads only materialized source and its receipt"
+  ],
+  "historical_checks_outside_this_fixture_suite": [
+    "Actual Linux kernel parent lock evidence and live GPU UUID/inode routing",
+    "Actual production allocator probe, native OOM traces, committed checkpoint/manifest/receipt inventory and queue activation",
+    "Numerical comparisons against saved benchmark outputs and historical report contents"
+  ]
+}

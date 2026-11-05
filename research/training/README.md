@@ -28,6 +28,8 @@ The live checkpoint and evaluator require the original deployment, input hashes,
 
 ## CPU validation
 
+The base training regression suite and the activation, checkpoint and evaluator contract tests are described in [the training test guide](tests/activation/README.md).
+
 Run the deployment's existing four CPU lifecycle tests with a Python environment that provides PyTorch. From this directory:
 
 ```bash
