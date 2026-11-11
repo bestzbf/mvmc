@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.5.2 — 2026-11-11
+
+- Rename the project and distribution to mvmc; add MVMC/MVMCConfig and mvmc CLI entry points while retaining the multid4rt API and existing checkpoint identities.
+- Distinguish all-observation defaults from target-time K/V used by the released 60k checkpoint and active research training.
+- Document the research refiner, visibility ordering, core-source hash verification and exported-controller snapshot boundary.
+- Reject unsupported refiner checkpoints in the lightweight inference loader with an explicit route to the research implementation.
+
 ## v0.5.1 — 2026-10-09
 
 - Add curated real RGB reconstruction examples using the trained giant checkpoint at step 56,000, with original inputs, offline viewers, PLY, tracks and scene flow.

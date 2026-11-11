@@ -1,22 +1,34 @@
-# MultiD4RT
+# mvmc
 
 **Multi-camera 4D Reconstruction and Tracking**
 
-MultiD4RT 从同步多相机 RGB 序列重建随时间变化的三维场景，输出稠密几何、scene flow、三维轨迹和逐相机可见性。输入只需要图像、相机身份和共享帧号，无需已知内外参或 timestamp。相机数量与序列长度可以变化。
+mvmc（原 MultiD4RT）从同步多相机 RGB 序列重建随时间变化的三维场景，输出稠密几何、scene flow、三维轨迹和逐相机可见性。输入只需要图像、相机身份和共享帧号，无需已知内外参或 timestamp。相机数量与序列长度可以变化。
+
+项目已更名为 `mvmc`，Python 使用 `from mvmc import MVMC, MVMCConfig`，命令行为 `mvmc`。原 `multid4rt` 包、类名和命令继续兼容；已有权重文件与魔搭仓库仍使用原名称。
+
+## 模型版本与 K/V 范围
+
+| 使用方式 | decoder 直接 K/V | refiner |
+| --- | --- | --- |
+| 新建 `MVMCConfig()` | 默认 `all_observations`（全部有效输入观察） | 无 |
+| 公开 60k giant 权重 | `target_time`（目标时刻全部有效相机） | 无 |
+| 当前研究训练 | `target_time`（目标时刻全部有效相机） | 有，见研究源码 |
+
+encoder 在两种模式中都融合全部有效相机与时刻；这不代表 decoder 直接使用全部帧 K/V。恢复权重应使用保存的配置，不能凭新建配置的默认值判断训练设置。顶层推理包不支持带 refiner 的研究 checkpoint。完整区别、refiner 输入输出和源码核验见[训练模型说明](docs/training-architecture.md)。
 
 ## 训练与全量评估
 
-当前实验的训练入口、全量评估流程和 step134400 冻结模型源码随主分支提供。研究入口、源码版本及部署配置见[训练与评估说明](research/README.md)。
+训练核心源码、导出时的训练控制器、全量评估流程和 step134400 冻结模型源码随主分支提供。研究入口、源码版本及部署配置见[训练与评估说明](research/README.md)；后续运维恢复器与该导出快照的区别见[训练模型说明](docs/training-architecture.md)。
 
 评估结果分别记录在[子集评估表](research/results/subset.md)和[全量评估表](research/results/full.md)。
 
 ## 安装
 
 ```bash
-git clone --branch v0.5.1 https://github.com/bestzbf/MultiD4RT.git
-cd MultiD4RT
+git clone https://github.com/bestzbf/mvmc.git
+cd mvmc
 python -m pip install -e '.[weights,viz]'
-multid4rt --help
+mvmc --help
 ```
 
 ## 预训练权重
@@ -51,13 +63,13 @@ print(checkpoint)
 加载真实权重或直接运行可视化：
 
 ```python
-from multid4rt import MultiD4RT
+from mvmc import MVMC
 
-model = MultiD4RT.from_checkpoint('weights/multid4rt_giant_step60000.pt').eval().cuda()
+model = MVMC.from_checkpoint('weights/multid4rt_giant_step60000.pt').eval().cuda()
 ```
 
 ```bash
-multid4rt visualize --input camera_sequences/ --mode multicamera --checkpoint weights/multid4rt_giant_step60000.pt --output outputs/multicamera --device cuda --amp --amp-dtype bfloat16
+mvmc visualize --input camera_sequences/ --mode multicamera --checkpoint weights/multid4rt_giant_step60000.pt --output outputs/multicamera --device cuda --amp --amp-dtype bfloat16
 ```
 
 `from_checkpoint()` 自动恢复权重保存的配置。该 60k 权重使用 `decoder_memory=target_time`、`time_origin=clip_start`：encoder 融合全部输入观察，运动 decoder 的 KV 来自目标时刻的有效相机。复现该权重的输出时保持这些设置。魔搭仓库附模型配置、校验值和导出验证记录；1,106 个状态张量与原始 checkpoint 完全一致，并通过真实双相机 RGB 的 CUDA 推理检查。
@@ -101,9 +113,9 @@ giant 配置使用 patch14、1536 维 encoder 和 40 层；完整模块与中间
 
 ```python
 import torch
-from multid4rt import MultiD4RT, MultiD4RTConfig, pack_synchronized_images
+from mvmc import MVMC, MVMCConfig, pack_synchronized_images
 
-model = MultiD4RT(MultiD4RTConfig.tiny()).eval()
+model = MVMC(MVMCConfig.tiny()).eval()
 rgb = torch.rand(1, 2, 3, 3, 28, 42)
 inputs = pack_synchronized_images(rgb, frame_indices=[0, 5, 10])
 
@@ -117,23 +129,23 @@ print(pred['visibility'].shape)  # [1,2,3,2,28,42]
 tiny 示例使用随机权重检查接口。实际推理加载对应 checkpoint：
 
 ```python
-model = MultiD4RT.from_checkpoint('model.pt').eval()
+model = MVMC.from_checkpoint('model.pt').eval()
 ```
 
-`model.encode()` 的结果可供同一输入下多个源图/目标时间请求复用。`multid4rt.tasks.scene_flow` 提取同一物理点的世界位移，`sample_tracks` 查询源图像素的三维轨迹。
+`model.encode()` 的结果可供同一输入下多个源图/目标时间请求复用。`mvmc.tasks.scene_flow` 提取同一物理点的世界位移，`sample_tracks` 查询源图像素的三维轨迹。
 
 ## 命令行推理
 
 准备图片与相机/时间标签组成的 JSON 或 JSONL manifest，然后运行：
 
 ```bash
-multid4rt infer --manifest observations.json --checkpoint model.pt --output outputs/prediction --device cuda --amp --amp-dtype bfloat16
+mvmc infer --manifest observations.json --checkpoint model.pt --output outputs/prediction --device cuda --amp --amp-dtype bfloat16
 ```
 
 输出 `inference.json` 和各片段的 `.pt` 预测结果。manifest 格式、源图选择、目标帧与 checkpoint 配置见 [推理说明](docs/inference.md)。
 
 ```bash
-multid4rt demo --output outputs/demo
+mvmc demo --output outputs/demo
 ```
 
 CPU demo 用随机 tiny 权重验证输入输出流程。
@@ -144,13 +156,13 @@ CPU demo 用随机 tiny 权重验证输入输出流程。
 
 ```bash
 # 多相机 4D：每个相机一个子目录，使用共享帧号
-multid4rt visualize --input camera_sequences/ --mode multicamera --checkpoint model.pt --output outputs/multicamera --device cuda --amp
+mvmc visualize --input camera_sequences/ --mode multicamera --checkpoint model.pt --output outputs/multicamera --device cuda --amp
 
 # 多视角单时刻：一个目录中的图片代表不同相机
-multid4rt visualize --input scene_views/ --mode multiview --checkpoint model.pt --output outputs/multiview --device cuda --amp
+mvmc visualize --input scene_views/ --mode multiview --checkpoint model.pt --output outputs/multiview --device cuda --amp
 
 # 单相机动态重建 / 追踪：视频或连续帧目录
-multid4rt visualize --input video.mp4 --mode monocular --checkpoint model.pt --output outputs/monocular --device cuda --amp
+mvmc visualize --input video.mp4 --mode monocular --checkpoint model.pt --output outputs/monocular --device cuda --amp
 ```
 
 打开输出目录中的 `viewer.html`，可以旋转三维场景、播放时间、切换相机、查看 RGB/深度和点选三维轨迹。页面离线可用，另导出 PLY、轨迹与 scene flow。可视化默认最多取 16 帧、等比例缩小至长边 518，使用 `--max-frames 0 --long-side 0` 保留全部帧和原始尺寸；补边像素会从显示与导出中排除。
@@ -158,7 +170,7 @@ multid4rt visualize --input video.mp4 --mode monocular --checkpoint model.pt --o
 没有 checkpoint 时可先检查界面：
 
 ```bash
-multid4rt visualize --demo --mode multicamera --output outputs/viewer_demo --device cpu
+mvmc visualize --demo --mode multicamera --output outputs/viewer_demo --device cpu
 ```
 
 此示例使用随机 tiny 权重，仅验证流程。文件夹格式、视频输入、原图像素查询、预测复用和导出维度见 [可视化说明](docs/visualization.md)。
@@ -175,6 +187,6 @@ multid4rt visualize --demo --mode multicamera --output outputs/viewer_demo --dev
 | **PointOdyssey · 单相机人物追踪** | |
 | [![PointOdyssey](examples/pointodyssey_c1t16/preview.png)](examples/pointodyssey_c1t16/viewer.html) | |
 
-也可下载[完整实例包](https://github.com/bestzbf/MultiD4RT/releases/download/v0.5.1/multid4rt-real-examples-step56000.zip)，解压后打开 `examples/index.html`。GitHub 文件预览显示源码，交互页面请在本地浏览器中打开。
+也可下载[完整实例包](https://github.com/bestzbf/mvmc/releases/download/v0.5.1/multid4rt-real-examples-step56000.zip)，解压后打开 `examples/index.html`。GitHub 文件预览显示源码，交互页面请在本地浏览器中打开。
 
 组件来源与许可见 [NOTICE](NOTICE)。

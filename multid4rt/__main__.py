@@ -12,7 +12,7 @@ COMMANDS = {
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="MultiD4RT: multi-camera 4D reconstruction and tracking")
+    parser = argparse.ArgumentParser(description="mvmc: multi-camera 4D reconstruction and tracking")
     parser.add_argument("command", choices=COMMANDS)
     parser.add_argument("arguments", nargs=argparse.REMAINDER,
                         help="Pass --help after the command for its options")

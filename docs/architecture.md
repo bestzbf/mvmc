@@ -1,8 +1,8 @@
-# MultiD4RT：模型结构与维度
+# mvmc：模型结构与维度
 
 [返回 README](../README.md) · 实现：[model.py](../multid4rt/model.py)、[config.py](../multid4rt/config.py)
 
-本文对应当前分支的实际实现。新模型采用全部观察 KV 和片段相对时间编码；旧 checkpoint 的计算语义兼容行为见最后一节。
+本文描述顶层 `multid4rt/` 推理实现（也由 `mvmc` 接口导出）。它支持两种 decoder memory：新建配置默认 `all_observations`；公开 60k 权重和当前研究训练使用 `target_time`。加载 checkpoint 时以保存的配置为准，不能用构造器默认值推断已训练模型的结构。顶层推理实现不含训练版本的 `TrajectoryRefiner`；训练结构及版本边界见[训练模型说明](training-architecture.md)。
 
 ## 1. 输入约定
 
@@ -122,13 +122,25 @@ P          [B,S,H,W,3]
 
 基础点采用 depth+K+c2w，ray 是辅助射线输出。轨迹与深度、相机头及 encoder 共用同一计算链。几何回归和相机计算在 float32 中执行。
 
-## 4. 运动分支：全部观察 KV + 时间条件
+## 4. 运动分支：可配置的 KV 范围 + 时间条件
 
 源码：[metadata.py](../multid4rt/metadata.py)、[motion.py](../multid4rt/motion.py)。
 
-### 全时刻 KV
+### `target_time`：公开 60k 权重与当前训练
 
-每个 tap 的所有 global patch 直接展平为：
+对每个目标时刻 t，直接 K/V 取该时刻**所有有效相机**的 global patch；缺失相机被 mask，不只取源相机，也不直接拼接其他时刻的 patch：
+
+```text
+memory                  [B,U,C*L,D]
+cross-attention queries [B*U,L+1,D]
+cross-attention KV      [B*U,C*L,D]
+```
+
+这些 patch 已经过 encoder 的跨相机、跨时刻融合，所以含有其他帧的上下文。**encoder 的全局上下文不等于 decoder 直接使用全时刻 K/V。** 源时刻也会进入内部解码，以进行位移锚定。
+
+### `all_observations`：新建配置默认，可显式选择
+
+仅在 `decoder_memory="all_observations"` 时，每个 tap 的所有 global patch 直接展平为：
 
 ```text
 memory         [B,S*L,D]
@@ -153,7 +165,7 @@ h_m(s,t)= τ_m(t) + W_target PE(t-o) + W_delta PE(t-t_s)     [B,U,D]
 
 条件既初始化每个目标的 prefix token，也持续调制每轮 AdaLN。AdaLN 一直使用原始条件 `h`，不会被更新后的 prefix 覆盖。
 
-### 共享四轮 decoder
+### 共享四轮 decoder（以下张量布局为 `all_observations`）
 
 对每个源图、每个 tap，取源 patch `[B,L,D]`，向 U 个目标复制，拼上对应 prefix：
 
@@ -231,7 +243,7 @@ with torch.inference_mode():
 
 `EncodedScene` 缓存只对应产生它的输入；图片或元数据变化时需要重新编码。
 
-## 7. 一个具体 giant 维度例子
+## 7. 一个具体 giant 维度例子（`all_observations` 配置）
 
 取 `B=1,C=4,T=Tq=8,Q=4`，原始 Kubric 图 `256×256` 补成 `266×266`，于是 `Hp=Wp=19,L=361,U=8,S=32`：
 
@@ -256,13 +268,13 @@ padding 像素也会输出预测，使用结果时应排除这些位置。该例
 ## 8. 性能和断点兼容
 
 - 当前结构按源图、按 tap 调用共享 decoder；不是把 Q 个源图一起构成超大查询。
-- encoder 的 global attention 计算规模仍随 `S*(L+2)` 的平方增长。全时刻 KV 更完整，同时增加 decoder attention 工作量。
+- encoder 的 global attention 计算规模仍随 `S*(L+2)` 的平方增长。全时刻 KV 的直接读取范围更大，也增加 decoder attention 工作量；这不保证质量更好。
 - CUDA 无 padding、BF16/FP16 且关闭 query 分块时，同相机 bias 等价分解为额外 Q/K 特征，允许 fused SDPA；不保证所有设备、dtype、mask 都使用 FlashAttention。
 - `attention_chunk_size=None`、`visibility_chunk_size=None` 关闭两种 query 分块。CLI `--no-query-chunking` 同时设置这两个值。
 - `geometry_chunk_size=8` 是 DualDPT 沿观察图批次的独立计算粒度，已变成显式配置；设为 `None` 才让几何 DPT 一次处理全部观察。`--no-query-chunking` 不改变这个设置。它不减少实际处理的像素。
 - 配置保留激活检查点字段以兼容原权重；推理 CLI 禁用激活检查点。
 
-新 checkpoint 的 `format_version=2`，config 记录 `decoder_memory`、`time_origin` 与 `geometry_chunk_size`。所有官方入口通过 `config_from_checkpoint()` 恢复：
+顶层推理包保存的 checkpoint 使用 `format_version=2`，config 记录 `decoder_memory`、`time_origin` 与 `geometry_chunk_size`。顶层推理入口通过 `config_from_checkpoint()` 恢复；带 refiner 的研究 checkpoint 须使用对应研究源码：
 
 | 加载方式 | KV 语义 |
 |---|---|

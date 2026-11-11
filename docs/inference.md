@@ -1,4 +1,4 @@
-# MultiD4RT 推理
+# mvmc 推理
 
 [返回 README](../README.md)
 
@@ -22,7 +22,7 @@
 ## 运行
 
 ```bash
-multid4rt infer --manifest observations.json --checkpoint model.pt --output outputs/prediction --source-obs 0 2 --query-times 0 5 --device cuda --amp --amp-dtype bfloat16 --no-query-chunking
+mvmc infer --manifest observations.json --checkpoint model.pt --output outputs/prediction --source-obs 0 2 --query-times 0 5 --device cuda --amp --amp-dtype bfloat16 --no-query-chunking
 ```
 
 `source_obs` 是展平后的输入下标，`query_times` 是帧标签。每个请求时刻至少需要一张有效输入图。不传这两个参数时返回所有源观察和所有输入时刻。`--no-visibility` 可省略可见性分支。
@@ -31,15 +31,17 @@ multid4rt infer --manifest observations.json --checkpoint model.pt --output outp
 
 ## Checkpoint 与接口
 
-`MultiD4RT.from_checkpoint()` 恢复保存的模型配置和权重，也兼容更名前的原生 checkpoint。参数键、张量形状、时间编码与 decoder KV 语义保持一致。`--decoder-memory`、`--time-origin` 是显式覆盖选项，可能改变旧权重的输出。
+`MVMC.from_checkpoint()`（兼容名 `MultiD4RT.from_checkpoint()`）恢复顶层推理架构的模型配置和权重，兼容原 MultiD4RT 与较早、不含 refiner 的原生 checkpoint。**它不支持当前带 `TrajectoryRefiner` 的研究训练 checkpoint**；这类权重须使用[对应训练源码](../research/training/README.md)或[冻结评估源码](../research/frozen_134400/README.md)，不能删除配置字段或忽略多余权重来冒充完整加载。
+
+公开 60k 权重使用 `target_time`：每个目标时刻的直接 K/V 来自该时刻所有有效相机，encoder 仍融合全部输入观察。`all_observations` 是新建配置的默认值和可选模式，不是这份权重的训练设置。`--decoder-memory`、`--time-origin` 是显式覆盖选项，会改变计算语义；覆盖后必须重新验证效果。
 
 ```python
-from multid4rt import MultiD4RT
-from multid4rt.tasks import scene_flow, sample_tracks
+from mvmc import MVMC
+from mvmc.tasks import scene_flow, sample_tracks
 
-model = MultiD4RT.from_checkpoint('model.pt').eval()
+model = MVMC.from_checkpoint('model.pt').eval()
 ```
 
 同一输入可先 `model.encode()`，再通过 `model.decode()` 查询不同源图和目标时刻。`scene_flow` 返回被跟踪点的世界位移；`sample_tracks` 使用 `[source_obs,u,v]` 的像素查询提取稠密预测。
 
-`multid4rt demo --output outputs/demo` 使用随机 tiny 权重检查 IO。
+`mvmc demo --output outputs/demo` 使用随机 tiny 权重检查 IO。

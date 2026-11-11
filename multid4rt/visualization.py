@@ -213,7 +213,7 @@ def export_visualization(payload, directory):
     try:
         from plotly.offline import get_plotlyjs
     except ImportError as exc:
-        raise ImportError("visualization requires: pip install 'multid4rt[viz]'") from exc
+        raise ImportError("visualization requires: pip install 'mvmc[viz]'") from exc
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     ply = directory/'ply'

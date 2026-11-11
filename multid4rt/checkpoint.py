@@ -8,6 +8,16 @@ import torch
 from .config import MultiD4RTConfig
 
 
+def _reject_refinement_checkpoint(data):
+    config = data.get("config") if isinstance(data, Mapping) else None
+    if isinstance(config, Mapping) and config.get("refinement_dim"):
+        raise ValueError(
+            "TrajectoryRefiner checkpoints require the matching research/training/source "
+            "or research/frozen_134400/model_source implementation; the mvmc/multid4rt "
+            "inference package has no refiner. Do not remove config fields to bypass this check."
+        )
+
+
 def config_from_checkpoint(data, fallback=None):
     """Restore saved execution semantics, including checkpoints predating scopes.
 
@@ -16,6 +26,7 @@ def config_from_checkpoint(data, fallback=None):
     Weight compatibility does not justify changing a resumed computation, so
     migration of either setting is explicit.
     """
+    _reject_refinement_checkpoint(data)
     values = data.get("config") if isinstance(data, Mapping) else None
     if isinstance(values, Mapping) and "embed_dim" in values:
         values = dict(values)
@@ -54,6 +65,7 @@ def load_4rc_weights(model, checkpoint, strict_base=True):
     data = read_checkpoint(checkpoint)
     if not isinstance(data, Mapping):
         raise ValueError("checkpoint must contain a state dictionary")
+    _reject_refinement_checkpoint(data)
     native = data.get("architecture") in ("multid4rt", "multicamera4rc")
     for wrapper in ("model", "state_dict", "model_state_dict"):
         if wrapper in data and isinstance(data[wrapper], Mapping):
@@ -73,6 +85,11 @@ def load_4rc_weights(model, checkpoint, strict_base=True):
         if key in state:
             raise ValueError(f"duplicate checkpoint key after removing prefixes: {key}")
         state[key] = value
+    if any(key.startswith("trajectory_refiner.") for key in state):
+        raise ValueError(
+            "TrajectoryRefiner weights cannot be loaded by the mvmc/multid4rt inference "
+            "package, even with strict_base=False; use the matching research implementation."
+        )
     expected = model.state_dict()
     matched = {key: value for key, value in state.items() if key in expected}
     if not matched:

@@ -73,7 +73,7 @@ def main(argv=None):
     try:
         from plotly.offline import get_plotlyjs  # Check the optional dependency before any expensive inference.
     except ImportError:
-        parser.error("install the visualization extra: pip install 'multid4rt[viz]'")
+        parser.error("install the visualization extra: pip install 'mvmc[viz]'")
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     input_path, mode, checkpoint = args.input, args.mode, args.checkpoint

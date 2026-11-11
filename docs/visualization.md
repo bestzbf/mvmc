@@ -1,10 +1,10 @@
 # 推理可视化
 
-`multid4rt visualize` 将普通 RGB 输入送入模型，再生成离线交互页面和三维导出。需要安装可选依赖：
+`mvmc visualize` 将普通 RGB 输入送入模型，再生成离线交互页面和三维导出。需要安装可选依赖：
 
 ```bash
 python -m pip install -e '.[weights,viz]'
-multid4rt visualize --help
+mvmc visualize --help
 ```
 
 ## 三种输入
@@ -30,7 +30,7 @@ camera_sequences/
 ```
 
 ```bash
-multid4rt visualize --input camera_sequences/ --mode multicamera \
+mvmc visualize --input camera_sequences/ --mode multicamera \
   --checkpoint model.pt --output outputs/multicamera --device cuda --amp
 ```
 
@@ -48,7 +48,7 @@ scene_views/
 ```
 
 ```bash
-multid4rt visualize --input scene_views/ --mode multiview \
+mvmc visualize --input scene_views/ --mode multiview \
   --checkpoint model.pt --output outputs/multiview --device cuda --amp
 ```
 
@@ -57,7 +57,7 @@ multid4rt visualize --input scene_views/ --mode multiview \
 ### 单相机动态重建与追踪
 
 ```bash
-multid4rt visualize --input video.mp4 --mode monocular \
+mvmc visualize --input video.mp4 --mode monocular \
   --checkpoint model.pt --output outputs/monocular --stride 5 --device cuda --amp
 ```
 
@@ -69,7 +69,7 @@ multid4rt visualize --input video.mp4 --mode monocular \
 
 ```bash
 # 保留全部帧与原始图像尺寸，仍会补齐 patch 所需边界
-multid4rt visualize --input camera_sequences/ --checkpoint model.pt \
+mvmc visualize --input camera_sequences/ --checkpoint model.pt \
   --max-frames 0 --long-side 0 --output outputs/native --device cuda --amp
 ```
 
@@ -88,7 +88,7 @@ multid4rt visualize --input camera_sequences/ --checkpoint model.pt \
 ```
 
 ```bash
-multid4rt visualize --input camera_sequences/ --checkpoint model.pt \
+mvmc visualize --input camera_sequences/ --checkpoint model.pt \
   --source-obs 0 3 --queries queries.json --output outputs/selected --device cuda --amp
 ```
 
@@ -137,11 +137,11 @@ Scene flow 是相邻**输出帧标签**之间同一源点的世界位移，不�
 
 ```bash
 # 已有完整 demo 输出目录，无需再加载模型或推理
-multid4rt visualize --prediction outputs/multicamera \
+mvmc visualize --prediction outputs/multicamera \
   --max-points 10000 --num-tracks 12 --output outputs/new_viewer
 
 # 已有 infer 的 .pt，需提供与预测同顺序、同尺寸的 RGB manifest
-multid4rt visualize --prediction outputs/prediction/clip_000000.pt \
+mvmc visualize --prediction outputs/prediction/clip_000000.pt \
   --input observations.json --output outputs/from_prediction
 ```
 
@@ -150,9 +150,9 @@ multid4rt visualize --prediction outputs/prediction/clip_000000.pt \
 ## 无权重的界面检查
 
 ```bash
-multid4rt visualize --demo --mode multicamera --output outputs/demo_multicamera --device cpu
-multid4rt visualize --demo --mode multiview --output outputs/demo_multiview --device cpu
-multid4rt visualize --demo --mode monocular --output outputs/demo_monocular --device cpu
+mvmc visualize --demo --mode multicamera --output outputs/demo_multicamera --device cpu
+mvmc visualize --demo --mode multiview --output outputs/demo_multiview --device cpu
+mvmc visualize --demo --mode monocular --output outputs/demo_monocular --device cpu
 ```
 
 这三条命令生成 RGB 示例并使用随机 tiny 权重，页面会明确标注。它们验证读取、模型执行、三维导出和交互，不代表重建质量。实际效果请使用对应的已训练 checkpoint。
