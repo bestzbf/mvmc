@@ -19,6 +19,7 @@ _ADAPTERS: dict[str, tuple[str, str]] = {
     "co3dv2": ("co3dv2", "Co3Dv2Adapter"),
     "dynamic_replica": ("dynamic_replica", "DynamicReplicaAdapter"),
     "egoexo4d": ("egoexo4d", "EgoExo4DAdapter"),
+    "egoexo4d_calibrated": ("egoexo4d_calibrated", "EgoExo4DCalibratedAdapter"),
     "kubric": ("kubric", "KubricAdapter"),
     "kubric_multicam": ("kubric_multicam", "KubricMultiCamAdapter"),
     "mv_kubric": ("mv_kubric", "MVKubricAdapter"),

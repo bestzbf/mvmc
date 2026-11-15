@@ -166,6 +166,29 @@ def test_required_authoritative_tracks_do_not_fall_back_to_static(tmp_path):
         _mugen_adapter(path).load_clip("moving", [0, 5, 10])
 
 
+def test_geometry_tracks_retains_sparse_motion_without_densifying_it(tmp_path):
+    from multicamera4rc.datasets.mixture import MultiCameraAdapterDataset, collate_adapter_samples
+    from multicamera4rc.datasets.partial_dense import materialize_partial_dense_targets
+    path = tmp_path / 'waymo_rigid.h5'
+    _write_mugen(path)
+    source = dict(adapter='mugen_h5', root=str(path), split='train', cameras=1,
+                  num_times=3, dense_kind='geometry_tracks', options=dict(
+                      generate_static_tracks=False, frame_interleave=1,
+                      strip_padding=False, train_only_val_ratio=0., verbose=False))
+    dataset = MultiCameraAdapterDataset([source], image_size=(28, 42), num_times=3,
+                                        supervision='dense', num_queries=0, epoch_size=10)
+    sample = dataset[0]
+    assert sample['targets']['sparse_query_valid'].any()
+    assert sample['targets']['sparse_displacement_valid'].any()
+    assert not sample['targets']['dense_pair_valid'].any()
+    batch = collate_adapter_samples([sample])
+    target = materialize_partial_dense_targets(batch, torch.tensor([[0, 1, 2]]))
+    assert not target['displacement_valid'].any()
+    assert target['sparse_displacement_valid'].any()
+    assert target['sparse_displacement'][target['sparse_displacement_valid']].abs().sum() > 0
+    assert torch.isfinite(target['sparse_trajectory']).all()
+
+
 @pytest.mark.parametrize("loader", ["kubric", "mugen"])
 def test_native_reader_bridge_supervision_reaches_backward(tmp_path, loader):
     torch.set_num_threads(1)

@@ -162,6 +162,7 @@ from .cross_camera import CROSS_CAMERA_METRICS
 from .query_pair import QUERY_PAIR_METRICS
 from .joint_geometry import JOINT_GEOMETRY_METRICS
 from .depth_objectives import DEPTH_OBJECTIVE_METRICS
+from .reprojection import REPROJECTION_METRICS
 
 
 _METRICS = ("loss", "depth", "camera", "ray", "trajectory", "displacement",
@@ -183,8 +184,8 @@ _METRICS = ("loss", "depth", "camera", "ray", "trajectory", "displacement",
             "visibility_precision", "visibility_recall", "visibility_f1",
             "camera_translation", "camera_rotation", "camera_fov", "camera_principal",
             "excluded_background_pixels", "excluded_background_fraction",
-            "camera_log_focal", "camera_principal_normalized",
-            "refinement_update", "refinement_match_fraction") + INTRINSICS_METRICS + CROSS_CAMERA_METRICS + QUERY_PAIR_METRICS + JOINT_GEOMETRY_METRICS + DEPTH_OBJECTIVE_METRICS
+            "camera_log_focal", "camera_principal_normalized", "camera_log_focal_ratio",
+            "refinement_update", "refinement_match_fraction") + INTRINSICS_METRICS + CROSS_CAMERA_METRICS + QUERY_PAIR_METRICS + JOINT_GEOMETRY_METRICS + DEPTH_OBJECTIVE_METRICS + REPROJECTION_METRICS
 
 
 def present_metric_average(name):

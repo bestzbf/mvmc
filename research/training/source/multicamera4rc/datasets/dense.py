@@ -114,7 +114,7 @@ def materialize_dense_targets(batch, source_indices, *, normalize_scene=True):
     recipe = batch["targets"]
     if "dense_camera_only" in recipe:
         from .camera_only import materialize_camera_only_targets
-        return materialize_camera_only_targets(batch, source_indices)
+        return materialize_camera_only_targets(batch, source_indices, normalize_scene=normalize_scene)
     if "dense_syn4d_vertices" in recipe:
         from .syn4d_dense import materialize_syn4d_targets
         return materialize_syn4d_targets(batch, source_indices, normalize_scene=normalize_scene)

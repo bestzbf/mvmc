@@ -30,7 +30,7 @@ import cv2
 import numpy as np
 import torch
 
-from datasets.transforms import TransformResult
+from datasets.transforms import TransformResult, _resize_pixel_coordinates
 from utils.patches import extract_local_patches
 
 
@@ -619,7 +619,7 @@ class D4RTQueryBuilder:
                     [S / max(float(cw), 1.0), S / max(float(ch), 1.0)],
                     dtype=np.float32,
                 )
-                trajs_for_mb = result.trajs_2d.astype(np.float32, copy=False) * scale
+                trajs_for_mb = _resize_pixel_coordinates(result.trajs_2d, scale)
                 motion_boundary = _motion_boundary_masks_sequence(
                     trajs_for_mb,
                     valid_mb,
@@ -800,7 +800,7 @@ class D4RTQueryBuilder:
             ok_flat = pts_depth_ok.ravel()
             if ok_flat.any():
                 flat_ids = np.flatnonzero(ok_flat)
-                pts_img_ok = (trajs_2d_f.reshape(-1, 2)[flat_ids] * scale_xy).astype(np.float32, copy=False)
+                pts_img_ok = _resize_pixel_coordinates(trajs_2d_f.reshape(-1, 2)[flat_ids], scale_xy)
                 xi = np.clip(np.round(pts_img_ok[:, 0]), 0, S - 1).astype(np.int32)
                 yi = np.clip(np.round(pts_img_ok[:, 1]), 0, S - 1).astype(np.int32)
                 frame_ids = flat_ids // N
@@ -816,8 +816,8 @@ class D4RTQueryBuilder:
             proj_x = cam_coords_src[..., 0] * inv_z * K_fx + K_cx
             proj_y = cam_coords_src[..., 1] * inv_z * K_fy + K_cy
             reproj_err = np.sqrt(
-                (proj_x - trajs_2d_f[..., 0] * scale_xy[0]) ** 2 +
-                (proj_y - trajs_2d_f[..., 1] * scale_xy[1]) ** 2
+                (proj_x - _resize_pixel_coordinates(trajs_2d_f[..., 0], scale_xy[0])) ** 2 +
+                (proj_y - _resize_pixel_coordinates(trajs_2d_f[..., 1], scale_xy[1])) ** 2
             )
         reproj_valid_all = (reproj_err < 3.0) | ~depth_valid_all
         valid_src_all = (
@@ -852,7 +852,7 @@ class D4RTQueryBuilder:
             pts_dok = pts_finite & in_bounds
             d_px = np.zeros((T, N), dtype=np.float32)
             if pts_dok.any():
-                pts_img_all = trajs_2d[pts_dok] * np.array([sx_d, sy_d], dtype=np.float32)
+                pts_img_all = _resize_pixel_coordinates(trajs_2d[pts_dok], [sx_d, sy_d])
                 xi_all = np.clip(np.round(pts_img_all[:, 0]), 0, S - 1).astype(np.int32)
                 yi_all = np.clip(np.round(pts_img_all[:, 1]), 0, S - 1).astype(np.int32)
                 depths_arr = np.stack(result.depths, axis=0)  # [T,S,S]
@@ -869,8 +869,8 @@ class D4RTQueryBuilder:
             proj_x = all_cam[:, :, 0] / (depth_z + 1e-8) * K_fx[:, None] + K_cx[:, None]
             proj_y = all_cam[:, :, 1] / (depth_z + 1e-8) * K_fy[:, None] + K_cy[:, None]
             reproj_err = np.sqrt(
-                (proj_x - trajs_2d[:, :, 0] * sx_d) ** 2 +
-                (proj_y - trajs_2d[:, :, 1] * sy_d) ** 2
+                (proj_x - _resize_pixel_coordinates(trajs_2d[:, :, 0], sx_d)) ** 2 +
+                (proj_y - _resize_pixel_coordinates(trajs_2d[:, :, 1], sy_d)) ** 2
             )  # [T,N]
         reproj_valid = (reproj_err < 3.0) | ~depth_valid
 
@@ -892,7 +892,7 @@ class D4RTQueryBuilder:
 
             # boundary mask は img_size 解像度、trajs は crop 解像度
             # → trajs を img_size へスケール
-            xy_img = np.round(pts[valid_src] * scale_xy).astype(np.int32)
+            xy_img = np.round(_resize_pixel_coordinates(pts[valid_src], scale_xy)).astype(np.int32)
             xy_img[:, 0] = np.clip(xy_img[:, 0], 0, S - 1)
             xy_img[:, 1] = np.clip(xy_img[:, 1], 0, S - 1)
             on_boundary = boundary_stack[fi][xy_img[:, 1], xy_img[:, 0]]
@@ -982,8 +982,8 @@ class D4RTQueryBuilder:
                        & src_depth_valid & tgt_depth_valid)
 
         sx, sy  = S / cw, S / ch
-        src_ix  = np.clip(np.round(src_xy[:, 0] * sx).astype(np.int32), 0, S - 1)
-        src_iy  = np.clip(np.round(src_xy[:, 1] * sy).astype(np.int32), 0, S - 1)
+        src_ix  = np.clip(np.round(_resize_pixel_coordinates(src_xy[:, 0], sx)).astype(np.int32), 0, S - 1)
+        src_iy  = np.clip(np.round(_resize_pixel_coordinates(src_xy[:, 1], sy)).astype(np.int32), 0, S - 1)
 
         src_is_bnd  = boundary_stack[src_frames, src_iy, src_ix]
         dbnd_stack  = depth_boundary_stack
@@ -1086,8 +1086,8 @@ class D4RTQueryBuilder:
         # Store flat resized indices; materialize crop coords only for sampled points.
         def _flat_to_crop_xy(flat: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
             ys_r, xs_r = np.divmod(flat, S)
-            xs_c = np.clip(np.rint(xs_r.astype(np.float32) * scale_x), 0, cw - 1).astype(np.int32)
-            ys_c = np.clip(np.rint(ys_r.astype(np.float32) * scale_y), 0, ch - 1).astype(np.int32)
+            xs_c = np.clip(np.rint(_resize_pixel_coordinates(xs_r, scale_x)), 0, cw - 1).astype(np.int32)
+            ys_c = np.clip(np.rint(_resize_pixel_coordinates(ys_r, scale_y)), 0, ch - 1).astype(np.int32)
             return xs_c, ys_c
 
         for fi in range(T):
@@ -1208,8 +1208,8 @@ class D4RTQueryBuilder:
                 v_tgt = K_tgt_all[:, 1, 1] * p_tgt[:, 1] / p_tgt[:, 2] + K_tgt_all[:, 1, 2]
             tgt_inbounds = (
                 np.isfinite(u_tgt) & np.isfinite(v_tgt) &
-                (u_tgt * scale_x >= 0.0) & (u_tgt * scale_x < cw) &
-                (v_tgt * scale_y >= 0.0) & (v_tgt * scale_y < ch) &
+                (_resize_pixel_coordinates(u_tgt, scale_x) >= 0.0) & (_resize_pixel_coordinates(u_tgt, scale_x) < cw) &
+                (_resize_pixel_coordinates(v_tgt, scale_y) >= 0.0) & (_resize_pixel_coordinates(v_tgt, scale_y) < ch) &
                 (p_tgt[:, 2] > 1e-3)
             )
             has_valid_3d = (
@@ -1233,8 +1233,8 @@ class D4RTQueryBuilder:
                 with np.errstate(divide="ignore", invalid="ignore"):
                     u = K_tgt[:, 0, 0] * p2[:, 0] / p2[:, 2] + K_tgt[:, 0, 2]
                     v = K_tgt[:, 1, 1] * p2[:, 1] / p2[:, 2] + K_tgt[:, 1, 2]
-                u_c = u * scale_x
-                v_c = v * scale_y
+                u_c = _resize_pixel_coordinates(u, scale_x)
+                v_c = _resize_pixel_coordinates(v, scale_y)
                 in_bounds = (
                     np.isfinite(u_c) & np.isfinite(v_c) &
                     (u_c >= 0.0) & (u_c < cw) &

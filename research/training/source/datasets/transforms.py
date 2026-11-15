@@ -39,15 +39,20 @@ def _crop_intrinsics(K: np.ndarray, x0: float, y0: float) -> np.ndarray:
 
 
 def _resize_intrinsics(K: np.ndarray, src_h: int, src_w: int, dst_h: int, dst_w: int) -> np.ndarray:
-    """Scale focal length and principal point after resizing. K: [...,3,3]."""
+    """Match OpenCV's integer-pixel-center RGB resize. K: [...,3,3]."""
     out = K.copy().astype(np.float32)
     sx = float(dst_w) / max(float(src_w), 1.0)
     sy = float(dst_h) / max(float(src_h), 1.0)
-    out[..., 0, 0] *= sx
-    out[..., 1, 1] *= sy
-    out[..., 0, 2] *= sx
-    out[..., 1, 2] *= sy
+    out[..., 0, :] *= sx
+    out[..., 1, :] *= sy
+    out[..., 0, 2] += (sx - 1.) / 2
+    out[..., 1, 2] += (sy - 1.) / 2
     return out
+
+
+def _resize_pixel_coordinates(coordinates: np.ndarray, scale) -> np.ndarray:
+    """Forward or inverse resize of integer pixel centers, including subpixels."""
+    return (np.asarray(coordinates, dtype=np.float32) + .5) * np.asarray(scale, dtype=np.float32) - .5
 
 
 def _crop_trajs_2d(trajs: np.ndarray, x0: float, y0: float) -> np.ndarray:

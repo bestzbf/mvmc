@@ -1,10 +1,27 @@
-# Six-rank training source and exported controller snapshot
+# Training source and historical six-rank controller snapshot
 
-The running ranks use the `069b1c28ce4763e2ac6a4f06dbc5b73c9ed3dc55` checkout as their working directory. The private bootstrap prepends the deployed `future_trainer_code_v22/source` tree to `sys.path`. That tree supplies the effective Python source. Compared with the clean checkout, the deployment replaces `multicamera4rc/train.py` and adds six files for the execution helpers, execution controller and six-rank gate.
+At the original export, the running ranks used the `069b1c28ce4763e2ac6a4f06dbc5b73c9ed3dc55` checkout as their working directory. That private bootstrap prepended the deployed `future_trainer_code_v22/source` tree to `sys.path`. That tree supplies the effective Python source. Compared with the clean checkout, the deployment replaces `multicamera4rc/train.py` and adds six files for the execution helpers, execution controller and six-rank gate.
 
 The export verified all 1,076 files pinned by the original deployment manifest. `source/` contains 288 effective source and configuration files, including the runtime package, adapter code, transitively referenced controller scripts and vendor license notices. `base_overrides/multicamera4rc/train.py` holds the unmodified baseline training module for native checkpoint validation. `provenance.json` records the original file hashes and role-relative source paths, the seven-file overlay, and the difference between the complete deployment and this filtered export.
 
-The core `model.py`, `config.py`, `refinement.py`, `train.py` and `launch.py` were rechecked against the deployment and match byte-for-byte. This does not certify the whole runtime or make the exported v23 supervisor the latest recovery controller. The live recovery uses `reliability_hardened_v3/resume_latest.py`. See [model/version boundaries and verified hashes](../../docs/training-architecture.md). Historical documents under `source/` describe their original configurations; use this entry point and the checkpoint config to identify the active recipe.
+The core `model.py`, `config.py`, `refinement.py`, `train.py` and `launch.py` matched the original deployment at export. The subsequent source changes below are not covered by that historical byte-for-byte claim. This does not certify the whole runtime or make the exported v23 supervisor the latest recovery controller. The live recovery uses `reliability_hardened_v3/resume_latest.py`. See [model/version boundaries and verified hashes](../../docs/training-architecture.md). Historical documents under `source/` describe their original configurations; use this entry point and the checkpoint config to identify the active recipe.
+
+## Supervision repair source update (2026-11-15)
+
+`source/` now also includes the deployed calibrated Ego-Exo4D/Aria adapters and the following opt-in continuation features. Historical controller templates, `provenance.json`, and original dataset/loss recipes remain snapshots; reproduce a continuation using its own checkpointed recipe and deployment manifest.
+
+- `dense_kind="geometry_tracks"` admits audited `mugen_h5` depth/cameras together with precomputed sparse trajectories. It requires real track masks, retains unknown temporal regions as unknown, and does not densify sparse trajectories. Dataset production and exclusion audits are external inputs.
+- `reprojection_options` supervises predicted 3D trajectories projected through predicted cameras against independently supported GT image correspondences. It excludes source self-projection and uses GT visibility or measured depth witnesses. Predicted confidence/visibility cannot remove residuals. A continuation may use `weight=0.05`, `huber_delta=0.01` in normalized image coordinates, and a 2048-point budget per view.
+- `focal_ratio_loss_weight=0.5`, with `intrinsics_loss_mode="log_focal"`, adds `abs(log(fx/fy)-log(fx_gt/fy_gt))` only on calibrated observations. This learns the calibrated ratio rather than assuming square focal lengths for every dataset. The existing absolute focal loss remains active.
+- `geometry_source_min_pixels=64` prioritizes supported depth observations for partial geometry samples; motion-labelled sources retain precedence. No depth-validity or occlusion tolerance is relaxed.
+- `rewarm_group_plan` creates a named, checkpointed LR continuation. The tested geometry ramp is 1.5 times the boundary LR over 500 updates, with other groups, Adam moments and the original global cosine phase preserved. Increasing the target step alone does not create this ramp.
+- Legacy resize utilities now transform pixel centres and intrinsic principal points together using `(x + 0.5) * scale - 0.5`. The current native loader already used this convention.
+
+These changes do not create dense human-surface temporal GT. Ego-Exo4D supplies its existing audited sparse joint displacement supervision; adjacent depth maps alone do not identify the same moving surface point.
+
+`source/scripts/depth_alignment_audit.py` exposes a separate least-squares alignment diagnostic. It preserves the GT-valid denominator and fixed log floor. It does not replace the frozen official scorer, remove failed predictions, or derive a clipping floor from evaluation GT. Visibility thresholds and content-canvas intrinsics likewise require separately labelled inference experiments.
+
+Targeted tests cover GT masks, focal-ratio gradients, pixel-centre geometry, two-rank training/save/resume, and sparse-motion retention. B200 real-sample probes additionally cover Waymo, Ego-Exo4D, Kinoptic and Kubric with the full model and Adam state. These are numerical/execution checks, not evidence of benchmark improvement after training.
 
 ## Launch chain and dependencies
 

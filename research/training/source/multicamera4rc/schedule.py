@@ -109,3 +109,23 @@ def migrate_geometry_plan(plan, old_group_names, new_group_names, *, start_step,
     policies['geometry'] = dict(start_step=start_step, multiplier=float(multiplier), warmup_steps=warmup_steps)
     return replace(plan, base_lrs=[rates[name] for name in new_group_names],
                    group_names=new_group_names, group_multipliers=policies)
+
+
+def rewarm_group_plan(plan, name, *, start_step, factor, warmup_steps):
+    """Add a continuation ramp without an LR jump or resetting Adam moments.
+
+    Rebase the selected group's base rate at its saved multiplier. Other groups
+    and the original global cosine phase are unchanged. The absolute new anchor
+    is serialized in the checkpoint, so resuming does not repeat the ramp.
+    """
+    if plan.group_names is None or name not in plan.group_names:
+        raise ValueError('rewarming requires an existing named optimizer group')
+    if (isinstance(start_step, bool) or not isinstance(start_step, int) or start_step < 0
+            or isinstance(warmup_steps, bool) or not isinstance(warmup_steps, int) or warmup_steps <= 0
+            or isinstance(factor, bool) or not math.isfinite(factor) or factor <= 0):
+        raise ValueError('invalid continuation ramp')
+    rates = list(plan.base_lrs)
+    rates[plan.group_names.index(name)] *= plan.group_factor(name, start_step)
+    policies = dict(plan.group_multipliers or {})
+    policies[name] = dict(start_step=start_step, multiplier=float(factor), warmup_steps=warmup_steps)
+    return replace(plan, base_lrs=rates, group_multipliers=policies)

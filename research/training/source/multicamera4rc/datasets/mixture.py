@@ -18,11 +18,12 @@ from torch.utils.data import Dataset
 from .registry import create_adapter
 from .adapters.base import InvalidClipError
 
-_NATIVE_MULTICAMERA = ("kubric_multicam", "mv_kubric", "panoptic", "panoptic_kinoptic", "egoexo4d", "syn4d")
-_VARIABLE_CAMERAS = ("kubric_multicam", "mv_kubric", "panoptic", "panoptic_kinoptic", "syn4d")
+_VARIABLE_CAMERAS = ("kubric_multicam", "mv_kubric", "panoptic", "panoptic_kinoptic", "egoexo4d_calibrated", "syn4d")
+_NATIVE_MULTICAMERA = (*_VARIABLE_CAMERAS, "egoexo4d")
+_CAMERA_KINDS = ("camera_only", "camera_joint_motion")
 
 class _InvalidDenseClip(RuntimeError):
-    """A readable clip whose actual depth mask contains no supervised pixel."""
+    """A clip rejected by an explicit supervision validity check."""
 
 
 def _positive_integer(value, name):
@@ -141,13 +142,21 @@ class MultiCameraAdapterDataset(Dataset):
                 raise ValueError(f"unknown source fields: {sorted(set(source)-allowed)}")
             name = str(source["adapter"]).lower()
             partial = {"mugen_h5", "pointodyssey_geometry", "pointodyssey_tracks", "dynamic_replica", "vkitti2", "vkitti2_stereo", "tartanair_v1_zip", "tartanair_v1_stereo", "tartanair_v2_zip", "hypersim_zip", "panoptic_kinoptic"}
-            if supervision == "dense" and name not in partial | {"kubric_multicam", "mv_kubric", "panoptic", "syn4d"}:
+            if supervision == "dense" and name not in partial | {"kubric_multicam", "mv_kubric", "panoptic", "egoexo4d_calibrated", "syn4d"}:
                 raise ValueError(f"{name}: dense GT requires native per-pixel labels; sparse tracks cannot be densified")
             native_kind = {"dynamic_replica": "replica_flow", "vkitti2": "vkitti_scene_flow", "vkitti2_stereo": "vkitti_scene_flow", "pointodyssey_tracks": "pointodyssey_tracks", "kubric_multicam": "kubric", "mv_kubric": "kubric", "panoptic": "camera_only", "syn4d": "syn4d"}.get(name, "geometry")
+            if name == "egoexo4d_calibrated":
+                native_kind = "camera_only"
             kind = source.get("dense_kind", native_kind)
-            if supervision == "dense" and kind not in ("kubric", "geometry", "replica_flow", "vkitti_scene_flow", "pointodyssey_tracks", "syn4d", "camera_only"):
+            if supervision == "dense" and kind not in ("kubric", "geometry", "geometry_tracks", "replica_flow", "vkitti_scene_flow", "pointodyssey_tracks", "syn4d", *_CAMERA_KINDS):
                 raise ValueError(f"unsupported dense_kind {kind}")
-            if supervision == "dense" and kind != "geometry" and kind != native_kind:
+            if kind == "geometry_tracks":
+                if supervision != "dense" or name != "mugen_h5":
+                    raise ValueError("geometry_tracks requires dense supervision and a verified mugen_h5 pack")
+            elif name == "egoexo4d_calibrated":
+                if supervision != "dense" or kind not in _CAMERA_KINDS:
+                    raise ValueError("egoexo4d_calibrated requires dense supervision with camera_only or camera_joint_motion")
+            elif supervision == "dense" and kind != "geometry" and kind != native_kind:
                 raise ValueError(f"{name} cannot provide {kind} dense labels")
             if name == "panoptic" and (supervision != "dense" or kind != "camera_only"):
                 raise ValueError("raw Panoptic provides calibration only; use dense_kind=camera_only")
@@ -193,6 +202,8 @@ class MultiCameraAdapterDataset(Dataset):
                     raise ValueError("variable camera layouts require a verified native multiview adapter; keep stereo pairs intact")
             minimum_cameras = min(counts)
             minimum_layout_times = min((v["num_times"] for v in layouts), default=source_times)
+            if kind == "camera_joint_motion" and (source_times != 2 or minimum_layout_times != 2):
+                raise ValueError("EgoPose joint displacement requires exactly two target times")
             weight = float(source.get("weight", 1.0))
             if not math.isfinite(weight) or weight <= 0:
                 raise ValueError("source weights must be finite and positive")
@@ -223,6 +234,13 @@ class MultiCameraAdapterDataset(Dataset):
                 for key, value in fixed.items():
                     if key in options and options[key] != value:
                         raise ValueError(f"{name}: {key} must be {value!r} for the configured layout")
+                    options[key] = value
+            elif name == "egoexo4d_calibrated":
+                fixed = dict(min_cameras=minimum_cameras, max_cameras=cameras,
+                             joint_motion=(kind == "camera_joint_motion"))
+                for key, value in fixed.items():
+                    if key in options and options[key] != value:
+                        raise ValueError(f"{name}: {key} must be {value!r} for the configured supervision")
                     options[key] = value
             elif name in ("vkitti2_stereo", "tartanair_v1_stereo"):
                 if cameras != 2:
@@ -262,7 +280,12 @@ class MultiCameraAdapterDataset(Dataset):
                 options.setdefault("assume_static_scene", False)
                 if options["generate_static_tracks"] and not options["assume_static_scene"]:
                     raise ValueError("MUGEN static-track generation requires explicit assume_static_scene=true; use precomputed tracks for dynamic scenes")
-                if supervision == "dense":
+                if supervision == "dense" and kind == "geometry_tracks":
+                    if options["generate_static_tracks"]:
+                        raise ValueError("geometry_tracks requires measured/certified precomputed tracks")
+                    options["prefer_precomputed_tracks"] = True
+                    options["require_precomputed_tracks"] = True
+                elif supervision == "dense":
                     if options["generate_static_tracks"]:
                         raise ValueError("partial dense geometry must not generate sparse static tracks")
                     options["prefer_precomputed_tracks"] = False
@@ -387,7 +410,7 @@ class MultiCameraAdapterDataset(Dataset):
                     os.close(fd)
                 candidate = self._replacement_index(index, requested_times, invalid_indices,
                                                     rng, coverage_intervals)
-        raise RuntimeError(f"32 dense clips with num_times={requested_times} had no valid depth; inspect {self.invalid_log}")
+        raise RuntimeError(f"32 clips with num_times={requested_times} failed label validation; inspect {self.invalid_log}")
 
     def _replacement_index(self, index, num_times, invalid_indices, rng, coverage_intervals):
         if coverage_intervals is not None:
@@ -495,6 +518,8 @@ class MultiCameraAdapterDataset(Dataset):
             frame_indices, static_info = select_static_views(source["adapter"], sequence, admitted,
                 times[0], source["camera_choices"], rng)
             requested_cameras = len(frame_indices)
+        elif source["name"] == "egoexo4d_calibrated":
+            frame_indices = times
         else:
             frame_indices = times*requested_cameras
         try:
@@ -511,12 +536,13 @@ class MultiCameraAdapterDataset(Dataset):
                 # Some older single-camera readers omit source frame labels.
                 # The sampler knows them; retain gaps rather than arange(T).
                 clip.metadata.setdefault("frame_indices", times)
+            kind = source["dense_kind"]
             sample = prepare_clip(clip, image_size=self.image_size,
                                   num_queries=self.num_queries, seed=sample_seed,
-                                  include_visibility=self.include_visibility,
+                                  include_visibility=self.include_visibility and kind != "camera_joint_motion",
                                   image_mode=self.image_mode,
-                                  all_track_queries=self.supervision == "dense" and source["dense_kind"] == "pointodyssey_tracks")
-            if (self.supervision == "dense" and source["dense_kind"] != "camera_only"
+                                  all_track_queries=self.supervision == "dense" and kind in ("pointodyssey_tracks", "geometry_tracks", "camera_joint_motion"))
+            if (self.supervision == "dense" and kind not in _CAMERA_KINDS
                     and not sample["targets"]["depth_valid"].any()):
                 # Replica stores a clip-level audit mapping; geometry adapters
                 # such as TartanAir V2 store a list of per-frame filter stats.
@@ -537,6 +563,9 @@ class MultiCameraAdapterDataset(Dataset):
                 elif source["dense_kind"] == "camera_only":
                     from .camera_only import attach_camera_only_recipe
                     attach_camera_only_recipe(clip, sample)
+                elif source["dense_kind"] == "camera_joint_motion":
+                    from .camera_only import attach_camera_joint_motion_recipe
+                    attach_camera_joint_motion_recipe(clip, sample)
                 else:
                     from .partial_dense import attach_partial_dense_recipe
                     attach_partial_dense_recipe(clip, sample, kind=source["dense_kind"],
@@ -557,6 +586,8 @@ class MultiCameraAdapterDataset(Dataset):
                         slots = np.flatnonzero(np.asarray(clip.metadata.get('valid_slot', [True]*len(clip.images))))
                         content_hw = [np.asarray(clip.images[i]).shape[:2] for i in slots]
                 sample = photometric_sample(sample, self.photometric_augmentation, sample_seed, content_hw)
+            if kind == "camera_joint_motion" and not sample["targets"]["sparse_query_valid"].any():
+                raise InvalidClipError("prepared crop contains no supervised EgoPose query")
             if len(sample["query_time_idx"]) != num_times:
                 raise ValueError("adapter changed the requested number of unique target times")
             if sample["camera_id"].unique().numel() != requested_cameras:

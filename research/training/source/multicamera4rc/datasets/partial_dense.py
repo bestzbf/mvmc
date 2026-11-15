@@ -154,10 +154,13 @@ def vkitti_pairs(clip, adapter):
 
 def attach_partial_dense_recipe(clip, sample, *, kind, image_mode, adapter=None):
     from .bridge import _content_size
-    if kind not in ("geometry", "replica_flow", "vkitti_scene_flow", "pointodyssey_tracks"):
+    if kind not in ("geometry", "geometry_tracks", "replica_flow", "vkitti_scene_flow", "pointodyssey_tracks"):
         raise ValueError(f"unsupported dense partial task: {kind}")
     target = {k: v for k, v in sample["targets"].items()
-              if kind == "pointodyssey_tracks" or not k.startswith("sparse_")}
+              if kind in ("pointodyssey_tracks", "geometry_tracks") or not k.startswith("sparse_")}
+    if kind == "geometry_tracks" and not target["sparse_query_valid"].any():
+        from .adapters.base import InvalidClipError
+        raise InvalidClipError("geometry_tracks requires at least one admitted source query")
     S, _, H, W = sample["images"].shape
     target["dense_partial"] = torch.tensor(True)
     # Compact adjacent recipes, independent of the requested T and Q. World
@@ -165,7 +168,7 @@ def attach_partial_dense_recipe(clip, sample, *, kind, image_mode, adapter=None)
     delta = torch.zeros(S, 2, H, W, 3)
     valid = torch.zeros(S, 2, H, W, dtype=torch.bool)
     times = torch.full((S, 2), -1, dtype=torch.long)
-    if kind not in ("geometry", "pointodyssey_tracks"):
+    if kind not in ("geometry", "geometry_tracks", "pointodyssey_tracks"):
         pairs = replica_pairs(clip) if kind == "replica_flow" else vkitti_pairs(clip, adapter)
         E = np.asarray(clip.extrinsics[0], np.float64)
         if clip.metadata.get("extrinsics_convention", "w2c") == "c2w":

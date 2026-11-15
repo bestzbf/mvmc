@@ -43,7 +43,10 @@ def sample_cost(dataset, index, image_hw, source_count=4, max_source_time_pairs=
     # Linear projection/MLP and quadratic global attention, plus dense heads.
     # Geometry/camera-only adapters skip motion in _TrainingStep.
     tokens = observations * n
-    motion = src['dense_kind'] in ('kubric', 'replica_flow', 'vkitti_scene_flow', 'pointodyssey_tracks', 'syn4d')
+    motion = src['dense_kind'] in (
+        'kubric', 'replica_flow', 'vkitti_scene_flow', 'pointodyssey_tracks', 'syn4d',
+        'camera_joint_motion',
+    )
     return tokens + tokens * tokens / 32768 + (q * t * n * (6 + c) if motion else 0)
 
 

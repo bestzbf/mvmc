@@ -57,7 +57,8 @@ def _sparse_supervised_queries(targets, index):
     return supervised
 
 
-def _sources(batch, count, max_source_time_pairs=0, prefer_motion=False, prefer_paired=False):
+def _sources(batch, count, max_source_time_pairs=0, prefer_motion=False, prefer_paired=False,
+             geometry_min_pixels=0):
     valid = batch["observation_valid"]
     b, s = valid.shape
     if max_source_time_pairs:
@@ -98,7 +99,23 @@ def _sources(batch, count, max_source_time_pairs=0, prefer_motion=False, prefer_
             candidates = torch.cat((labels, rest))
         else:
             candidates = candidates[torch.randperm(len(candidates), device=candidates.device)]
-        if prefer_paired:
+        # Partial geometry often has valid depth in only a few real cameras.
+        # Keep those sources ahead of empty maps without relaxing any GT mask.
+        # Motion-labelled sources retain their existing priority.
+        depth_priority = (geometry_min_pixels > 0 and not len(labels)
+                          and 'dense_partial' in batch['targets']
+                          and 'depth_valid' in batch['targets'])
+        if depth_priority:
+            pixels = batch['targets']['depth_valid'][index].bool().flatten(1).sum(1)
+            reliable = pixels[candidates] >= geometry_min_pixels
+            if not reliable.any():
+                reliable = pixels[candidates] > 0
+            supported, rest = candidates[reliable], candidates[~reliable]
+            if prefer_paired:
+                from .query_pair import paired_source_order
+                supported = paired_source_order(supported, batch['camera_id'][index], batch['time_idx'][index], count)
+            candidates = torch.cat((supported, rest))
+        elif prefer_paired:
             from .query_pair import paired_source_order
             candidates = paired_source_order(candidates, batch['camera_id'][index], batch['time_idx'][index], count)
         rows.append(candidates[:count])
@@ -216,7 +233,8 @@ class _TrainingStep(nn.Module):
                 source_obs_idx=meta.source_index, source_valid=meta.source_valid,
                 source_time_idx=meta.source_times, query_time_idx=meta.query_times,
                 camera_id=scene.camera_id, time_idx=scene.time_idx,
-                observation_valid=scene.observation_valid)
+                observation_valid=scene.observation_valid,
+                output_camera_id=meta.camera_values, output_camera_valid=meta.camera_valid)
         else:
             prediction = self.model(images, camera_id, time_idx, query_time_idx, source,
                                     observation_valid=observation_valid,
@@ -706,7 +724,7 @@ def _train(args, context):
             batch["targets"] = {key: value.to(device, non_blocking=True)
                                 for key, value in batch["targets"].items()}
             source = _sources(batch, args.source_count, args.max_source_time_pairs, prefer_motion_sources,
-                              criterion.query_pair_source_sampling)
+                              criterion.query_pair_source_sampling, criterion.geometry_source_min_pixels)
             if dense_supervision:
                 from .datasets.dense import materialize_dense_targets
                 targets = materialize_dense_targets(batch, source)
@@ -775,6 +793,7 @@ def _train(args, context):
             # Averaged metrics can mix unrelated datasets. Retain local error
             # measurements to attribute outliers without another forward.
             local_keys = ("loss", "depth_abs_rel", "depth_mae_normalized", "trajectory_epe_normalized",
+                          "camera_log_focal", "camera_log_focal_ratio", "camera_principal_normalized",
                           "displacement_epe_dynamic_normalized", "depth_confidence_saturated_fraction",
                           "trajectory_epe_temporal_normalized", "displacement_epe_temporal_normalized",
                           "supervised_source_pixels", "supervised_trajectory_pixels",

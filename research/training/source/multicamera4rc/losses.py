@@ -95,13 +95,16 @@ class MultiCamera4RCLoss(nn.Module):
                  camera_loss_mode: str = "matrix",
                  intrinsics_loss_mode: str = "legacy",
                  focal_loss_weight: float = .5, principal_loss_weight: float = .5,
+                 focal_ratio_loss_weight: float = 0.,
                  absolute_intrinsics_gradient: str = "full",
                  trajectory_motion_gradient_scale: float = 1.0,
                  cross_camera_3d_weight: float = 0.0,
                  query_pair_weight: float = 0.0,
                  query_pair_source_sampling: bool | None = None,
+                 geometry_source_min_pixels: int = 0,
                  query_pair_options: Mapping | None = None,
                  joint_geometry_options: Mapping | None = None,
+                 reprojection_options: Mapping | None = None,
                  depth_objective_options: Mapping | None = None,
                  weights: Mapping[str, float] | None = None):
         super().__init__()
@@ -149,6 +152,12 @@ class MultiCamera4RCLoss(nn.Module):
             raise ValueError("intrinsics weights must be finite and nonnegative")
         self.intrinsics_loss_mode = intrinsics_loss_mode
         self.focal_loss_weight, self.principal_loss_weight = focal_loss_weight, principal_loss_weight
+        if (isinstance(focal_ratio_loss_weight, bool) or not math.isfinite(focal_ratio_loss_weight)
+                or focal_ratio_loss_weight < 0):
+            raise ValueError('focal ratio weight must be finite and nonnegative')
+        if focal_ratio_loss_weight and intrinsics_loss_mode != 'log_focal':
+            raise ValueError('focal ratio supervision requires log_focal intrinsics')
+        self.focal_ratio_loss_weight = float(focal_ratio_loss_weight)
         if absolute_intrinsics_gradient not in ("full", "isolated"):
             raise ValueError("absolute_intrinsics_gradient must be full or isolated")
         self.absolute_intrinsics_gradient = absolute_intrinsics_gradient
@@ -165,10 +174,17 @@ class MultiCamera4RCLoss(nn.Module):
         if query_pair_source_sampling is not None and not isinstance(query_pair_source_sampling, bool):
             raise ValueError('query_pair_source_sampling must be boolean or None')
         self.query_pair_weight = float(query_pair_weight)
+        if (isinstance(geometry_source_min_pixels, bool) or not isinstance(geometry_source_min_pixels, int)
+                or geometry_source_min_pixels < 0):
+            raise ValueError('geometry source pixel threshold must be a nonnegative integer')
+        self.geometry_source_min_pixels = geometry_source_min_pixels
         self.query_pair_source_sampling = (query_pair_weight > 0 if query_pair_source_sampling is None
                                            else query_pair_source_sampling)
         self.query_pair_options = QueryPairOptions(**dict(query_pair_options or {}))
         from .joint_geometry import JointGeometryOptions
+        from .reprojection import ReprojectionOptions
+        self.reprojection_options = (None if reprojection_options is None else
+                                     ReprojectionOptions(**dict(reprojection_options)))
         self.joint_geometry_options = (None if joint_geometry_options is None else
                                        JointGeometryOptions(**dict(joint_geometry_options)))
         from .depth_objectives import DepthObjectiveOptions
@@ -186,6 +202,12 @@ class MultiCamera4RCLoss(nn.Module):
                     depth_gradient_scales=list(self.depth_gradient_scales),
                     depth_gradient_confidence=self.depth_gradient_confidence,
                     camera_loss_mode=self.camera_loss_mode,
+                    **(dict(focal_ratio_loss_weight=self.focal_ratio_loss_weight)
+                       if self.focal_ratio_loss_weight else {}),
+                    **(dict(geometry_source_min_pixels=self.geometry_source_min_pixels)
+                       if self.geometry_source_min_pixels else {}),
+                    **(dict(reprojection_options=asdict(self.reprojection_options))
+                       if self.reprojection_options is not None else {}),
                     **(dict(joint_geometry_options=asdict(self.joint_geometry_options))
                        if self.joint_geometry_options is not None else {}),
                     **(dict(depth_objective_options=asdict(self.depth_objective_options))
@@ -703,10 +725,15 @@ class MultiCamera4RCLoss(nn.Module):
                     if (focal <= 0).any() or (gt_focal <= 0).any():
                         raise ValueError("log focal supervision requires positive intrinsics")
                     terms["camera_log_focal"] = (focal.log()-gt_focal.log()).abs().mean()
+                    if self.focal_ratio_loss_weight:
+                        log_error = focal.log()-gt_focal.log()
+                        terms['camera_log_focal_ratio'] = (log_error[..., 0]-log_error[..., 1]).abs().mean()
                     h, w = target_size if target_size is not None else pred["depth"].shape[-2:]
                     terms["camera_principal_normalized"] = ((p[..., :2, 2]-t[..., :2, 2])/p.new_tensor([w,h])).abs().mean()
                     intrinsic_extra = (self.focal_loss_weight*terms["camera_log_focal"]
                                        +self.principal_loss_weight*terms["camera_principal_normalized"])
+                    if self.focal_ratio_loss_weight:
+                        intrinsic_extra = intrinsic_extra + self.focal_ratio_loss_weight*terms['camera_log_focal_ratio']
                     # Preserve the original extrinsics coefficient exactly:
                     # with K+c2w present the old mean contributes 0.5 L_c2w.
                     camera_terms.append(intrinsic_extra*0)
@@ -783,6 +810,12 @@ class MultiCamera4RCLoss(nn.Module):
             supervised = supervised or joint_total.requires_grad
 
         sparse_terms = {}
+        if self.reprojection_options is not None:
+            from .reprojection import reprojection_losses
+            reprojection_terms, reprojection_total = reprojection_losses(pred, target, self.reprojection_options)
+            terms.update(reprojection_terms)
+            total = total + reprojection_total
+            supervised = supervised or reprojection_total.requires_grad
         if "sparse_queries" in target:
             sparse_terms, sparse_total, sparse_confidence, sparse_supervised = self._sparse_losses(pred, target, zero)
             total = total + sparse_total

@@ -289,8 +289,6 @@ class EgoExo4DAdapter(BaseAdapter):
         self.cache_dir = Path(cache_dir)
         self.depth_cache_dir = self.cache_dir / "depth_v1"
         self.points_cache_dir = self.cache_dir / "points_v1"
-        self.depth_cache_dir.mkdir(parents=True, exist_ok=True)
-        self.points_cache_dir.mkdir(parents=True, exist_ok=True)
         if frame_disk_cache is None:
             raw_frame_disk_cache = os.getenv("D4RT_EGOEXO4D_FRAME_DISK_CACHE", "0")
             frame_disk_cache = raw_frame_disk_cache.strip().lower() in {
