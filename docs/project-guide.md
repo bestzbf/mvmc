@@ -1,14 +1,14 @@
 # mvmc 代码导航
 
-[项目首页](../README.md) · [公开推理](inference.md) · [研究训练](../research/training/source/README.md) · [研究权重推理](research-inference.md) · [基准评估](../research/evaluation/README.md)
+[项目首页](../README.md) · [轻量推理](inference.md) · [研究训练](../research/training/source/README.md) · [研究权重推理](research-inference.md) · [基准评估](../research/evaluation/README.md)
 
 先按权重选择代码，再选择命令。公开推理、研究训练和冻结评估共享项目设计，但有各自的模型实现和运行依赖。
 
 | 要做什么 | 入口 | 权重或其他输入 |
 |---|---|---|
 | 用魔搭默认 195500 giant 权重推理 | [默认权重的下载和推理](default-checkpoint.md) | 权重与配套运行时，含 TrajectoryRefiner |
-| 用兼容的 60k giant 权重运行自己的图像 | `mvmc infer` / [公开推理指南](inference.md) | 60k 权重 + RGB manifest；公开模型不含 TrajectoryRefiner |
-| 浏览单目、多视角或多相机视频的输出 | `mvmc visualize` / [可视化指南](visualization.md) | 公开推理兼容权重，或用 `--demo` 验证流程 |
+| 用不含 refiner 的 checkpoint 推理 | `mvmc infer` / [轻量推理指南](inference.md) | 兼容权重 + RGB manifest |
+| 浏览单目、多视角或多相机视频的输出 | `mvmc visualize` / [可视化指南](visualization.md) | 不含 refiner 的兼容权重，或用 `--demo` 验证流程 |
 | 新训练、续训或调试 GT | `python -m multicamera4rc launch` / [训练入口](../research/training/source/README.md) | 数据配置、损失配置 + 初始化权重或完整断点 |
 | 用研究训练权重推理 | `python -m multicamera4rc prepare-inference` → `infer` → `export` / [研究推理指南](research-inference.md) | 与训练 checkpoint 匹配的源码和配置；保留 refiner |
 | 复算正式指标 | [冻结模型](../research/frozen_134400/README.md) + [评估队列](../research/evaluation/README.md) | 绑定的模型源码、checkpoint、固定输入清单、评分协议和外部方法环境 |

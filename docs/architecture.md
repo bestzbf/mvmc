@@ -2,7 +2,7 @@
 
 [返回 README](../README.md) · 实现：[model.py](../multid4rt/model.py)、[config.py](../multid4rt/config.py)
 
-本文描述顶层 `multid4rt/` 推理实现（也由 `mvmc` 接口导出）。它支持两种 decoder memory：新建配置默认 `all_observations`；公开 60k 权重和当前研究训练使用 `target_time`。加载 checkpoint 时以保存的配置为准，不能用构造器默认值推断已训练模型的结构。顶层推理实现不含训练版本的 `TrajectoryRefiner`；训练结构及版本边界见[训练模型说明](training-architecture.md)。
+本文描述顶层 `multid4rt/` 推理实现（也由 `mvmc` 接口导出）。它支持两种 decoder memory：新建配置默认 `all_observations`；魔搭默认 195500 权重和已核验的研究训练配方使用 `target_time`。加载 checkpoint 时以保存的配置为准，不能用构造器默认值推断已训练模型的结构。顶层推理实现不含训练版本的 `TrajectoryRefiner`；训练结构及版本边界见[训练模型说明](training-architecture.md)。
 
 ## 1. 输入约定
 
@@ -126,7 +126,7 @@ P          [B,S,H,W,3]
 
 源码：[metadata.py](../multid4rt/metadata.py)、[motion.py](../multid4rt/motion.py)。
 
-### `target_time`：公开 60k 权重与已核验的研究训练配方
+### `target_time`：魔搭默认权重与已核验的研究训练配方
 
 对每个目标时刻 t，直接 K/V 取该时刻**所有有效相机**的 global patch；缺失相机被 mask，不只取源相机，也不直接拼接其他时刻的 patch：
 

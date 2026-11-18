@@ -2,7 +2,7 @@
 
 [项目导航](project-guide.md) · [魔搭模型卡](https://modelscope.cn/models/binfengzou/MultiD4RT) · [研究推理准备](research-inference.md)
 
-默认文件由魔搭仓库的 `configuration.json` 指定。**195500 含 TrajectoryRefiner，使用随权重发布的研究推理代码。** 顶层 `mvmc infer` 和 `MVMC.from_checkpoint()` 继续对应历史 60k 权重。
+默认文件由魔搭仓库的 `configuration.json` 指定。**195500 含 TrajectoryRefiner，使用随权重发布的研究推理代码。** 顶层轻量 API 不支持加载本权重。
 
 ## 下载并准备样例
 

@@ -6,7 +6,7 @@ mvmc（原 MultiD4RT）从同步多相机 RGB 序列重建随时间变化的三�
 
 项目已更名为 `mvmc`，Python 使用 `from mvmc import MVMC, MVMCConfig`，命令行为 `mvmc`。原 `multid4rt` 包、类名和命令继续兼容；已有权重文件与魔搭仓库仍使用原名称。
 
-**先看 [项目代码导航](docs/project-guide.md)**：按任务选择 [公开推理](docs/inference.md)、[研究训练](research/training/source/README.md)、[研究权重推理](docs/research-inference.md) 或 [基准评估](research/evaluation/README.md)。
+**先看 [项目代码导航](docs/project-guide.md)**：按任务选择 [默认推理](docs/default-checkpoint.md)、[研究训练](research/training/source/README.md)、[研究权重推理](docs/research-inference.md) 或 [基准评估](research/evaluation/README.md)。
 
 ## 模型版本与 K/V 范围
 
@@ -14,7 +14,6 @@ mvmc（原 MultiD4RT）从同步多相机 RGB 序列重建随时间变化的三�
 | --- | --- | --- |
 | 新建 `MVMCConfig()` | 默认 `all_observations`（全部有效输入观察） | 无 |
 | 魔搭默认 195500 giant 权重 | `target_time`（目标时刻全部有效相机） | 有，使用配套研究推理代码 |
-| 旧版 60k giant 权重 | `target_time`（目标时刻全部有效相机） | 无 |
 | 已核验的研究训练配方 | `target_time`（目标时刻全部有效相机） | 有，见研究源码 |
 
 encoder 在两种模式中都融合全部有效相机与时刻；这不代表 decoder 直接使用全部帧 K/V。恢复权重应使用保存的配置，不能凭新建配置的默认值判断训练设置。顶层推理包不支持带 refiner 的研究 checkpoint。完整区别、refiner 输入输出和源码核验见[训练模型说明](docs/training-architecture.md)。
@@ -42,53 +41,6 @@ PYTHONPATH=weights/mvmc-default/runtime python -m multicamera4rc.infer \
 ```
 
 下载脚本会读取[魔搭默认配置](https://modelscope.cn/models/binfengzou/MultiD4RT)、校验约 6.11 GB 的权重和配套推理源码，并生成一组可以直接跑的双相机样例。没有 CUDA 时把最后一行的设备参数换成 `--device cpu`，去掉 `--amp --amp-dtype bfloat16`。输出为 `outputs/default_demo/inference.json` 和 `outputs/default_demo/clip_000000.pt`。换成自己的 RGB 清单见[默认权重推理指南](docs/default-checkpoint.md)。
-
-### 60k 兼容权重
-
-以下命令使用旧版 **60k giant** 权重和顶层 `mvmc` 包，原下载路径仍可用。
-
-```bash
-python -m pip install -e '.[weights,viz]'
-```
-
-| 项目 | 内容 |
-|---|---|
-| 权重文件 | `multid4rt_giant_step60000.pt` |
-| 模型 | giant：patch14、1536 维、40 层 encoder |
-| 格式 / 大小 | 原始 FP32，6.11 GB；包含模型参数与配置 |
-| 兼容版本 | MultiD4RT v0.5.1 |
-| SHA256 | `1161d6bfaa0d277b22108c5b9e803b9e1c36e289f98799e35bd59a9b821197e0` |
-
-下载到项目的 `weights/` 目录：
-
-```bash
-python -m pip install 'modelscope>=1.35.1'
-```
-
-```python
-from modelscope.hub.file_download import model_file_download
-
-checkpoint = model_file_download(
-    'binfengzou/MultiD4RT',
-    file_path='multid4rt_giant_step60000.pt',
-    local_dir='weights',
-)
-print(checkpoint)
-```
-
-加载真实权重或直接运行可视化：
-
-```python
-from mvmc import MVMC
-
-model = MVMC.from_checkpoint('weights/multid4rt_giant_step60000.pt').eval().cuda()
-```
-
-```bash
-mvmc visualize --input camera_sequences/ --mode multicamera --checkpoint weights/multid4rt_giant_step60000.pt --output outputs/multicamera --device cuda --amp --amp-dtype bfloat16
-```
-
-`from_checkpoint()` 自动恢复权重保存的配置。该 60k 权重使用 `decoder_memory=target_time`、`time_origin=clip_start`：encoder 融合全部输入观察，运动 decoder 的 KV 来自目标时刻的有效相机。复现该权重的输出时保持这些设置。魔搭仓库附模型配置、校验值和导出验证记录；1,106 个状态张量与原始 checkpoint 完全一致，并通过真实双相机 RGB 的 CUDA 推理检查。
 
 ## 模型输入与输出
 
@@ -125,7 +77,9 @@ time_idx     0   5  10   0   5  10
 
 giant 配置使用 patch14、1536 维 encoder 和 40 层；完整模块与中间张量维度见 [模型结构](docs/architecture.md)。
 
-## Python 接口（60k 兼容包）
+## 轻量 Python 接口
+
+如需使用没有 refiner 的 checkpoint，安装顶层包：`python -m pip install -e '.[weights,viz]'`。魔搭默认 195500 请用上面的快速开始。
 
 ```python
 import torch
@@ -150,7 +104,7 @@ model = MVMC.from_checkpoint('model.pt').eval()
 
 `model.encode()` 的结果可供同一输入下多个源图/目标时间请求复用。`mvmc.tasks.scene_flow` 提取同一物理点的世界位移，`sample_tracks` 查询源图像素的三维轨迹。
 
-## 命令行推理（60k 兼容包）
+## 轻量命令行推理
 
 准备图片与相机/时间标签组成的 JSON 或 JSONL manifest，然后运行：
 
@@ -166,7 +120,7 @@ mvmc demo --output outputs/demo
 
 CPU demo 用随机 tiny 权重验证输入输出流程。
 
-## 推理可视化（60k 兼容包）
+## 轻量推理可视化
 
 同一个命令支持三种输入：
 

@@ -2,7 +2,7 @@
 
 Multi-camera 4D Reconstruction and Tracking.
 
-本目录是兼容公开 60k 权重的推理实现，保留 `multid4rt` 导入名，也由 `mvmc` 导出。它不含研究训练版本的 `TrajectoryRefiner`；两种 decoder K/V 模式、实际权重配置和加载边界见[训练模型说明](../docs/training-architecture.md)。
+本目录是适用于不含 refiner 的兼容权重的轻量推理实现，保留 `multid4rt` 导入名，也由 `mvmc` 导出。它不含研究训练版本的 `TrajectoryRefiner`；两种 decoder K/V 模式、实际权重配置和加载边界见[训练模型说明](../docs/training-architecture.md)。
 
 [项目入口](../README.md) · [模型结构](../docs/architecture.md) · [推理说明](../docs/inference.md) · [可视化](../docs/visualization.md)
 

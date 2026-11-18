@@ -1,6 +1,6 @@
 # 用研究 checkpoint 推理
 
-[项目导航](project-guide.md) · [研究训练](../research/training/source/README.md) · [公开 60k 推理](inference.md)
+[项目导航](project-guide.md) · [研究训练](../research/training/source/README.md) · [魔搭默认权重](default-checkpoint.md)
 
 研究训练 checkpoint 可能含 `TrajectoryRefiner`。用与其匹配的 `multicamera4rc` 源码，在独立环境启动。需要复跑冻结正式评估时按[对应快照](../research/frozen_134400/README.md)执行。
 

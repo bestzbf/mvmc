@@ -1,8 +1,8 @@
-# mvmc 推理
+# mvmc 轻量推理接口
 
 [项目导航](project-guide.md) · [研究 checkpoint 推理](research-inference.md) · [返回 README](../README.md)
 
-本页使用顶层公开 `mvmc` 包和兼容的 60k 权重。魔搭默认 **195500** 含 `TrajectoryRefiner`，请使用[默认权重的配套运行时](default-checkpoint.md)。
+本页说明顶层 `mvmc` 包，适用于不含 refiner 的兼容权重。魔搭默认 **195500** 含 `TrajectoryRefiner`，请使用[默认权重的配套运行时](default-checkpoint.md)。
 
 ## 图像与 manifest
 
@@ -35,7 +35,7 @@ mvmc infer --manifest observations.json --checkpoint model.pt --output outputs/p
 
 `MVMC.from_checkpoint()`（兼容名 `MultiD4RT.from_checkpoint()`）恢复顶层推理架构的模型配置和权重，兼容原 MultiD4RT 与较早、不含 refiner 的原生 checkpoint。**它不支持当前带 `TrajectoryRefiner` 的研究训练 checkpoint**；这类权重须使用[对应训练源码](../research/training/README.md)或[冻结评估源码](../research/frozen_134400/README.md)，不能删除配置字段或忽略多余权重来冒充完整加载。
 
-公开 60k 权重使用 `target_time`：每个目标时刻的直接 K/V 来自该时刻所有有效相机，encoder 仍融合全部输入观察。`all_observations` 是新建配置的默认值和可选模式，不是这份权重的训练设置。`--decoder-memory`、`--time-origin` 是显式覆盖选项，会改变计算语义；覆盖后必须重新验证效果。
+K/V 范围以 checkpoint 保存的配置为准。`target_time` 的直接 K/V 来自目标时刻的所有有效相机；两种模式的 encoder 都融合全部输入观察。`all_observations` 是新建配置的默认值。`--decoder-memory`、`--time-origin` 是显式覆盖选项，会改变计算语义；覆盖后必须重新验证效果。
 
 ```python
 from mvmc import MVMC

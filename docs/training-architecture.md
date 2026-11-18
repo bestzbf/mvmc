@@ -8,7 +8,6 @@
 | --- | --- | --- | --- |
 | 顶层新建 `MVMCConfig()` / `MultiD4RTConfig()` | 默认 `all_observations`，可显式选 `target_time` | 无 | `mvmc` / `multid4rt` |
 | 魔搭默认 195500 giant 权重 | `target_time`，`time_origin=clip_start` | 有 | [随权重发布的研究推理运行时](default-checkpoint.md) |
-| 旧版 60k giant 权重 | `target_time`，`time_origin=clip_start` | 无 | 顶层 `from_checkpoint()` |
 | 已核验的研究训练配方 | 启动参数明确为 `target_time` | 有，具体尺寸与开关以 checkpoint 配置为准 | `research/training/source/multicamera4rc` |
 | step134400 冻结评估 | 以该冻结 checkpoint 配置为准 | 使用冻结源码实现 | `research/frozen_134400/model_source` |
 
