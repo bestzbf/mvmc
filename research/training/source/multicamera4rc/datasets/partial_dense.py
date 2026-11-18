@@ -1,7 +1,8 @@
 """Dense partial-task labels. Missing motion is unknown, never zero motion.
 
 Replica endpoints use native flow and depth; VKITTI endpoints use its native
-camera-coordinate scene flow, including endpoints hidden in the target view.
+camera-coordinate scene flow, converted to canonical world/reference deltas,
+including endpoints hidden in the target view.
 Neither path rasterizes a particle/mesh track pool.
 """
 from __future__ import annotations
@@ -170,16 +171,17 @@ def attach_partial_dense_recipe(clip, sample, *, kind, image_mode, adapter=None)
     times = torch.full((S, 2), -1, dtype=torch.long)
     if kind not in ("geometry", "geometry_tracks", "pointodyssey_tracks"):
         pairs = replica_pairs(clip) if kind == "replica_flow" else vkitti_pairs(clip, adapter)
-        E = np.asarray(clip.extrinsics[0], np.float64)
-        if clip.metadata.get("extrinsics_convention", "w2c") == "c2w":
-            E = np.linalg.inv(E)
+        # ``replica_pairs`` and ``vkitti_pairs`` return deltas in the
+        # canonical world/reference gauge.  ``materialize_partial_dense_targets``
+        # adds them to the world-space base points below, so applying the first
+        # camera rotation here would rotate a world vector a second time.
         for s, row in enumerate(pairs):
             for d, pair in enumerate(row):
                 if pair is None:
                     continue
                 t, dv, mask = pair
                 content = _content_size(*mask.shape, (H, W), image_mode)
-                dv = np.where(mask[..., None], dv @ E[:3, :3].T, 0).astype(np.float32)
+                dv = np.where(mask[..., None], dv, 0).astype(np.float32)
                 xyz = torch.from_numpy(dv).permute(2, 0, 1)[None]
                 m = torch.from_numpy(mask.copy())[None, None].float()
                 if tuple(mask.shape) != content:

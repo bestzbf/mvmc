@@ -29,6 +29,14 @@
   ],
   "depth_gradient_confidence": true,
   "camera_loss_mode": "matrix",
+  "focal_ratio_loss_weight": 0.5,
+  "geometry_source_min_pixels": 64,
+  "reprojection_options": {
+    "weight": 0.05,
+    "huber_delta": 0.01,
+    "max_points_per_view": 2048,
+    "minimum_depth_ratio": 0.05
+  },
   "joint_geometry_options": {
     "source_anchor_weight": 0.1,
     "relative_pose_weight": 0.1,
@@ -39,8 +47,27 @@
     "depth_baseline_scale_weight": 0.1,
     "baseline_min_normalized": 0.001
   },
+  "depth_objective_options": {
+    "relative_weight": 0.05,
+    "log_bias_weight": 0.02,
+    "temporal_scale_weight": 0.01,
+    "relative_floor_fraction": 0.01,
+    "robust_beta": 0.1,
+    "temporal_single_camera_only": true,
+    "diagnostics": true,
+    "near_ratio": 0.5,
+    "far_ratio": 2.0,
+    "confidence_saturation": 10000.0,
+    "prediction_upper_ratio": 100.0
+  },
+  "auxiliary_motion_options": {
+    "joint_weight": 0.1,
+    "pseudo_weight": 0.02,
+    "huber_delta": 0.01,
+    "pseudo_uncertainty_scale": 1.0
+  },
   "cross_camera_3d_weight": 0.1,
-  "query_pair_weight": 0.01,
+  "query_pair_weight": 0.1,
   "query_pair_source_sampling": true,
   "query_pair_options": {
     "depth_absolute_tolerance_m": 0.01,
@@ -52,13 +79,8 @@
     "dynamic_temporal_fraction": 0.3
   },
   "trajectory_motion_gradient_scale": 0.25,
+  "pseudo_trajectory_base_gradient_scale": 0.0,
   "intrinsics_loss_mode": "log_focal",
   "focal_loss_weight": 0.5,
-  "principal_loss_weight": 0.5,
-  "depth_objective_options": {
-    "relative_weight": 0.05,
-    "log_bias_weight": 0.02,
-    "temporal_scale_weight": 0.01,
-    "diagnostics": true
-  }
+  "principal_loss_weight": 0.5
 }
