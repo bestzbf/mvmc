@@ -228,6 +228,16 @@ def crop_sample(sample, boxes):
         target['dense_syn4d_content_hw']=torch.tensor([[h,w]]*s,dtype=torch.long)
         target['dense_motion_source_valid']=(target['dense_syn4d_face_map']>=0).flatten(1).any(1)
 
+    for prefix in ('joint_motion','pseudo_motion'):
+        if prefix+'_queries' not in target:continue
+        queries=target[prefix+'_queries'].clone();source=queries[:,0].long()
+        queries[:,1]-=boxes[source,1].to(queries)
+        queries[:,2]-=boxes[source,0].to(queries)
+        retained=(queries[:,1]>=0)&(queries[:,1]<=w-1)&(queries[:,2]>=0)&(queries[:,2]<=h-1)
+        target[prefix+'_queries']=queries
+        target[prefix+'_query_valid']=target[prefix+'_query_valid']&retained
+        target[prefix+'_valid']=target[prefix+'_valid']&retained[:,None]
+
     if 'sparse_queries' in target:
         queries=target['sparse_queries'].clone()
         source=queries[:,0].long()

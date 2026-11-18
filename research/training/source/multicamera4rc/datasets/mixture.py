@@ -18,9 +18,9 @@ from torch.utils.data import Dataset
 from .registry import create_adapter
 from .adapters.base import InvalidClipError
 
-_VARIABLE_CAMERAS = ("kubric_multicam", "mv_kubric", "panoptic", "panoptic_kinoptic", "egoexo4d_calibrated", "syn4d")
+_VARIABLE_CAMERAS = ("kubric_multicam", "mv_kubric", "panoptic", "panoptic_kinoptic", "kinoptic_human", "egoexo4d_calibrated", "syn4d")
 _NATIVE_MULTICAMERA = (*_VARIABLE_CAMERAS, "egoexo4d")
-_CAMERA_KINDS = ("camera_only", "camera_joint_motion")
+_CAMERA_KINDS = ("camera_only", "camera_joint_motion", "camera_tracks")
 
 class _InvalidDenseClip(RuntimeError):
     """A clip rejected by an explicit supervision validity check."""
@@ -142,15 +142,27 @@ class MultiCameraAdapterDataset(Dataset):
                 raise ValueError(f"unknown source fields: {sorted(set(source)-allowed)}")
             name = str(source["adapter"]).lower()
             partial = {"mugen_h5", "pointodyssey_geometry", "pointodyssey_tracks", "dynamic_replica", "vkitti2", "vkitti2_stereo", "tartanair_v1_zip", "tartanair_v1_stereo", "tartanair_v2_zip", "hypersim_zip", "panoptic_kinoptic"}
-            if supervision == "dense" and name not in partial | {"kubric_multicam", "mv_kubric", "panoptic", "egoexo4d_calibrated", "syn4d"}:
+            if supervision == "dense" and name not in partial | {"kubric_multicam", "mv_kubric", "panoptic", "egoexo4d_calibrated", "stereo4d", "kinoptic_human", "syn4d"}:
                 raise ValueError(f"{name}: dense GT requires native per-pixel labels; sparse tracks cannot be densified")
             native_kind = {"dynamic_replica": "replica_flow", "vkitti2": "vkitti_scene_flow", "vkitti2_stereo": "vkitti_scene_flow", "pointodyssey_tracks": "pointodyssey_tracks", "kubric_multicam": "kubric", "mv_kubric": "kubric", "panoptic": "camera_only", "syn4d": "syn4d"}.get(name, "geometry")
             if name == "egoexo4d_calibrated":
                 native_kind = "camera_only"
+            if name == "kinoptic_human":
+                native_kind = "kinoptic_human"
             kind = source.get("dense_kind", native_kind)
-            if supervision == "dense" and kind not in ("kubric", "geometry", "geometry_tracks", "replica_flow", "vkitti_scene_flow", "pointodyssey_tracks", "syn4d", *_CAMERA_KINDS):
+            if supervision == "dense" and kind not in ("kubric", "geometry", "geometry_tracks", "replica_flow", "vkitti_scene_flow", "pointodyssey_tracks", "syn4d", "kinoptic_human", *_CAMERA_KINDS):
                 raise ValueError(f"unsupported dense_kind {kind}")
-            if kind == "geometry_tracks":
+            if name == "stereo4d":
+                if supervision != "dense" or kind != "camera_tracks":
+                    raise ValueError("Stereo4D requires camera_tracks supervision")
+            elif name == "stereo4d":
+                if cameras not in (1, 2):raise ValueError("Stereo4D needs one or two cameras")
+                if "stereo" in options and options["stereo"] != (cameras == 2):raise ValueError("Stereo4D stereo/layout mismatch")
+                options["stereo"] = cameras == 2
+            elif name == "kinoptic_human":
+                if supervision != "dense" or kind != "kinoptic_human":
+                    raise ValueError("Kinoptic human packs require separated kinoptic_human supervision")
+            elif kind == "geometry_tracks":
                 if supervision != "dense" or name != "mugen_h5":
                     raise ValueError("geometry_tracks requires dense supervision and a verified mugen_h5 pack")
             elif name == "egoexo4d_calibrated":
@@ -235,6 +247,13 @@ class MultiCameraAdapterDataset(Dataset):
                     if key in options and options[key] != value:
                         raise ValueError(f"{name}: {key} must be {value!r} for the configured layout")
                     options[key] = value
+            elif name == "stereo4d":
+                if cameras not in (1, 2):raise ValueError("Stereo4D needs one or two cameras")
+                if "stereo" in options and options["stereo"] != (cameras == 2):raise ValueError("Stereo4D stereo/layout mismatch")
+                options["stereo"] = cameras == 2
+            elif name == "kinoptic_human":
+                if cameras != 2 or minimum_cameras != 2 or source_times != 2 or minimum_layout_times != 2 or strides != (1,):
+                    raise ValueError("Kinoptic human packs require fixed C2T2 and strides=[1]")
             elif name == "egoexo4d_calibrated":
                 fixed = dict(min_cameras=minimum_cameras, max_cameras=cameras,
                              joint_motion=(kind == "camera_joint_motion"))
@@ -518,7 +537,7 @@ class MultiCameraAdapterDataset(Dataset):
             frame_indices, static_info = select_static_views(source["adapter"], sequence, admitted,
                 times[0], source["camera_choices"], rng)
             requested_cameras = len(frame_indices)
-        elif source["name"] == "egoexo4d_calibrated":
+        elif source["name"] in ("egoexo4d_calibrated", "stereo4d"):
             frame_indices = times
         else:
             frame_indices = times*requested_cameras
@@ -539,9 +558,9 @@ class MultiCameraAdapterDataset(Dataset):
             kind = source["dense_kind"]
             sample = prepare_clip(clip, image_size=self.image_size,
                                   num_queries=self.num_queries, seed=sample_seed,
-                                  include_visibility=self.include_visibility and kind != "camera_joint_motion",
+                                  include_visibility=self.include_visibility and kind not in ("camera_joint_motion", "camera_tracks"),
                                   image_mode=self.image_mode,
-                                  all_track_queries=self.supervision == "dense" and kind in ("pointodyssey_tracks", "geometry_tracks", "camera_joint_motion"))
+                                  all_track_queries=self.supervision == "dense" and kind in ("pointodyssey_tracks", "geometry_tracks", "camera_joint_motion", "camera_tracks"))
             if (self.supervision == "dense" and kind not in _CAMERA_KINDS
                     and not sample["targets"]["depth_valid"].any()):
                 # Replica stores a clip-level audit mapping; geometry adapters
@@ -563,9 +582,15 @@ class MultiCameraAdapterDataset(Dataset):
                 elif source["dense_kind"] == "camera_only":
                     from .camera_only import attach_camera_only_recipe
                     attach_camera_only_recipe(clip, sample)
+                elif source["dense_kind"] == "camera_tracks":
+                    from .camera_only import attach_camera_tracks_recipe
+                    attach_camera_tracks_recipe(clip, sample)
                 elif source["dense_kind"] == "camera_joint_motion":
                     from .camera_only import attach_camera_joint_motion_recipe
                     attach_camera_joint_motion_recipe(clip, sample)
+                elif source["dense_kind"] == "kinoptic_human":
+                    from .kinoptic_human import attach_kinoptic_human_recipe
+                    attach_kinoptic_human_recipe(clip, sample, image_mode=self.image_mode)
                 else:
                     from .partial_dense import attach_partial_dense_recipe
                     attach_partial_dense_recipe(clip, sample, kind=source["dense_kind"],
@@ -658,6 +683,8 @@ def collate_adapter_samples(batch):
         output["static_multiview"] = [x.get("static_multiview") for x in batch]
     if any("native_tracks" in x for x in batch):
         output["native_tracks"] = [x.get("native_tracks") for x in batch]
+    if any("kinoptic_human" in x for x in batch):
+        output["kinoptic_human"] = [x.get("kinoptic_human") for x in batch]
     if any("syn4d" in x for x in batch):
         output["syn4d"] = [x.get("syn4d") for x in batch]
     for key in ("images", "camera_id", "time_idx", "observation_valid"):
@@ -697,6 +724,9 @@ def collate_adapter_samples(batch):
             elif key.startswith("sparse_"):
                 fill = -1 if key == "sparse_track_id" else 0
                 value = _pad_axis(value, max(x["targets"]["sparse_queries"].shape[0] for x in batch), 0, fill)
+            elif key.startswith(("joint_motion_", "pseudo_motion_")):
+                prefix = 'joint_motion' if key.startswith('joint_motion_') else 'pseudo_motion'
+                value = _pad_axis(value, max(x['targets'][prefix+'_queries'].shape[0] for x in batch), 0)
             elif key.startswith("dense_object_"):
                 objects = max(x["targets"]["dense_object_valid"].shape[0] for x in batch)
                 axis = 1 if key in ("dense_object_R", "dense_object_t") else 0

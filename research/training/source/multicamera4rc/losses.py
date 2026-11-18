@@ -106,7 +106,9 @@ class MultiCamera4RCLoss(nn.Module):
                  joint_geometry_options: Mapping | None = None,
                  reprojection_options: Mapping | None = None,
                  depth_objective_options: Mapping | None = None,
-                 weights: Mapping[str, float] | None = None):
+                 auxiliary_motion_options: Mapping | None = None,
+                 weights: Mapping[str, float] | None = None, *,
+                 pseudo_trajectory_base_gradient_scale: float = 1.0):
         super().__init__()
         self.weights = {"depth": depth_weight, "camera": camera_weight, "ray": ray_weight,
                         "trajectory": trajectory_weight, "displacement": displacement_weight,
@@ -165,6 +167,11 @@ class MultiCamera4RCLoss(nn.Module):
                 or not 0 <= trajectory_motion_gradient_scale <= 1):
             raise ValueError('trajectory_motion_gradient_scale must be in [0,1]')
         self.trajectory_motion_gradient_scale = float(trajectory_motion_gradient_scale)
+        if (isinstance(pseudo_trajectory_base_gradient_scale, bool)
+                or not math.isfinite(pseudo_trajectory_base_gradient_scale)
+                or not 0 <= pseudo_trajectory_base_gradient_scale <= 1):
+            raise ValueError('pseudo_trajectory_base_gradient_scale must be in [0,1]')
+        self.pseudo_trajectory_base_gradient_scale = float(pseudo_trajectory_base_gradient_scale)
         if not math.isfinite(cross_camera_3d_weight) or cross_camera_3d_weight < 0:
             raise ValueError('cross_camera_3d_weight must be finite and nonnegative')
         self.cross_camera_3d_weight = float(cross_camera_3d_weight)
@@ -190,6 +197,9 @@ class MultiCamera4RCLoss(nn.Module):
         from .depth_objectives import DepthObjectiveOptions
         self.depth_objective_options = (None if depth_objective_options is None else
                                         DepthObjectiveOptions(**dict(depth_objective_options)))
+        from .auxiliary_motion import AuxiliaryMotionOptions
+        self.auxiliary_motion_options = (None if auxiliary_motion_options is None else
+                                         AuxiliaryMotionOptions(**dict(auxiliary_motion_options)))
 
     def to_config(self):
         return dict(weights=dict(self.weights), confidence_alpha=self.confidence_alpha,
@@ -212,6 +222,8 @@ class MultiCamera4RCLoss(nn.Module):
                        if self.joint_geometry_options is not None else {}),
                     **(dict(depth_objective_options=asdict(self.depth_objective_options))
                        if self.depth_objective_options is not None else {}),
+                    **(dict(auxiliary_motion_options=asdict(self.auxiliary_motion_options))
+                       if self.auxiliary_motion_options is not None else {}),
                     **(dict(cross_camera_3d_weight=self.cross_camera_3d_weight)
                        if self.cross_camera_3d_weight else {}),
                     **(dict(query_pair_weight=self.query_pair_weight,
@@ -222,6 +234,8 @@ class MultiCamera4RCLoss(nn.Module):
                        if self.absolute_intrinsics_gradient != "full" else {}),
                     **(dict(trajectory_motion_gradient_scale=self.trajectory_motion_gradient_scale)
                        if self.trajectory_motion_gradient_scale != 1 else {}),
+                    **(dict(pseudo_trajectory_base_gradient_scale=self.pseudo_trajectory_base_gradient_scale)
+                       if self.pseudo_trajectory_base_gradient_scale != 1 else {}),
                     **(dict(intrinsics_loss_mode=self.intrinsics_loss_mode,
                             focal_loss_weight=self.focal_loss_weight,
                             principal_loss_weight=self.principal_loss_weight)
@@ -426,13 +440,17 @@ class MultiCamera4RCLoss(nn.Module):
             key = f"sparse_{name}"
             truth = target[key].to(zero.device)
             if name == "visibility":
+                valid = _valid_mask(truth, target.get("sparse_visibility_valid"))
+                valid = valid & query_valid[..., None, None]
+                # Sources without visibility annotations intentionally skip the
+                # visibility head. Unknown labels must not require its outputs.
+                if not valid.any():
+                    continue
                 if "visibility_logits" not in sampled or "projection_valid" not in sampled:
                     raise KeyError("sparse visibility needs sampled logits and projection_valid")
                 logits = sampled["visibility_logits"]
                 if truth.ndim != 4 or logits.shape != truth.shape:
                     raise ValueError("sparse_visibility must match [B,N,T,C] sampled logits")
-                valid = _valid_mask(truth, target.get("sparse_visibility_valid"))
-                valid = valid & query_valid[..., None, None]
                 if self.visibility_projection_mask:
                     valid &= sampled["projection_valid"].bool()
                 if not valid.any():
@@ -449,7 +467,21 @@ class MultiCamera4RCLoss(nn.Module):
                     raise KeyError(f"sparse {name} supervision needs sampled {name}")
                 estimate = sampled[name]
                 if name == 'trajectory':
-                    estimate = self._absolute_trajectory(estimate, sampled.get('displacement'))
+                    displacement = sampled.get('displacement')
+                    estimate = self._absolute_trajectory(estimate, displacement)
+                    is_pseudo = target.get('sparse_trajectory_is_pseudo')
+                    if (is_pseudo is not None and self.pseudo_trajectory_base_gradient_scale != 1
+                            and torch.is_grad_enabled()):
+                        if is_pseudo.dtype != torch.bool or is_pseudo.shape != estimate.shape[:1]:
+                            raise ValueError('sparse_trajectory_is_pseudo must be boolean [B]')
+                        if displacement is None or displacement.shape != estimate.shape:
+                            raise ValueError('pseudo trajectory gradient routing requires matching displacement')
+                        base = sampled[name] - displacement
+                        # An exact zero in the forward pass. Direct calibration,
+                        # dense geometry, and relative motion remain supervised.
+                        base_gradient = torch.where(is_pseudo.to(zero.device)[:, None, None, None],
+                                                    base - base.detach(), 0.)
+                        estimate = estimate + (self.pseudo_trajectory_base_gradient_scale - 1) * base_gradient
                 if truth.ndim != 4 or truth.shape[-1] != 3 or estimate.shape != truth.shape:
                     raise ValueError(f"{key} must match [B,N,T,3] sampled {name}")
                 supplied = target.get(f"{key}_valid", target.get("sparse_trajectory_valid"))
@@ -808,6 +840,13 @@ class MultiCamera4RCLoss(nn.Module):
             terms.update(joint_terms)
             total = total + joint_total
             supervised = supervised or joint_total.requires_grad
+
+        if self.auxiliary_motion_options is not None:
+            from .auxiliary_motion import auxiliary_motion_losses
+            aux_terms, aux_total, aux_supervised = auxiliary_motion_losses(pred, target, self.auxiliary_motion_options)
+            terms.update(aux_terms)
+            total = total + aux_total
+            supervised = supervised or aux_supervised
 
         sparse_terms = {}
         if self.reprojection_options is not None:

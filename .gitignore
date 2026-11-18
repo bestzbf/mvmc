@@ -18,6 +18,7 @@ dist/
 
 # Local datasets, checkpoints and generated output
 outputs/
+weights/
 tmp/
 .index_cache_*/
 *.log

@@ -38,9 +38,13 @@ class MultiCamera4RCConfig:
     refinement_temporal: bool = True
     refinement_matching: bool = True
     refinement_max_update: float = 0.05
+    # Explicit, checkpoint-persistent late-stage ablations. Legacy defaults agree.
+    ablation: str = "none"
 
     def __post_init__(self):
         import math
+        if self.ablation not in ('none', 'no_camera_relation', 'no_relative_time', 'no_refiner'):
+            raise ValueError('unknown ablation')
         if self.decoder_kv_cache_limit_mb <= 0:
             raise ValueError('decoder KV cache budget must be positive')
         if (self.refinement_dim < 0 or self.refinement_heads < 1

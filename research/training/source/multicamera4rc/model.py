@@ -65,6 +65,32 @@ class MultiCamera4RC(nn.Module):
             self.trajectory_refiner = TrajectoryRefiner(cfg)
         else:
             self.trajectory_refiner = None
+        self.enforce_ablation()
+        self.register_load_state_dict_post_hook(self._restore_ablation)
+
+    @property
+    def refinement_active(self):
+        return self.trajectory_refiner is not None and self.config.ablation != 'no_refiner'
+
+    def _restore_ablation(self, module, incompatible_keys):
+        self.enforce_ablation()
+
+    def enforce_ablation(self):
+        """Keep strict checkpoint keys; disabled weights cannot regrow in AdamW.
+
+        Retain the refiner module for checkpoint loading and internal time-grid
+        selection, but bypass its computation for the no-refiner experiment.
+        """
+        mode = self.config.ablation
+        with torch.no_grad():
+            for name, parameter in self.named_parameters():
+                zero = ((mode == 'no_camera_relation' and
+                         (name.endswith('camera_relation_weight') or name == 'motion_decoder.camera_bias'))
+                        or (mode == 'no_relative_time' and name.startswith('delta_projection.')))
+                if zero:
+                    parameter.zero_()
+                if zero or (mode == 'no_refiner' and name.startswith('trajectory_refiner.')):
+                    parameter.requires_grad_(False)
 
     def _time_origin(self, times, valid):
         if self.config.time_origin == "absolute":
@@ -163,7 +189,7 @@ class MultiCamera4RC(nn.Module):
                 b, internal_count, camera_count, l).reshape(b, internal_count, camera_count*l)
         origin = self._time_origin(scene.time_idx, scene.observation_valid)
         target_pe = self.target_projection(self.frame_embedding(meta.internal_times-origin))
-        if return_visibility or self.trajectory_refiner is not None:
+        if return_visibility or self.refinement_active:
             target_depth = gather_observations(scene.geometry["depth"], meta.memory_index)
             target_conf = gather_observations(scene.geometry["depth_conf"], meta.memory_index)
             target_K = gather_observations(scene.geometry["K"], meta.memory_index)
@@ -178,7 +204,7 @@ class MultiCamera4RC(nn.Module):
                         and kv_bytes <= self.config.decoder_kv_cache_limit_mb * 2**20)
         prepared_memories = ([self.motion_decoder.prepare_memory(memory, patch_grid) for memory in memories]
                              if use_kv_cache else [None] * len(memories))
-        if self.trajectory_refiner is not None:
+        if self.refinement_active:
             with torch.autocast(device_type=scene.camera_id.device.type, enabled=False):
                 prepared = self.trajectory_refiner.prepare(scene.features[-1][0], patch_grid)
                 target_prepared = gather_observations(prepared, meta.memory_index)
@@ -205,7 +231,7 @@ class MultiCamera4RC(nn.Module):
                 delta = raw-anchor[:, None]
                 xyz = base[:, None]+delta
                 refinement = None
-                if self.trajectory_refiner is not None:
+                if self.refinement_active:
                     refinement = self.trajectory_refiner(
                         xyz, motion["features"], source_feature, target_prepared,
                         target_depth, target_conf, target_K, target_c2w, meta.memory_valid,
@@ -253,7 +279,7 @@ class MultiCamera4RC(nn.Module):
             rendered = (checkpoint(render_source, *args, use_reentrant=False)
                         if self.config.gradient_checkpointing and torch.is_grad_enabled()
                         else render_source(*args))
-            if self.trajectory_refiner is not None:
+            if self.refinement_active:
                 refinement_updates.append(rendered["refinement_update"])
                 refinement_matches.append(rendered["refinement_match_fraction"])
             if return_visibility:
@@ -277,7 +303,7 @@ class MultiCamera4RC(nn.Module):
             output.update(visibility=torch.stack(visibilities, 1),
                           visibility_logits=torch.stack(visibility_logits, 1),
                           projection_valid=torch.stack(projection_valids, 1))
-        if self.trajectory_refiner is not None:
+        if self.refinement_active:
             output.update(refinement_update=torch.stack(refinement_updates, 1),
                           refinement_match_fraction=torch.stack(refinement_matches, 1))
         return output

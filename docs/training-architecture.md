@@ -1,12 +1,15 @@
 # mvmc 训练模型与公开推理接口
 
-本页区分三种版本，避免将配置默认值、已训练权重与冻结评估混为一谈。
+[项目导航](project-guide.md) · [研究权重推理](research-inference.md)
+
+本页区分构造器默认值、公开权重、研究训练配方与冻结评估。
 
 | 版本 | 直接 decoder K/V | TrajectoryRefiner | 加载位置 |
 | --- | --- | --- | --- |
 | 顶层新建 `MVMCConfig()` / `MultiD4RTConfig()` | 默认 `all_observations`，可显式选 `target_time` | 无 | `mvmc` / `multid4rt` |
-| 公开 60k giant 权重 | `target_time`，`time_origin=clip_start` | 无 | 顶层 `from_checkpoint()` |
-| 当前研究训练 | 启动参数明确为 `target_time` | 有，具体尺寸与开关以 checkpoint 配置为准 | `research/training/source/multicamera4rc` |
+| 魔搭默认 195500 giant 权重 | `target_time`，`time_origin=clip_start` | 有 | [随权重发布的研究推理运行时](default-checkpoint.md) |
+| 旧版 60k giant 权重 | `target_time`，`time_origin=clip_start` | 无 | 顶层 `from_checkpoint()` |
+| 已核验的研究训练配方 | 启动参数明确为 `target_time` | 有，具体尺寸与开关以 checkpoint 配置为准 | `research/training/source/multicamera4rc` |
 | step134400 冻结评估 | 以该冻结 checkpoint 配置为准 | 使用冻结源码实现 | `research/frozen_134400/model_source` |
 
 `mvmc` 是项目新名称。顶层 Python 接口兼容原 `multid4rt`，研究命名空间仍为 `multicamera4rc`；名称相似不表示这些版本的模型配置可以互换。已有 checkpoint 的参数键、架构标记、外部权重文件名和历史结果身份保留原值。
@@ -34,7 +37,7 @@ refiner 将轨迹与运动特征降到 patch 网格。在当前轨迹投影附�
 
 ## 源码核验与复现边界
 
-本次仓库审计逐一比较了部署源码与仓库 `research/training/source/multicamera4rc/` 中五个核心文件，SHA-256 一致：
+下面是早期训练导出时核验过的五个核心文件 SHA-256，用于识别该历史版本。后续源文件变更和在途部署应分别核验：
 
 | 文件 | SHA-256 |
 | --- | --- |
@@ -44,4 +47,4 @@ refiner 将轨迹与运动特征降到 patch 网格。在当前轨迹投影附�
 | `train.py` | `ab7051ed4154493acc7c94a9c97b28d021f601770c7bbb4d5b13282cdc031072` |
 | `launch.py` | `8c2993f1d46b106f18d61bd6eccbc0af332c4a3c490b67562e94148c7149d7f6` |
 
-这证明五个核心文件一致，不表示仓库包含最新运维恢复器、私有数据绑定、运行环境或训练权重。训练目录的 v23 supervisor 是导出时快照；后续恢复使用的 `reliability_hardened_v3/resume_latest.py` 不在该导出中。当前恢复从 step175300 继续，目标为 200000。复现实验还需匹配 checkpoint 配置、数据清单、损失配置与评估协议；历史结果不因项目更名而变成当前训练结果。
+训练目录的 v23 supervisor 同样是导出时快照，不代表后续运维恢复器。确认在途任务时检查正在执行的命令、源码及配置哈希和最近一次完整 checkpoint。复现实验还需匹配数据清单、损失配置和评估协议；历史结果继续保留原 checkpoint 身份。

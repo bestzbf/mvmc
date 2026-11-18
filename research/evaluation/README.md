@@ -1,5 +1,7 @@
 # Evaluation runtime source snapshot
 
+[Repository map](../../docs/project-guide.md) · [Frozen model](../frozen_134400/README.md) · [Published results](../results/README.md)
+
 This snapshot records the deployed evaluation entry points, two benchmark harness versions, six model adapters, the streamed Ours wrapper, the score consumers, recovery helpers, and report generation. The source hashes identify the actual deployed bytes. Templates carry path and device bindings outside source control.
 
 Copy `bindings.example.json` to a private bindings file and fill in the deployment values. Run the repository's `research/materialize.py` with this directory, that bindings file, and a new output directory. Set each role root to its corresponding materialized directory. Supply the pinned external checkouts from `third_party_versions.json` and the Python environments, weights and benchmark inputs separately. Bind the Ours frozen model root to its pinned Git checkout when using the original Git provenance guard.

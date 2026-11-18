@@ -217,6 +217,8 @@ class _TrainingStep(nn.Module):
         geometry_only = ("displacement_valid" in targets and not targets["displacement_valid"].any()
                          and not targets.get("sparse_displacement_valid", torch.zeros((), device=images.device)).any()
                          and not targets.get("sparse_trajectory_valid", torch.zeros((), device=images.device)).any()
+                         and not targets.get("joint_motion_valid", torch.zeros((), device=images.device)).any()
+                         and not targets.get("pseudo_motion_valid", torch.zeros((), device=images.device)).any()
                          and not need_visibility and not targets.get("static_mask", torch.zeros((), device=images.device)).any())
         if geometry_only:
             # A geometry-only sample has no temporal labels. Train geometry
@@ -290,6 +292,8 @@ def main(argv=None):
     weights = parser.add_mutually_exclusive_group()
     weights.add_argument("--pretrained", help="Original 4RC .pth/.safetensors; requires matching giant preset")
     weights.add_argument("--resume", help="Native model+optimizer training checkpoint")
+    weights.add_argument("--initialize-native", help="Native weights/config only; fresh optimizer, RNG and data cursor")
+    parser.add_argument("--ablation", choices=('none', 'no_camera_relation', 'no_relative_time', 'no_refiner'), default=None)
     parser.add_argument("--reset-data-cursor", action="store_true",
                         help="With --resume, restart sampling at epoch/batch zero for a new data configuration")
     parser.add_argument("--migrate-data-config", action="store_true",
@@ -399,6 +403,9 @@ def _train(args, context):
         dataset = MultiCameraManifestDataset(args.manifest)
         collate_fn = collate_multicamera
     resume = read_checkpoint(args.resume) if args.resume else None
+    initialization = read_checkpoint(args.initialize_native) if args.initialize_native else None
+    if args.ablation is not None and resume is not None:
+        raise ValueError('Change ablation only with weights-only initialization, not optimizer resume')
     training_state = resume.get("training_state", {}) if resume is not None else {}
     data_fingerprint = (hashlib.sha256(Path(args.data_config).read_bytes()).hexdigest()
                         if args.data_config else None)
@@ -475,7 +482,9 @@ def _train(args, context):
     batches_per_epoch = len(loader)
     cfg = (MultiCamera4RCConfig.tiny(gradient_checkpointing=not args.no_checkpointing)
            if args.preset == "tiny" else MultiCamera4RCConfig(gradient_checkpointing=not args.no_checkpointing))
-    cfg = config_from_checkpoint(resume, fallback=cfg)
+    cfg = config_from_checkpoint(resume if resume is not None else initialization, fallback=cfg)
+    if args.ablation is not None:
+        cfg = replace(cfg, ablation=args.ablation)
     for name in ('reuse_shared_computation', 'reuse_decoder_kv'):
         if getattr(args, name) is not None:
             cfg = replace(cfg, **{name: getattr(args, name)})
@@ -497,6 +506,12 @@ def _train(args, context):
         print(json.dumps({"model_config": cfg.to_dict()}), flush=True)
     if resume is not None:
         model = MultiCamera4RC.from_checkpoint(resume, config=cfg)
+    elif initialization is not None:
+        model = MultiCamera4RC(cfg)
+        model.load_state_dict(initialization['model'], strict=True)
+        if context.primary:
+            print(json.dumps({'weights_only_initialization': args.initialize_native,
+                              'parent_step': initialization.get('step'), 'ablation': cfg.ablation}), flush=True)
     else:
         model = MultiCamera4RC(cfg)
         if args.pretrained:
@@ -512,6 +527,7 @@ def _train(args, context):
     if args.freeze_geometry:
         model.head.requires_grad_(False)
         model.cam_dec.requires_grad_(False)
+    model.enforce_ablation()
     from .optim import optimizer_groups, load_optimizer_state
     geometry_options = training_state.get('geometry_lr_options')
     if args.geometry_lr_multiplier is not None:
@@ -671,6 +687,11 @@ def _train(args, context):
             save_checkpoint(path, model, optimizer, step=step,
                             grad_scaler=scaler.state_dict(), rank_rng=rng,
                             training_state={"execution_optimizations": execution.checkpoint_metadata(),
+                                            "weights_only_initialization": ({"path": str(args.initialize_native),
+                                                "parent_step": initialization.get('step'),
+                                                "ablation": cfg.ablation,
+                                                "optimizer_reset": True} if initialization is not None else
+                                                training_state.get('weights_only_initialization')),
                                             "data_epoch": data_epoch,
                                             "batches_consumed": batches_consumed,
                                             "world_size": context.world_size,
@@ -804,7 +825,7 @@ def _train(args, context):
                           "native_velocity_epe_normalized", "camera_rotation_degrees",
                           "excluded_background_pixels", "excluded_background_fraction")
             local_metrics = {k: v.detach() for k, v in metrics.items()
-                             if k in local_keys or k.startswith(("intrinsics_", "cross_camera_3d", "query_pair_", "joint_"))
+                             if k in local_keys or k.startswith(("intrinsics_", "cross_camera_3d", "query_pair_", "joint_", "kinoptic_"))
                              or k in ("camera_log_focal", "camera_principal_normalized")}
             # One device-to-host copy, rather than a blocking scalar copy for
             # each diagnostic. No metric is removed or sampled less often.
@@ -820,6 +841,8 @@ def _train(args, context):
                 rank_batch["static_multiview"] = batch["static_multiview"]
             if "native_tracks" in batch:
                 rank_batch["native_tracks"] = batch["native_tracks"]
+            if "kinoptic_human" in batch:
+                rank_batch["kinoptic_human"] = batch["kinoptic_human"]
             if "syn4d" in batch:
                 rank_batch["syn4d"] = batch["syn4d"]
             rank_batches = [rank_batch]

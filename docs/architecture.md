@@ -126,7 +126,7 @@ P          [B,S,H,W,3]
 
 源码：[metadata.py](../multid4rt/metadata.py)、[motion.py](../multid4rt/motion.py)。
 
-### `target_time`：公开 60k 权重与当前训练
+### `target_time`：公开 60k 权重与已核验的研究训练配方
 
 对每个目标时刻 t，直接 K/V 取该时刻**所有有效相机**的 global patch；缺失相机被 mask，不只取源相机，也不直接拼接其他时刻的 patch：
 

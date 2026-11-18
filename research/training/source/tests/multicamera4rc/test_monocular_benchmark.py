@@ -70,17 +70,17 @@ def test_padding_is_removed_before_depth_and_calibration_resampling():
 
 
 def test_d4rt_depth_alignment_matches_legacy_per_frame_function():
-    import ast
-    path = Path(__file__).resolve().parents[2]/'test/eval_sintel_checkpoint.py'
-    tree = ast.parse(path.read_text())
-    function = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == '_per_frame_align_depth')
-    namespace = {'torch': torch}
-    exec(compile(ast.Module(body=[function], type_ignores=[]), str(path), 'exec'), namespace)
+    # Golden outputs from the legacy scorer; its standalone script was not
+    # part of the research export. The fixture records the original source hash.
+    path = Path(__file__).with_name('fixtures')/'legacy_sintel_depth_alignment.json'
+    fixture = json.loads(path.read_text())
     gt = torch.arange(1., 33.).reshape(2, 4, 4); pred = gt/3.+.1
     mask = torch.ones_like(gt, dtype=torch.bool)
     for mode in ('scale', 'scale_shift'):
-        expected = namespace['_per_frame_align_depth'](pred, gt, mask, mode, max_depth=70)
-        torch.testing.assert_close(align_depth_per_frame(pred, gt, mask, mode, 70), expected)
+        expected = torch.tensor(fixture['expected'][mode], dtype=pred.dtype)
+        torch.testing.assert_close(
+            align_depth_per_frame(pred, gt, mask, mode, fixture['max_depth']), expected
+        )
 
 
 def test_one_scene_gauge_recovers_geometry_without_per_frame_repair():

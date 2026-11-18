@@ -15,6 +15,7 @@ if TYPE_CHECKING:
 
 
 _ADAPTERS: dict[str, tuple[str, str]] = {
+    "stereo4d": ("stereo4d", "Stereo4DAdapter"),
     "blendedmvs": ("blendedmvs", "BlendedMVSAdapter"),
     "co3dv2": ("co3dv2", "Co3Dv2Adapter"),
     "dynamic_replica": ("dynamic_replica", "DynamicReplicaAdapter"),
@@ -25,6 +26,7 @@ _ADAPTERS: dict[str, tuple[str, str]] = {
     "mv_kubric": ("mv_kubric", "MVKubricAdapter"),
     "panoptic": ("panoptic", "PanopticAdapter"),
     "panoptic_kinoptic": ("panoptic_kinoptic", "PanopticKinopticAdapter"),
+    "kinoptic_human": ("kinoptic_human", "KinopticHumanAdapter"),
     "mugen_h5": ("mugen_h5", "MugenH5Adapter"),
     "mvssynth": ("mvssynth", "MVSSynthAdapter"),
     "pointodyssey": ("pointodyssey", "PointOdysseyAdapter"),

@@ -53,6 +53,21 @@ def attach_camera_joint_motion_recipe(clip, sample):
     )
 
 
+def attach_camera_tracks_recipe(clip, sample):
+    """Sparse surface pseudo trajectories with no dense depth/visibility labels."""
+    sparse = sample['targets']
+    if not sparse['sparse_displacement_valid'].any():
+        raise InvalidClipError('no Stereo4D sparse motion labels')
+    points = sparse['sparse_trajectory'][sparse['sparse_trajectory_valid']]
+    scale = points.norm(dim=-1).median()
+    if not torch.isfinite(scale) or scale <= 1e-6:
+        raise InvalidClipError('invalid sparse scene scale')
+    _attach_camera_recipe(clip, sample, kind='camera_tracks')
+    sample['targets'].update({k:v for k,v in sparse.items() if k.startswith('sparse_')})
+    sample['targets']['sparse_visibility_valid'].zero_()
+    sample['targets']['dense_sparse_tracks_scale'] = scale
+
+
 @torch.no_grad()
 def materialize_camera_only_targets(batch, source_indices, *, normalize_scene=True):
     recipe = batch['targets']
@@ -75,6 +90,16 @@ def materialize_camera_only_targets(batch, source_indices, *, normalize_scene=Tr
         if normalize_scene:
             scale = recipe['dense_joint_motion_scale']
         target['sparse_displacement'] = target['sparse_displacement'] / scale[:, None, None, None]
+    if 'dense_sparse_tracks_scale' in recipe:
+        if normalize_scene:
+            scale = recipe['dense_sparse_tracks_scale']
+        for key in ('sparse_trajectory', 'sparse_displacement'):
+            target[key] = target[key] / scale[:, None, None, None]
+        # Pose and tracks share the same pseudo-metric gauge; no baseline is invented.
+        target['c2w'] = target['c2w'].clone()
+        target['c2w'][..., :3, 3] /= scale[:, None, None]
+        target['camera_translation_valid'] = target['camera_valid'].clone()
+        target['sparse_trajectory_is_pseudo'] = torch.ones_like(scale, dtype=torch.bool)
     target.update(ray=zero.expand(b,s,h,w,6), ray_valid=false.expand(b,s,h,w),
         trajectory=zero.expand(*motion_shape,3), trajectory_valid=false.expand(motion_shape),
         displacement=zero.expand(*motion_shape,3), displacement_valid=false.expand(motion_shape),

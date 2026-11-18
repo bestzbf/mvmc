@@ -63,7 +63,8 @@ def _frame_labels(metadata, count, cameras):
         values = np.asarray(metadata["slot_time"], dtype=np.float64)
         fps = metadata.get("fps")
         unit = metadata.get("physical_time_unit")
-        if unit == "seconds" or (fps is not None and "slot_physical_camera_id" in metadata):
+        # Only infer seconds for legacy metadata without an explicit unit.
+        if unit == "seconds" or (unit is None and fps is not None and "slot_physical_camera_id" in metadata):
             if fps is None or not np.isfinite(float(fps)) or float(fps) <= 0:
                 raise ValueError("seconds require a positive fps to recover frame labels")
             values = values * float(fps)

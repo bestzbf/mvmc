@@ -1,10 +1,12 @@
 # Training source and historical six-rank controller snapshot
 
+For a new experiment, start with the [training source guide](source/README.md) and the [repository map](../../docs/project-guide.md). To load a trained research checkpoint for inference, see the [research inference guide](../../docs/research-inference.md). The setup below describes a historical deployment, not a live training status.
+
 At the original export, the running ranks used the `069b1c28ce4763e2ac6a4f06dbc5b73c9ed3dc55` checkout as their working directory. That private bootstrap prepended the deployed `future_trainer_code_v22/source` tree to `sys.path`. That tree supplies the effective Python source. Compared with the clean checkout, the deployment replaces `multicamera4rc/train.py` and adds six files for the execution helpers, execution controller and six-rank gate.
 
 The export verified all 1,076 files pinned by the original deployment manifest. `source/` contains 288 effective source and configuration files, including the runtime package, adapter code, transitively referenced controller scripts and vendor license notices. `base_overrides/multicamera4rc/train.py` holds the unmodified baseline training module for native checkpoint validation. `provenance.json` records the original file hashes and role-relative source paths, the seven-file overlay, and the difference between the complete deployment and this filtered export.
 
-The core `model.py`, `config.py`, `refinement.py`, `train.py` and `launch.py` matched the original deployment at export. The subsequent source changes below are not covered by that historical byte-for-byte claim. This does not certify the whole runtime or make the exported v23 supervisor the latest recovery controller. The live recovery uses `reliability_hardened_v3/resume_latest.py`. See [model/version boundaries and verified hashes](../../docs/training-architecture.md). Historical documents under `source/` describe their original configurations; use this entry point and the checkpoint config to identify the active recipe.
+The core `model.py`, `config.py`, `refinement.py`, `train.py` and `launch.py` matched the original deployment at export. The subsequent source changes below are not covered by that historical byte-for-byte claim. This does not certify the whole runtime or make the exported v23 supervisor the latest recovery controller. A subsequent recovery used `reliability_hardened_v3/resume_latest.py`, outside this snapshot. See [model/version boundaries and verified hashes](../../docs/training-architecture.md). Identify an active recipe from its running command, checkpoint, and bound configuration.
 
 ## Supervision repair source update (2026-11-15)
 
@@ -35,6 +37,32 @@ The supervisor loads `evaluate_joint_checkpoint_v22.py` dynamically for training
 
 Python is `3.10.20`. The bootstrap binds PyTorch `2.10.0+cu128` and CUDA `12.8` from the shared environment, `flash_attn_4` `4.0.0b37` from the private environment, and OpenEXR/Imath from the data environment. `runtime_packages.json` records the corresponding installed distribution metadata. `source/pyproject.toml` lists the source package's dependencies.
 
+## Stereo4D sparse-track integration (2026-11-15)
+
+The `stereo4d` adapter uses `dense_kind="camera_tracks"` inside the existing dense mixture, while retaining sparse trajectory, displacement and velocity targets. Released left-rectified RGB and `camera2world` poses share the published track coordinate system. Timestamps are microseconds; velocity uses original frame indices and rejects nonuniform frame intervals. The 60-degree rectified camera uses pixel-centre principal points `(255.5, 255.5)` at 512 pixels. Rectification is not applied twice.
+
+Supply an audited train-only JSONL inventory through `options.inventory`; each row contains `clip`, `split`, `frames`, `npz`, and `left_video`. Exclude held-out video IDs before building this inventory. The adapter checks RGB frame count, finite recorded trajectories, and RGB forward/backward correspondence for source queries. A missing track record remains invalid. The labels are published **pseudo trajectories**, not guaranteed sensor ground truth. Pose translation and sparse XYZ/displacement are normalized by the same scene scale.
+
+The binocular option (`cameras=2`, adapter `stereo=True`) requires `right_video` in each admitted inventory row. It uses the official fixed 0.063 m pseudo-metric baseline: rectified rotations coincide and the right centre is `t_left + 0.063 * R_left[:, 0]`. This is not a recovered per-device measured calibration. Rectification rotations have already been applied to the RGB and must not be applied again. Right source queries require independent SGBM correspondence, forward/backward LK checks, and at most 1.5 pixels residual against the projected published trajectory. Unverified queries are masked; insufficient support rejects the sample.
+
+Neither mode fabricates dense depth, normals or occlusion labels. The visibility-valid mask is false and the loss tolerates an intentionally disabled visibility head. The mixed continuation retains the total 10% Stereo4D allocation, split evenly between monocular and binocular sources, while retaining all other source weights. This is a sampling proportion, not a claim about the proportion of valid supervised points. Binocular inventory membership additionally requires both videos; monocular sampling still covers all admitted left videos.
+
+Admission checks used 10 independent real-clip geometry audits, 32 sampled loading/mask checks, and five full-model B200 optimizer updates with an intermediate model/Adam/LR save and reload. These tests establish pipeline operation and finite gradients; they do not establish convergence or an evaluation gain. The production checkpoint, inventory digest and migration receipt remain external deployment artifacts.
+
+## Kinoptic measured depth and separate human-motion labels
+
+The opt-in `kinoptic_human` adapter uses fixed two-camera, two-time packs with `dense_kind="kinoptic_human"`. Its manifest pins each pack hash, the original training-capture whitelist and an auxiliary capture split. Production configuration should also pin `options.manifest_sha256`; unadmitted candidate packs require an explicit test-only `allow_candidate=true`.
+
+The three supervision families remain separate:
+
+- Measured Kinect depth retains the original calibration, timing, sensor agreement, occlusion and RGB verification filters. Selecting supported neighbouring HD camera pairs changes sampling, never fills depth holes. Any measured coverage gain must be reported as conditional on the accepted pairs.
+- `joint_motion_*` contains official joint-centre displacement with measured-surface proximity checks in both cameras and at both times. It is an auxiliary motion target, not absolute human-surface XYZ or visibility ground truth.
+- `pseudo_motion_*` contains RGB-correspondence/depth surface estimates checked with a third camera. These are pseudo labels, not dense temporal GT. They do not populate `dense_pair_valid`, sparse GT trajectories, or visibility targets. Shared anchor-camera errors remain possible despite third-view consistency.
+
+`auxiliary_motion_options` enables independently logged joint and pseudo losses. The initial candidate uses weights `0.1` and `0.02`, respectively, with Huber delta `0.01` in scene-normalized units. Pseudo residuals inside a positive, depth-dependent uncertainty band receive zero gradient. This band is a conservative heuristic, not a calibrated accuracy guarantee. Displacements and uncertainty use the same scene normalization; crop operations update query locations and masks. All options default to disabled for older recipes.
+
+Real-sample admission and optimizer smoke tests establish valid loading, finite updates and gradient connectivity. They do not establish convergence, evaluation gains or the availability of true dense human-surface motion GT. Deployment manifests and dated admission receipts determine whether an optional source is active.
+
 ## Materialize the runtime bindings
 
 Use the repository's `research/materialize.py` with the template directory, a filled copy of its `bindings.example.json`, and a fresh destination. The destination must be outside the source snapshot. Use absolute ASCII paths without spaces, quotes or shell metacharacters for the bindings. If the checkout path falls outside that format, copy `source/` to a suitable runtime path. The `binding_locations.json` files identify the fields served by each binding.
@@ -43,7 +71,7 @@ Use the repository's `research/materialize.py` with the template directory, a fi
 2. Render `templates/runtime/` to an isolated runtime directory using the same resolved `PRIVATE_ENV`. Bind the shared and data sites, the rendered bootstrap, and the planned deployment JSON. Before rendering `templates/inputs/`, calculate the SHA-256 of the bootstrap, wrapper and selected `multicamera4rc/training_execution_future.py`. Set `RUNTIME_BOOTSTRAP_SHA256`, `RUNTIME_WRAPPER_SHA256` and `TRAINING_EXECUTION_SOURCE_SHA256` to those hashes. Set `SOURCE_ROOT` to the selected source tree and supply the GPU UUIDs and dataset bindings. Verify that `deployment.json` pins the selected controller's exact bytes before running the CPU preflight below.
 3. For checkpoint validation and supervised launch, render `templates/supervisor_code/`, `templates/checkpoint_validation_config/`, `templates/activation_config/` and `templates/supervisor_plan/` in that order. Supply the SHA-256 values of the files produced by each preceding stage and the trusted external proof records. Run the control scripts from a directory that also exposes the rendered `control_common.py` to Python.
 
-The live checkpoint and evaluator require the original deployment, input hashes, and Git identity. The filtered export has a new deployment digest, and the optional controller template changes the execution implementation digest. An exact production resume requires the original bound deployment and artifacts. The production controller also requires its pinned publisher and gate records before it can adopt a checkpoint. Historical repository configuration files retain their original defaults. Use the bound `optional_long.json` and the exported loss recipe for the active configuration.
+The checkpoint and evaluator for this deployment require its original deployment, input hashes, and Git identity. The filtered export has a new deployment digest, and the optional controller template changes the execution implementation digest. An exact resume requires the original bound deployment and artifacts. The corresponding controller also requires its pinned publisher and gate records before it can adopt a checkpoint. Repository templates retain their original defaults; refer to this deployment's bound `optional_long.json` and loss recipe for its effective configuration.
 
 ## CPU validation
 

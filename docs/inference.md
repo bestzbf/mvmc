@@ -1,6 +1,8 @@
 # mvmc 推理
 
-[返回 README](../README.md)
+[项目导航](project-guide.md) · [研究 checkpoint 推理](research-inference.md) · [返回 README](../README.md)
+
+本页使用顶层公开 `mvmc` 包和兼容的 60k 权重。魔搭默认 **195500** 含 `TrajectoryRefiner`，请使用[默认权重的配套运行时](default-checkpoint.md)。
 
 ## 图像与 manifest
 
@@ -17,7 +19,7 @@
 
 同一片段的图片需准备成相同大小，高宽为 14 的倍数且均至少 28。默认不 resize；保持比例准备图像，可以补边。`--image-size H W` 为显式 resize，调用方应选择保持比例的尺寸。
 
-同一物理相机共享 ID，各相机使用同一时间轴；帧号保留抽帧间隔。需要缺失观察时可在 manifest 中设置 `valid: false`，观察 0 必须有效。相机 0 的参考角色由观察顺序决定。
+同一物理相机共享 ID，各相机使用同一时间轴；帧号保留抽帧间隔。需要缺失观察时可在 manifest 中设置 `valid: false`。第 0 张观察必须有效，并定义参考相机；它的 `camera_id` 可以不是 0。
 
 ## 运行
 

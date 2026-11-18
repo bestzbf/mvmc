@@ -163,6 +163,7 @@ from .query_pair import QUERY_PAIR_METRICS
 from .joint_geometry import JOINT_GEOMETRY_METRICS
 from .depth_objectives import DEPTH_OBJECTIVE_METRICS
 from .reprojection import REPROJECTION_METRICS
+from .auxiliary_motion import AUXILIARY_MOTION_METRICS
 
 
 _METRICS = ("loss", "depth", "camera", "ray", "trajectory", "displacement",
@@ -185,11 +186,12 @@ _METRICS = ("loss", "depth", "camera", "ray", "trajectory", "displacement",
             "camera_translation", "camera_rotation", "camera_fov", "camera_principal",
             "excluded_background_pixels", "excluded_background_fraction",
             "camera_log_focal", "camera_principal_normalized", "camera_log_focal_ratio",
-            "refinement_update", "refinement_match_fraction") + INTRINSICS_METRICS + CROSS_CAMERA_METRICS + QUERY_PAIR_METRICS + JOINT_GEOMETRY_METRICS + DEPTH_OBJECTIVE_METRICS + REPROJECTION_METRICS
+            "refinement_update", "refinement_match_fraction") + INTRINSICS_METRICS + CROSS_CAMERA_METRICS + QUERY_PAIR_METRICS + JOINT_GEOMETRY_METRICS + DEPTH_OBJECTIVE_METRICS + REPROJECTION_METRICS + AUXILIARY_MOTION_METRICS
 
 
 def present_metric_average(name):
-    return ((name.startswith('depth_objective_')
+    return ((name.startswith('kinoptic_') and name.endswith(('_epe_m', '_uncertainty_m', '_outside_uncertainty_fraction')))
+            or (name.startswith('depth_objective_')
              and name not in ('depth_objective_relative', 'depth_objective_log_bias', 'depth_objective_temporal_scale')
              and not name.endswith(('_pixels', '_observations', '_pairs')))
             or name.startswith(("intrinsics_", "refinement_")) or "_epe_" in name or "confidence_" in name
@@ -219,6 +221,13 @@ def aggregate_metrics(context, metrics):
     present = torch.zeros(len(_METRICS), dtype=torch.float64, device=context.device)
     for index, name in enumerate(_METRICS):
         if name in metrics:
+            if name.startswith('kinoptic_') and present_metric_average(name):
+                family = 'kinoptic_joint_motion' if name.startswith('kinoptic_joint_motion_') else 'kinoptic_pseudo_motion'
+                eligible = torch.as_tensor(metrics.get(family+'_points', 0), device=context.device) > 0
+                value = torch.as_tensor(metrics[name], device=context.device).detach()
+                values[index] = torch.where(eligible, value, torch.zeros_like(value))
+                present[index] = eligible
+                continue
             values[index] = torch.as_tensor(metrics[name], device=context.device).detach()
             present[index] = 1
     if context.distributed:

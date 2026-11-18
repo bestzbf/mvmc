@@ -246,4 +246,9 @@ def materialize_partial_dense_targets(batch, source_indices, *, normalize_scene=
     for name in ("sparse_trajectory", "sparse_displacement"):
         if name in target:
             target[name] = target[name]/scale[:, None, None, None]
+    for prefix in ('joint_motion', 'pseudo_motion'):
+        if prefix+'_displacement' in target:
+            target[prefix+'_displacement'] = target[prefix+'_displacement']/scale[:, None, None, None]
+        if prefix+'_uncertainty' in target:
+            target[prefix+'_uncertainty'] = target[prefix+'_uncertainty']/scale[:, None, None]
     return target
