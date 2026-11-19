@@ -171,6 +171,50 @@ def _empty_targets(S, H, W, N, T, C):
     }
 
 
+def _attach_stereo4d_correspondences(targets, clip, slots, cameras, times, target_times,
+                                    transforms, source, track, trajectory_valid):
+    """Publish camera-axis RGB endpoints, separate from visibility annotations."""
+    metadata = clip.metadata
+    pixels = np.asarray(metadata["stereo_right_lk_uv"])
+    valid = np.asarray(metadata["stereo_right_lk_valid"], dtype=bool)
+    temporal = np.asarray(metadata["stereo_left_temporal_edges"], dtype=bool)
+    n_frames, n_tracks = valid.shape
+    if (clip.dataset_name != "stereo4d" or len(clip.images) != 2 * n_frames
+            or pixels.shape != (n_frames, n_tracks, 2)
+            or temporal.shape != (n_frames - 1, n_tracks)
+            or not np.array_equal(cameras, (slots >= n_frames).astype(np.int64))):
+        raise ValueError("Stereo4D RGB correspondence metadata does not match the rectified stereo clip")
+    count = len(source)
+    right_uv = torch.zeros((*targets["sparse_visibility_valid"].shape, 2))
+    right_valid = torch.zeros_like(targets["sparse_visibility_valid"])
+    right_axis = np.searchsorted(np.unique(cameras), 1)
+    if not (cameras == 1).any():
+        return
+    for slot in np.flatnonzero(cameras == 1):
+        right_frame = int(slots[slot]) - n_frames
+        if right_frame == 0:
+            continue
+        target_index = np.flatnonzero(target_times == times[slot])
+        if not len(target_index):
+            continue
+        ti = int(target_index[0])
+        # Require the same track to pass the forward temporal edge A→B
+        # in the left video, then B's independently checked L→R match.
+        usable = ((slots[source] == right_frame - 1)
+                  & temporal[right_frame - 1, track] & valid[right_frame, track]
+                  & trajectory_valid[:, ti])
+        xy = pixels[right_frame, track].astype(np.float64)
+        image_h, image_w = np.asarray(clip.images[slots[slot]]).shape[:2]
+        usable &= ((xy >= 0) & (xy <= [image_w - 1, image_h - 1])).all(-1)
+        affine = transforms[slot]
+        xy = np.where(usable[:, None], xy, 0) @ affine[:2, :2].T + affine[:2, 2]
+        height, width = targets["depth"].shape[-2:]
+        usable &= ((xy >= 0) & (xy <= [width - 1, height - 1])).all(-1)
+        right_uv[:count, ti, right_axis] = torch.from_numpy(np.where(usable[:, None], xy, 0).astype(np.float32))
+        right_valid[:count, ti, right_axis] = torch.from_numpy(usable)
+    targets.update(sparse_stereo_uv=right_uv, sparse_stereo_uv_valid=right_valid)
+
+
 def prepare_clip(clip, image_size=(280, 504), num_queries=256, seed=0,
                  query_time_idx=None, include_visibility=True, image_mode="fit",
                  all_track_queries=False):
@@ -271,8 +315,14 @@ def prepare_clip(clip, image_size=(280, 504), num_queries=256, seed=0,
                  _mask(visibility_known, (old_count, tracks), "visibility_valids")[slots])
         if metadata.get("has_visibility") is False:
             known[:] = False
-        world, uv = world[slots], uv[slots].copy()
-        valid &= np.isfinite(world).all(-1)
+        # Advanced indexing owns these buffers. Replace nonfinite rows only
+        # for the coordinate math; keep their original validity separately.
+        world, uv = world[slots], uv[slots]
+        finite_world = np.isfinite(world).all(-1)
+        finite_uv = np.isfinite(uv).all(-1)
+        valid &= finite_world
+        world[~finite_world] = 0.
+        uv[~finite_uv] = 0.
         # Every observation is expressed in one fixed reference coordinate frame.
         world = world @ reference[:3, :3].T + reference[:3, 3]
         for index, affine in enumerate(transforms):
@@ -288,7 +338,7 @@ def prepare_clip(clip, image_size=(280, 504), num_queries=256, seed=0,
                 pooled[time_id, fresh] = world[observation, fresh]
                 support[time_id] |= valid[observation]
         eligible = _mask(metadata.get("track_source_eligible", np.ones(tracks, bool)), (tracks,), "track_source_eligible")
-        source_ok = valid & visible & known & np.isfinite(uv).all(-1) & eligible[None]
+        source_ok = valid & visible & known & finite_uv & np.isfinite(uv).all(-1) & eligible[None]
         if "track_source_valid" in metadata:
             source_ok &= _mask(metadata["track_source_valid"], (old_count, tracks), "track_source_valid")[slots]
         relative_w2c = np.linalg.inv(c2w)
@@ -353,6 +403,9 @@ def prepare_clip(clip, image_size=(280, 504), num_queries=256, seed=0,
             for key, value in (("sparse_trajectory", truth), ("sparse_displacement", displacement)):
                 targets[key][:count] = torch.from_numpy(value.astype(np.float32))
                 targets[f"{key}_valid"][:count] = torch.from_numpy(truth_valid.copy())
+            if "stereo_right_lk_uv" in metadata:
+                _attach_stereo4d_correspondences(targets, clip, slots, cameras, times, target_times,
+                                                transforms, source, track, truth_valid)
             if include_visibility:
                 for target, time in enumerate(target_times):
                     for camera, label in enumerate(camera_values):

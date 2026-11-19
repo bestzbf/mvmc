@@ -19,6 +19,37 @@ def scene_flow(prediction, start_time, end_time):
     return gather_observations(frames_first, slots[1])-gather_observations(frames_first, slots[0])
 
 
+def target_canvas_hw(target, fallback_hw):
+    """Return GT spatial (H, W) from dense trajectory or depth when supplied."""
+    if "trajectory" in target and target["trajectory"].ndim == 6:
+        return tuple(target["trajectory"].shape[-3:-1])
+    if "depth" in target and target["depth"].ndim == 4:
+        return tuple(target["depth"].shape[-2:])
+    return tuple(fallback_hw)
+
+
+def rescale_queries_to_prediction(queries, pred_hw, target, query_valid=None):
+    """Map [B,N,3] = [source_obs,u,v] from GT canvas to prediction canvas.
+
+    Preserves integer pixel centers under align_corners=False resizing without
+    mutating the caller's query tensor. Identical canvases return unchanged.
+    """
+    gt_h, gt_w = target_canvas_hw(target, pred_hw)
+    pred_h, pred_w = pred_hw
+    if (gt_h, gt_w) == (pred_h, pred_w):
+        return queries, query_valid
+    gt_canvas = queries.new_tensor((gt_w, gt_h))
+    pred_canvas = queries.new_tensor((pred_w, pred_h))
+    gt_uv = queries[..., 1:]
+    inside_gt = ((gt_uv >= 0) & (gt_uv <= gt_canvas - 1)).all(-1)
+    valid = inside_gt if query_valid is None else (query_valid.bool() & inside_gt)
+    uv = (gt_uv + 0.5) * (pred_canvas / gt_canvas) - 0.5
+    # Match the border extension used by align_corners=False resizing for
+    # valid GT edge pixels.
+    uv = torch.where(inside_gt[..., None], uv.clamp_min(0).minimum(pred_canvas - 1), uv)
+    return torch.cat((queries[..., :1], uv), dim=-1), valid
+
+
 def sample_tracks(prediction, queries, strict=True):
     """Bilinearly sample [source_observation_index,u,v] queries in pixel units.
 

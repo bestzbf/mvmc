@@ -202,6 +202,9 @@ class MultiCamera4RCLoss(nn.Module):
                                          AuxiliaryMotionOptions(**dict(auxiliary_motion_options)))
 
     def to_config(self):
+        reprojection = asdict(self.reprojection_options) if self.reprojection_options is not None else None
+        if reprojection is not None and not reprojection["stereo_certified_weight"]:
+            del reprojection["stereo_certified_weight"]
         return dict(weights=dict(self.weights), confidence_alpha=self.confidence_alpha,
                     regression_norm=self.regression_norm, foreground_weight=self.foreground_weight,
                     visibility_projection_mask=self.visibility_projection_mask,
@@ -216,8 +219,7 @@ class MultiCamera4RCLoss(nn.Module):
                        if self.focal_ratio_loss_weight else {}),
                     **(dict(geometry_source_min_pixels=self.geometry_source_min_pixels)
                        if self.geometry_source_min_pixels else {}),
-                    **(dict(reprojection_options=asdict(self.reprojection_options))
-                       if self.reprojection_options is not None else {}),
+                    **(dict(reprojection_options=reprojection) if reprojection is not None else {}),
                     **(dict(joint_geometry_options=asdict(self.joint_geometry_options))
                        if self.joint_geometry_options is not None else {}),
                     **(dict(depth_objective_options=asdict(self.depth_objective_options))
@@ -401,7 +403,8 @@ class MultiCamera4RCLoss(nn.Module):
             else:
                 height, width = target["depth"].shape[-2:] if "depth" in target else pred["depth"].shape[-2:]
                 source_h, source_w = pred["depth"].shape[-2:]
-                p = p*p.new_tensor((width/source_w, height/source_h, 1))[:, None]
+                ratio = p.new_tensor((width/source_w, height/source_h, 1))
+                principal = p[..., :2, 2]*ratio[:2] + (ratio[:2]-1)/2
                 gt_focal = torch.stack((t[..., 1, 1], t[..., 0, 0]), -1)
                 if (gt_focal <= 0).any():
                     raise ValueError("supervised camera focal lengths must be positive")
@@ -410,10 +413,11 @@ class MultiCamera4RCLoss(nn.Module):
                 if "camera_encoding" in pred:
                     fov = pred["camera_encoding"][valid][..., 7:9].float().clamp(0, math.pi-1e-4)
                 else:
-                    fov = 2*torch.atan(half_size/torch.stack((p[..., 1, 1], p[..., 0, 0]), -1).clamp_min(1e-8))
+                    focal = torch.stack((p[..., 1, 1]*ratio[1], p[..., 0, 0]*ratio[0]), -1)
+                    fov = 2*torch.atan(half_size/focal.clamp_min(1e-8))
                 terms["camera_fov"] = (fov-gt_fov).abs().mean()
                 normalizer = p.new_tensor((width, height))
-                terms["camera_principal"] = ((p[..., :2, 2]-t[..., :2, 2])/normalizer).abs().mean()
+                terms["camera_principal"] = ((principal-t[..., :2, 2])/normalizer).abs().mean()
         return terms
 
     def _sparse_losses(self, pred: Mapping[str, Tensor], target: Mapping[str, Tensor],
@@ -428,14 +432,22 @@ class MultiCamera4RCLoss(nn.Module):
         if "sparse_queries" not in target:
             raise KeyError("sparse supervision needs sparse_queries [B,N,3]=[source_obs,u,v]")
         # Deferred import keeps the dense geometry/loss API usable independently.
-        from .tasks import sample_tracks
-        sampled = sample_tracks(pred, target["sparse_queries"].to(zero.device), strict=False)
+        from .tasks import rescale_queries_to_prediction, sample_tracks
+        queries = target["sparse_queries"].to(zero.device)
+        gt_query_valid = target.get("sparse_query_valid")
+        if gt_query_valid is not None:
+            gt_query_valid = gt_query_valid.to(zero.device).bool()
+        if "trajectory" in pred:
+            queries, gt_query_valid = rescale_queries_to_prediction(
+                queries, pred["trajectory"].shape[-3:-1], target, gt_query_valid
+            )
+        sampled = sample_tracks(pred, queries, strict=False)
+        if gt_query_valid is not None:
+            sampled = dict(sampled, query_valid=sampled["query_valid"].bool() & gt_query_valid)
         metadata = dict(sampled)
         if "query_time_idx" in pred:
             metadata["query_time_idx"] = pred["query_time_idx"]
         query_valid = sampled["query_valid"].bool()
-        if "sparse_query_valid" in target:
-            query_valid &= target["sparse_query_valid"].to(zero.device).bool()
         for name in enabled:
             key = f"sparse_{name}"
             truth = target[key].to(zero.device)
@@ -839,7 +851,17 @@ class MultiCamera4RCLoss(nn.Module):
             joint_terms, joint_total = joint_geometry_losses(pred, target, self.joint_geometry_options)
             terms.update(joint_terms)
             total = total + joint_total
-            supervised = supervised or joint_total.requires_grad
+            opts = self.joint_geometry_options
+            joint_supervised = (
+                (opts.source_anchor_weight > 0 and "joint_source_pixels" in joint_terms)
+                or (opts.relative_pose_weight > 0 and ("joint_rotation_pairs" in joint_terms
+                                                      or "joint_translation_pairs" in joint_terms))
+                or (opts.dynamic_displacement_weight > 0 and "joint_dynamic_point_times" in joint_terms)
+                or (opts.static_displacement_weight > 0 and "joint_static_point_times" in joint_terms)
+                or (opts.baseline_relative_weight > 0 and "joint_baseline_pairs" in joint_terms)
+                or (opts.depth_baseline_scale_weight > 0 and "joint_scale_pairs" in joint_terms)
+            )
+            supervised = supervised or joint_supervised
 
         if self.auxiliary_motion_options is not None:
             from .auxiliary_motion import auxiliary_motion_losses
@@ -854,7 +876,7 @@ class MultiCamera4RCLoss(nn.Module):
             reprojection_terms, reprojection_total = reprojection_losses(pred, target, self.reprojection_options)
             terms.update(reprojection_terms)
             total = total + reprojection_total
-            supervised = supervised or reprojection_total.requires_grad
+            supervised = supervised or bool(reprojection_terms)
         if "sparse_queries" in target:
             sparse_terms, sparse_total, sparse_confidence, sparse_supervised = self._sparse_losses(pred, target, zero)
             total = total + sparse_total

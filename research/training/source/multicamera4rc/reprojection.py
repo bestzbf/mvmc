@@ -14,8 +14,10 @@ import torch.nn.functional as F
 from .query_pair import QueryPairOptions, _project, _visible
 
 
-REPROJECTION_METRICS = tuple('joint_reprojection_' + name for name in (
+_GEOMETRY_METRICS = tuple('joint_reprojection_' + name for name in (
     'loss', 'pixels', 'views', 'epe_px', 'behind_fraction', 'dense_pixels', 'sparse_pixels'))
+_STEREO_METRICS = tuple('joint_reprojection_stereo_' + name for name in ('loss', 'pixels', 'epe_px'))
+REPROJECTION_METRICS = _GEOMETRY_METRICS + _STEREO_METRICS
 
 
 @dataclass(frozen=True)
@@ -24,6 +26,7 @@ class ReprojectionOptions:
     huber_delta: float = .01  # fractions of the RGB canvas, not scene units
     max_points_per_view: int = 2048
     minimum_depth_ratio: float = .05
+    stereo_certified_weight: float = 0.
 
     def __post_init__(self):
         if isinstance(self.weight, bool) or not math.isfinite(self.weight) or self.weight < 0:
@@ -35,6 +38,92 @@ class ReprojectionOptions:
             raise ValueError('reprojection point budget must be a positive integer')
         if not math.isfinite(self.minimum_depth_ratio) or not 0 < self.minimum_depth_ratio < 1:
             raise ValueError('reprojection minimum depth ratio must be in (0,1)')
+        if (isinstance(self.stereo_certified_weight, bool) or not math.isfinite(self.stereo_certified_weight)
+                or self.stereo_certified_weight < 0):
+            raise ValueError('certified stereo reprojection weight must be finite and nonnegative')
+
+
+def _robust_projection(points, uv, gz, k, c, canvas, options):
+    pc = (points - c[:3, 3]) @ c[:3, :3]
+    positive_floor = options.minimum_depth_ratio * gz
+    projected = (pc @ k.T)[:, :2] / pc[:, 2:].clamp_min(positive_floor[:, None])
+    error = projected - uv
+    residual = error / canvas
+    robust = F.huber_loss(residual, torch.zeros_like(residual), reduction='none',
+                          delta=options.huber_delta) / options.huber_delta
+    positive_penalty = (positive_floor - pc[:, 2]).clamp_min(0) / gz
+    return robust.mean() + positive_penalty.mean(), error.norm(dim=-1).mean().detach(), (
+        pc[:, 2] <= 0
+    ).float().mean().detach()
+
+
+def _certified_stereo_losses(pred, target, sampled, queries, query_valid, camera_known, canvas, zero, options):
+    """Compare motion with a directly matched right-camera pixel.
+
+    Use the fixed pseudo-metric source anchor and dataset cameras from the
+    existing stereo gauge. Only displacement is trainable in this residual;
+    it cannot optimize the predicted depth, anchor or camera/baseline.
+    """
+    measured = target['sparse_stereo_uv'].detach().float()
+    known = target['sparse_stereo_uv_valid'].bool()
+    truth = target['sparse_trajectory'].detach().float()
+    truth_valid = target['sparse_trajectory_valid'].bool()
+    if (known.flatten(1).any(-1) & ~target['sparse_trajectory_is_pseudo'].bool()).any():
+        raise ValueError('certified stereo UV requires the Stereo4D pseudo-metric gauge')
+    if (measured.shape != (*known.shape, 2) or known.shape != (*truth_valid.shape, pred['output_camera_id'].shape[1])):
+        raise ValueError('certified stereo UV must use sparse query, time and camera axes')
+    losses, errors, counts = [], [], []
+    for bi in range(len(known)):
+        if not known[bi].any():
+            continue
+        times = pred['query_time_idx'][bi]
+        source_times = sampled['source_time_idx'][bi]
+        source_time_matches = source_times[:, None] == times[None, :]
+        anchors = source_time_matches.long().argmax(-1)
+        nodes = torch.arange(len(anchors), device=anchors.device)
+        base = truth[bi, nodes, anchors]
+        source_slots = queries[bi, :, 0].long().clamp(0, pred['camera_id'].shape[1] - 1)
+        anchored = (query_valid[bi] & (pred['camera_id'][bi, source_slots] == 0)
+                    & source_time_matches.any(-1)
+                    & truth_valid[bi, nodes, anchors] & torch.isfinite(base).all(-1))
+        for ti, time in enumerate(times):
+            slots = (camera_known[bi] & (pred['time_idx'][bi] == time)
+                     & (pred['camera_id'][bi] == 1)).nonzero().flatten()
+            for si in slots:
+                ci = (pred['output_camera_id'][bi] == 1).nonzero().flatten()
+                if len(ci) != 1:
+                    raise ValueError('ambiguous certified stereo camera axis')
+                uv = measured[bi, :, ti, ci[0]]
+                valid = (known[bi, :, ti, ci[0]] & anchored & (source_times < time)
+                         & truth_valid[bi, :, ti] & ((uv >= 0) & (uv <= canvas - 1)).all(-1))
+                ids = valid.nonzero().flatten()
+                if not len(ids):
+                    continue
+                k = target['K'][bi, si].detach().float()
+                c = target['c2w'][bi, si].detach().float()
+                if not torch.isfinite(k).all() or not torch.isfinite(c).all():
+                    raise ValueError('nonfinite GT camera marked valid')
+                _, gz, finite = _project(truth[bi, ids, ti], k, c)
+                admit = finite & (gz > 0)
+                ids, gz = ids[admit], gz[admit]
+                if len(ids) > options.max_points_per_view:
+                    selected = torch.linspace(0, len(ids)-1, options.max_points_per_view,
+                                              device=ids.device).long()
+                    ids, gz = ids[selected], gz[selected]
+                if not len(ids):
+                    continue
+                points = base[ids] + sampled['displacement'][bi, ids, ti].float()
+                if not torch.isfinite(points).all():
+                    raise FloatingPointError('nonfinite displacement on certified stereo match')
+                loss, error, _ = _robust_projection(points, uv[ids], gz, k, c, canvas, options)
+                losses.append(loss)
+                errors.append(error)
+                counts.append(len(ids))
+    if not losses:
+        return {}, zero
+    loss = torch.stack(losses).mean()
+    values = (loss, zero.new_tensor(sum(counts)), torch.stack(errors).mean())
+    return dict(zip(_STEREO_METRICS, values)), options.stereo_certified_weight * loss
 
 
 def reprojection_losses(pred, target, options):
@@ -45,9 +134,15 @@ def reprojection_losses(pred, target, options):
     the camera remain penalized without division by almost zero. Existing
     depth/XYZ objectives still supervise metric scale. Source self-projection
     is excluded because unprojection followed by projection is an identity.
+
+    Sparse query pixels use the GT canvas from the dense trajectory or depth
+    shape. With no such raster label, they use the prediction canvas.
     """
     zero = pred['trajectory'].new_zeros((), dtype=torch.float32)
-    if not options.weight:
+    stereo_enabled = options.stereo_certified_weight and {
+        'sparse_stereo_uv', 'sparse_stereo_uv_valid', 'sparse_trajectory_is_pseudo',
+    } <= set(target)
+    if not (options.weight or stereo_enabled):
         return {}, zero
     required = {'K', 'c2w', 'camera_id', 'time_idx', 'query_time_idx',
                 'source_obs_idx', 'source_valid', 'observation_valid', 'output_camera_id'}
@@ -114,22 +209,16 @@ def reprojection_losses(pred, target, options):
         points = estimate[ids]
         if not all(torch.isfinite(x).all() for x in (points, pe, pk)):
             raise FloatingPointError('nonfinite prediction on admitted reprojection GT')
-        pc = (points-pe[:3, 3]) @ pe[:3, :3]
-        positive_floor = options.minimum_depth_ratio*gz
-        projected = pc @ pk.T
-        puv = projected[:, :2]/pc[:, 2:].clamp_min(positive_floor[:, None])
-        residual = (puv-uv)/canvas
-        robust = F.huber_loss(residual, torch.zeros_like(residual), reduction='none',
-                              delta=options.huber_delta)/options.huber_delta
-        positive_penalty = (positive_floor-pc[:, 2]).clamp_min(0)/gz
-        losses.append(robust.mean()+positive_penalty.mean())
-        errors.append((puv-uv).norm(dim=-1).mean().detach())
-        behinds.append((pc[:, 2] <= 0).float().mean().detach())
+        loss, error, behind = _robust_projection(points, uv, gz, pk, pe, canvas, options)
+        losses.append(loss)
+        errors.append(error)
+        behinds.append(behind)
         counts.append(len(ids))
         (sparse_counts if sparse else dense_counts).append(len(ids))
 
+    stereo_terms, stereo_total = {}, zero
     with torch.autocast(device_type=zero.device.type, enabled=False):
-        if {'trajectory', 'trajectory_valid'} <= set(target):
+        if options.weight and {'trajectory', 'trajectory_valid'} <= set(target):
             for bi in range(len(observed)):
                 for qi, source in enumerate(pred['source_obs_idx'][bi]):
                     if not pred['source_valid'][bi, qi]:
@@ -148,12 +237,22 @@ def reprojection_losses(pred, target, options):
                                 known = target['visibility_valid'][bi, qi, ti, ci[0]]
                             add_view(pred['trajectory'][bi, qi, ti], target['trajectory'][bi, qi, ti],
                                      target['trajectory_valid'][bi, qi, ti], bi, si, visible, known)
-        if {'sparse_trajectory', 'sparse_trajectory_valid', 'sparse_queries'} <= set(target):
-            from .tasks import sample_tracks
-            sampled = sample_tracks(pred, target['sparse_queries'].to(zero.device), strict=False)
-            for bi in range(len(observed)):
-                valid_query = sampled['query_valid'][bi] & target['sparse_query_valid'][bi].bool()
-                sources = target['sparse_queries'][bi, :, 0].long()
+        if (options.weight or stereo_enabled) and {'sparse_trajectory', 'sparse_trajectory_valid', 'sparse_queries'} <= set(target):
+            from .tasks import rescale_queries_to_prediction, sample_tracks
+            queries = target['sparse_queries'].to(zero.device)
+            gt_query_valid = target['sparse_query_valid'].bool()
+            queries, gt_query_valid = rescale_queries_to_prediction(
+                queries, (pred_h, pred_w), target, gt_query_valid,
+            )
+            sampled = sample_tracks(pred, queries, strict=False)
+            if stereo_enabled:
+                stereo_terms, stereo_total = _certified_stereo_losses(
+                    pred, target, sampled, queries, sampled['query_valid'] & gt_query_valid,
+                    camera_known, canvas, zero, options,
+                )
+            for bi in range(len(observed) if options.weight else 0):
+                valid_query = sampled['query_valid'][bi] & gt_query_valid[bi]
+                sources = queries[bi, :, 0].long()
                 for ti, time in enumerate(pred['query_time_idx'][bi]):
                     slots = (camera_known[bi] & (pred['time_idx'][bi] == time)).nonzero().flatten()
                     for si in slots:
@@ -168,8 +267,11 @@ def reprojection_losses(pred, target, options):
                         add_view(sampled['trajectory'][bi, :, ti], target['sparse_trajectory'][bi, :, ti],
                                  valid, bi, si, visible, known, sparse=True)
     if not losses:
-        return {}, zero
+        return stereo_terms, stereo_total
     loss = torch.stack(losses).mean()
     values = (loss, zero.new_tensor(sum(counts)), zero.new_tensor(len(counts)), torch.stack(errors).mean(),
               torch.stack(behinds).mean(), zero.new_tensor(sum(dense_counts)), zero.new_tensor(sum(sparse_counts)))
-    return dict(zip(REPROJECTION_METRICS, values)), options.weight*loss
+    total = options.weight * loss
+    if stereo_terms:
+        total = total + stereo_total
+    return {**dict(zip(_GEOMETRY_METRICS, values)), **stereo_terms}, total

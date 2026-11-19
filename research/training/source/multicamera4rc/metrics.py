@@ -2,7 +2,7 @@
 
 import torch
 
-from .losses import _resize_scalar, _valid_mask
+from .losses import _resize_scalar, _resize_vector, _valid_mask
 from .calibration_metrics import intrinsics_metrics
 
 
@@ -94,7 +94,8 @@ def dense_metrics(prediction, target):
         task_valid = target.get(f"{name}_valid", valid).bool()
         if not task_valid.any():
             continue
-        error = torch.linalg.vector_norm(prediction[name].float()-target[name].float(), dim=-1)
+        estimate = _resize_vector(prediction[name], tuple(target[name].shape[-3:-1])).float()
+        error = torch.linalg.vector_norm(estimate-target[name].float(), dim=-1)
         if task_valid.any():
             metrics[f"{name}_epe_normalized"] = mean(error, task_valid)
         if (task_valid & temporal).any():
@@ -114,7 +115,8 @@ def dense_metrics(prediction, target):
         metrics["depth_abs_rel"] = mean(depth_error/target["depth"].float().clamp_min(1e-8), depth_valid)
     if "base_points" in prediction and depth_valid.any():
         base = target["ray"][..., 3:]+target["depth"][..., None]*target["ray"][..., :3]
-        error = torch.linalg.vector_norm(prediction["base_points"].float()-base, dim=-1)
+        pred_base = _resize_vector(prediction["base_points"], tuple(target["depth"].shape[-2:])).float()
+        error = torch.linalg.vector_norm(pred_base-base, dim=-1)
         metrics["base_epe_normalized"] = mean(error, depth_valid)
 
     if times.shape[1] > 1 and target.get("displacement_valid", valid).any():
@@ -123,7 +125,8 @@ def dense_metrics(prediction, target):
         if (dt <= 0).any():
             raise ValueError("velocity metrics require unique physical frame indices")
         index = order[:, None, :, None, None, None].expand_as(target["displacement"])
-        residual = (prediction["displacement"].float()-target["displacement"].float()).gather(2, index)
+        pred_disp = _resize_vector(prediction["displacement"], tuple(target["displacement"].shape[-3:-1])).float()
+        residual = (pred_disp-target["displacement"].float()).gather(2, index)
         error = torch.linalg.vector_norm(residual.diff(dim=2)/dt[:, None, :, None, None, None], dim=-1)
         mask = target.get("displacement_valid", valid).bool().gather(2, index[..., 0])
         fg = foreground.gather(2, index[..., 0])
@@ -162,7 +165,8 @@ def dense_metrics(prediction, target):
     if "visibility" in target and "visibility" in prediction:
         mask = torch.broadcast_to(target["visibility_valid"].bool(), target["visibility"].shape)
         label = target["visibility"].bool()[mask]
-        estimate = prediction["visibility"].float()[mask] >= .5
+        vis_pred = _resize_scalar(prediction["visibility"], tuple(target["visibility"].shape[-2:])).float()
+        estimate = vis_pred[mask] >= .5
         tp = (estimate & label).sum().float()
         fp = (estimate & ~label).sum().float()
         fn = (~estimate & label).sum().float()

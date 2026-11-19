@@ -69,6 +69,9 @@ class Stereo4DAdapter(BaseAdapter):
                 images.append(cv2.cvtColor(image,cv2.COLOR_BGR2RGB))
         finally:cap.release()
         gray=[cv2.cvtColor(x,cv2.COLOR_RGB2GRAY) for x in images];certified=np.zeros_like(valid);errors=[]
+        # Keep each validated temporal edge; endpoint membership alone does
+        # not establish a reliable correspondence through a different edge.
+        left_temporal_edges=np.zeros((len(ids)-1, valid.shape[1]), dtype=bool) if self.stereo else None
         # Source correspondences are checked independently on RGB. This is a
         # conservative pseudo-label quality gate, not an occlusion annotation.
         for a in range(len(ids)-1):
@@ -80,6 +83,8 @@ class Stereo4DAdapter(BaseAdapter):
             error=np.linalg.norm(nxt[:,0]-guess[:,0],axis=-1);fb=np.linalg.norm(back[:,0]-q[:,0],axis=-1)
             good=status[:,0].astype(bool)&back_status[:,0].astype(bool)&(error<=self.tolerance)&(fb<=1.)
             certified[a,keep[good]]=True;certified[b,keep[good]]=True;errors.extend(error[good].tolist())
+            if left_temporal_edges is not None:
+                left_temporal_edges[a,keep[good]]=True
         selected=np.flatnonzero(certified.any(0))[:self.max_tracks]
         if len(selected)<16:raise InvalidClipError('insufficient RGB-checked Stereo4D source correspondences')
         world=world[:,selected];valid=valid[:,selected];uv=uv[:,selected];certified=certified[:,selected]
@@ -92,9 +97,9 @@ class Stereo4DAdapter(BaseAdapter):
             depths=None,normals=None,trajs_3d_world=world,trajs_2d=uv,valids=valid,visibs=certified,
             visibility_valids=certified,intrinsics=np.repeat(K[None],len(ids),axis=0),extrinsics=c2w.astype(np.float32),metadata=metadata)
 
-        return self._add_right_eye(clip, row, ids) if self.stereo else clip
+        return self._add_right_eye(clip, row, ids, left_temporal_edges[:,selected]) if self.stereo else clip
 
-    def _add_right_eye(self, clip, row, ids):
+    def _add_right_eye(self, clip, row, ids, left_temporal_edges):
         # Official track_optimization.py computes Z = f * 0.063 / disparity.
         # Rectified axes coincide; the right centre is +X in the left frame.
         right_pose = clip.extrinsics.copy()
@@ -113,6 +118,7 @@ class Stereo4DAdapter(BaseAdapter):
         matcher=cv2.StereoSGBM_create(minDisparity=0,numDisparities=128,blockSize=5,
             P1=8*25,P2=32*25,disp12MaxDiff=1,uniquenessRatio=12,speckleWindowSize=50,speckleRange=2)
         certified=np.zeros_like(clip.valids);residuals=[]
+        observed_right_uv=np.zeros_like(uv, dtype=np.float32)
         for t in range(len(ids)):
             left=cv2.cvtColor(clip.images[t],cv2.COLOR_RGB2GRAY);right=cv2.cvtColor(images[t],cv2.COLOR_RGB2GRAY)
             left_uv=clip.trajs_2d[t]
@@ -130,6 +136,7 @@ class Stereo4DAdapter(BaseAdapter):
             good=status[:,0].astype(bool)&bs[:,0].astype(bool)&(np.linalg.norm(back[:,0]-q[:,0],axis=-1)<=1)
             good &= (abs(nxt[:,0,1]-q[:,0,1])<=1)&(abs(q[:,0,0]-nxt[:,0,0]-d)<=1.5)&(error<=1.5)
             certified[t,keep[good]]=True;residuals.extend(error[good].tolist())
+            observed_right_uv[t,keep[good]]=nxt[good,0]
         if certified.sum()<32 or certified.any(0).sum()<16:
             raise InvalidClipError('insufficient independently RGB-verified right-eye queries')
         count=len(ids);left_source=clip.visibs.copy()
@@ -143,5 +150,7 @@ class Stereo4DAdapter(BaseAdapter):
         clip.metadata.update(slot_camera=np.repeat([0,1],count),time_idx=ids.tolist()*2,
             frame_indices=ids.tolist()*2,track_source_valid=clip.visibs.copy(),stereo_baseline_m=.063,
             stereo_scale_kind='official_fixed_baseline_pseudo_metric',right_source_error_px=residuals,
-            right_source_check='independent SGBM and forward-backward LK; 1.5px GT residual gate')
+            right_source_check='independent SGBM and forward-backward LK; 1.5px pseudo projection residual gate',
+            stereo_right_lk_uv=observed_right_uv, stereo_right_lk_valid=certified,
+            stereo_left_temporal_edges=left_temporal_edges)
         return clip

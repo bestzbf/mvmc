@@ -81,3 +81,88 @@ def test_absolute_pseudo_tracks_remove_only_marked_base_gradients(monkeypatch):
     torch.testing.assert_close(output[0][1], output[1][1], rtol=0, atol=0)
     assert 'pseudo_trajectory_base_gradient_scale' not in control.to_config()
     assert MultiCamera4RCLoss(**gated.to_config()).to_config() == gated.to_config()
+
+
+def test_certified_stereo_uses_measured_pixels_and_only_updates_temporal_motion():
+    from multicamera4rc.datasets.augmentation import crop_sample
+    from multicamera4rc.distributed import _METRICS
+    from multicamera4rc.losses import MultiCamera4RCLoss
+    from multicamera4rc.reprojection import ReprojectionOptions, reprojection_losses
+
+    pose = np.repeat(np.eye(4, dtype=np.float32)[None], 4, axis=0)
+    pose[2:, 0, 3] = .063
+    single_K = np.array([[20., 0, 27.5], [0, 20., 27.5], [0, 0, 1.]], np.float32)
+    k = np.repeat(single_K[None], 4, axis=0)
+    xyz = np.array([[[0., 0, 2.], [0., 0, 2.]],
+                    [[.2, 0, 2.], [.2, 0, 2.]]] * 2, np.float32)
+    camera = xyz - pose[:, None, :3, 3]
+    uv = camera[..., :2] / camera[..., 2:] * 20 + 27.5
+    valid = np.ones((4, 2), bool)
+    # The RGB-matched endpoint deliberately differs from the projected pseudo XYZ.
+    right_rgb = uv[2:].copy()
+    right_rgb[1, :, 0] += 0.75
+    clip = UnifiedClip(
+        dataset_name='stereo4d', sequence_name='stereo_fixture', frame_paths=None,
+        images=[np.zeros((56, 56, 3), np.uint8)] * 4, depths=None, normals=None,
+        trajs_3d_world=xyz, trajs_2d=uv, valids=valid, visibs=valid,
+        intrinsics=k, extrinsics=pose, visibility_valids=valid,
+        metadata=dict(extrinsics_convention='c2w', frame_indices=[0, 2, 0, 2], time_idx=[0, 2, 0, 2],
+                      slot_camera=[0, 0, 1, 1], supervision_kind='camera_tracks',
+                      stereo_right_lk_uv=right_rgb, stereo_right_lk_valid=valid[2:],
+                      stereo_left_temporal_edges=np.array([[True, False]])),
+    )
+    sample = prepare_clip(clip, image_mode='native', all_track_queries=True, include_visibility=False)
+    attach_camera_tracks_recipe(clip, sample)
+    structural = sample["targets"]
+    mask = structural["sparse_stereo_uv_valid"]
+    assert mask.nonzero().tolist() == [[0, 1, 1]]
+    torch.testing.assert_close(structural["sparse_stereo_uv"][mask][0], torch.from_numpy(right_rgb[1, 0]))
+    dropped = crop_sample(sample, [[0, 0, 28, 28]] * 4)
+    assert not dropped["targets"]["sparse_stereo_uv_valid"].any()
+    sample = crop_sample(sample, [[8, 8, 28, 28]] * 2 + [[10, 11, 28, 28]] * 2)
+    assert not sample["targets"]["sparse_visibility_valid"].any()
+    assert sample["targets"]["sparse_stereo_uv_valid"].sum() == 1
+    updated_uv = torch.from_numpy(right_rgb[1, 0]) - torch.tensor([11., 10.])
+    torch.testing.assert_close(sample["targets"]["sparse_stereo_uv"][0, 1, 1], updated_uv)
+
+    idx = torch.tensor([[0]])
+    batch = collate_adapter_samples([sample])
+    target = materialize_dense_targets(batch, idx)
+    # Match the 3D pseudo trajectory exactly. The observed RGB error must
+    # still be 0.75 px, proving this isn't a self-reprojection objective.
+    delta = target['sparse_displacement'][0, 0].view(1, 1, 2, 1, 1, 3)
+    delta = delta.expand(1, 1, 2, 28, 28, 3).clone().requires_grad_()
+    anchor = torch.randn_like(delta).requires_grad_()
+    pK = target['K'].clone().requires_grad_()
+    pc2w = target['c2w'].clone().requires_grad_()
+    pred = dict(trajectory=anchor + delta, displacement=delta,
+                motion_confidence=torch.ones_like(delta[..., 0]),
+                K=pK, c2w=pc2w, camera_id=batch['camera_id'], time_idx=batch['time_idx'],
+                query_time_idx=batch['query_time_idx'], source_obs_idx=idx,
+                source_time_idx=torch.tensor([[0]]), observation_valid=batch['observation_valid'],
+                source_valid=torch.ones_like(idx, dtype=torch.bool), output_camera_id=torch.tensor([[0, 1]]))
+    terms, disabled = reprojection_losses(pred, target, ReprojectionOptions(weight=.05))
+    assert not terms and disabled == 0
+    default_config = MultiCamera4RCLoss(reprojection_options={'weight': .05}).to_config()
+    assert 'stereo_certified_weight' not in default_config['reprojection_options']
+    configured = MultiCamera4RCLoss(reprojection_options={'stereo_certified_weight': .02})
+    options = configured.to_config()['reprojection_options']
+    assert options['weight'] == 0 and options['stereo_certified_weight'] == .02
+    terms, loss = reprojection_losses(
+        pred, target, ReprojectionOptions(**options)
+    )
+    assert terms['joint_reprojection_stereo_pixels'] == 1
+    assert all(metric in _METRICS for metric in terms)
+    torch.testing.assert_close(terms['joint_reprojection_stereo_epe_px'], torch.tensor(.75))
+    assert loss > 0
+    loss.backward()
+    assert delta.grad is not None and torch.isfinite(delta.grad).all() and delta.grad[:, :, 1].abs().sum() > 0
+    assert not delta.grad[:, :, 0].any()
+    assert anchor.grad is None and pK.grad is None and pc2w.grad is None
+
+    # Check the production loss entry point too; no visibility head is present.
+    options = {'stereo_certified_weight': .02}
+    motion_weights = dict.fromkeys(MultiCamera4RCLoss().weights, 0.)
+    complete = MultiCamera4RCLoss(weights=motion_weights, reprojection_options=options)(pred, target)
+    torch.testing.assert_close(complete['loss'], loss.detach())
+    assert not complete['sparse_visibility'].item()

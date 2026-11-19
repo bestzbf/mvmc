@@ -277,6 +277,17 @@ def crop_sample(sample, boxes):
                     known[:,ti,ci] &= (~old | geometry_valid[:,ti])
                     visibility[:,ti,ci] = old & geometry_valid[:,ti] & inside
             target.update(sparse_visibility=visibility,sparse_visibility_valid=known)
+        if 'sparse_stereo_uv' in target:
+            rgb_uv = target['sparse_stereo_uv'].clone()
+            rgb_valid = target['sparse_stereo_uv_valid'] & retained[:,None,None]
+            for ci,camera in enumerate(sample['camera_id'].unique(sorted=True)):
+                # Every observation in a camera uses the same ROI.
+                slot = int((sample['camera_id'] == camera).nonzero()[0,0])
+                xy = rgb_uv[:,:,ci] - boxes[slot,[1,0]].to(rgb_uv)
+                inside = ((xy >= 0) & (xy <= xy.new_tensor((w-1,h-1)))).all(-1)
+                rgb_valid[:,:,ci] &= inside
+                rgb_uv[:,:,ci] = torch.where(rgb_valid[:,:,ci,None], xy, 0)
+            target.update(sparse_stereo_uv=rgb_uv,sparse_stereo_uv_valid=rgb_valid)
     out['targets']=target
     out['augmentation']=dict(kind='integer_camera_roi_v1',applied=True,boxes=boxes.tolist(),
                              source_hw=[height,width],content_hw=[h,w],output_hw=[hp,wp])

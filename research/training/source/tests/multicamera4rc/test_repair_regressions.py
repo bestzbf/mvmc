@@ -112,3 +112,99 @@ def test_reprojection_cross_resolution_scales_pred_k_and_resizes_trajectory():
     loss_err.backward()
     for name in ("trajectory", "K", "c2w"):
         assert torch.isfinite(pred_err[name].grad).all() and pred_err[name].grad.abs().sum() > 0
+
+
+def _sparse_reprojection_case(gt_hw, gt_uv=None):
+    pred_hw = (3, 4)
+    k_pred_single = torch.tensor(
+        [[4.0, 0.0, 1.5], [0.0, 4.0, 1.0], [0.0, 0.0, 1.0]]
+    )
+    sx, sy = gt_hw[1] / pred_hw[1], gt_hw[0] / pred_hw[0]
+    resize = torch.tensor([[sx, 0.0, (sx - 1.0) / 2.0],
+                           [0.0, sy, (sy - 1.0) / 2.0],
+                           [0.0, 0.0, 1.0]])
+    k_gt_single = resize @ k_pred_single
+    k_pred = k_pred_single.expand(1, 2, 3, 3).clone()
+    k_gt = k_gt_single.expand(1, 2, 3, 3).clone()
+    c2w = torch.eye(4).expand(1, 2, 4, 4).clone()
+    # Camera 1 (the query source) has identity pose and observes a plane at Z=2.
+    xyz = unproject_depth(torch.full((1, 2, *pred_hw), 2.), k_pred, c2w)
+    xyz = xyz[:, 1:2, None].expand(1, 1, 2, *pred_hw, 3).clone()
+    if gt_uv is None:
+        gt_uv = ((torch.tensor([1.0, 1.0]) + 0.5)
+                 * torch.tensor([sx, sy]) - 0.5).tolist()
+    fx, fy = k_gt_single[0, 0], k_gt_single[1, 1]
+    cx, cy = k_gt_single[0, 2], k_gt_single[1, 2]
+    u, v = gt_uv
+    point = torch.tensor([2 * (u - cx) / fx, 2 * (v - cy) / fy, 2.])
+    pred = dict(
+        trajectory=xyz,
+        displacement=torch.zeros_like(xyz),
+        motion_confidence=torch.ones(xyz.shape[:-1]),
+        K=k_pred,
+        c2w=c2w.clone(),
+        camera_id=torch.tensor([[7, 7]]),
+        time_idx=torch.tensor([[0, 9]]),
+        query_time_idx=torch.tensor([[0, 9]]),
+        source_obs_idx=torch.tensor([[1]]),
+        source_time_idx=torch.tensor([[9]]),
+        source_valid=torch.ones(1, 1, dtype=torch.bool),
+        observation_valid=torch.ones(1, 2, dtype=torch.bool),
+        output_camera_id=torch.tensor([[7]]),
+    )
+    target = dict(
+        K=k_gt,
+        c2w=c2w,
+        depth=torch.full((1, 2, *gt_hw), 2.),
+        sparse_queries=torch.tensor([[[1., u, v]]]),
+        sparse_query_valid=torch.ones(1, 1, dtype=torch.bool),
+        sparse_trajectory=point.expand(1, 1, 2, 3).clone(),
+        sparse_trajectory_valid=torch.ones(1, 1, 2, dtype=torch.bool),
+        sparse_visibility=torch.ones(1, 1, 2, 1),
+        sparse_visibility_valid=torch.ones(1, 1, 2, 1, dtype=torch.bool),
+    )
+    return pred, target
+
+
+@pytest.mark.parametrize("device", [
+    "cpu",
+    pytest.param("cuda", marks=pytest.mark.skipif(not torch.cuda.is_available(), reason="requires CUDA")),
+])
+@pytest.mark.parametrize(("gt_hw", "gt_uv", "expected_epe"), [
+    pytest.param((3, 4), None, 0., id="same-canvas"),
+    pytest.param((6, 12), None, 0., id="gt-larger"),
+    pytest.param((2, 3), None, 0., id="gt-smaller"),
+    pytest.param((6, 12), (0., 2.5), 1., id="gt-edge"),
+    pytest.param((2, 3), (-0.1, 0.5), None, id="outside-gt"),
+])
+def test_sparse_reprojection_scales_query_pixels_to_prediction_canvas(device, gt_hw, gt_uv, expected_epe):
+    pred, target = _sparse_reprojection_case(gt_hw, gt_uv)
+    if device != "cpu":
+        pred = {key: value.to(device) if torch.is_tensor(value) else value for key, value in pred.items()}
+        target = {key: value.to(device) if torch.is_tensor(value) else value for key, value in target.items()}
+    original_queries = target["sparse_queries"].clone()
+    options = ReprojectionOptions(weight=0.1)
+    terms, loss = reprojection_losses(pred, target, options)
+    torch.testing.assert_close(target["sparse_queries"], original_queries, rtol=0, atol=0)
+    if expected_epe is None:
+        assert not terms and loss.item() == 0
+        return
+    assert terms["joint_reprojection_sparse_pixels"] == 1
+    assert terms["joint_reprojection_dense_pixels"] == 0
+    assert terms["joint_reprojection_epe_px"].item() == pytest.approx(expected_epe, abs=1e-5)
+    if expected_epe == 0:
+        assert loss.item() == pytest.approx(0., abs=1e-6)
+
+    # A known shift must change the target projection and survive backprop.
+    pred["trajectory"] = pred["trajectory"] + 0.125 * torch.tensor(
+        [1., 0., 0.], device=pred["trajectory"].device
+    )
+    for name in ("trajectory", "K", "c2w"):
+        pred[name].requires_grad_()
+    terms, loss = reprojection_losses(pred, target, options)
+    epe_shift = target["K"][0, 1, 0, 0].item() * 0.125 / 2.
+    assert terms["joint_reprojection_epe_px"].item() == pytest.approx(expected_epe + epe_shift, abs=1e-5)
+    loss.backward()
+    for name in ("trajectory", "K", "c2w"):
+        grad = pred[name].grad
+        assert torch.isfinite(grad).all() and grad.abs().sum() > 0

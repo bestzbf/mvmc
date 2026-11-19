@@ -703,7 +703,8 @@ def collate_adapter_samples(batch):
     observation_fields.update({"dense_segmentation", "dense_pair_delta", "dense_pair_valid", "dense_pair_time"})
     observation_fields.update({"dense_syn4d_face_map", "dense_syn4d_environment", "dense_motion_source_valid",
                                "dense_syn4d_content_hw"})
-    visibility_fields = {"sparse_visibility", "sparse_visibility_valid"}
+    visibility_fields = {"sparse_visibility", "sparse_visibility_valid",
+                         "sparse_stereo_uv", "sparse_stereo_uv_valid"}
     for key in sorted(keys):
         values = []
         for sample in batch:

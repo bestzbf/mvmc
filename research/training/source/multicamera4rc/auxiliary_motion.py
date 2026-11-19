@@ -34,7 +34,7 @@ def auxiliary_motion_losses(pred, target, options):
     Pseudo residuals inside their measured uncertainty band have zero gradient.
     A low loss on pseudo labels is not an independent accuracy measurement.
     """
-    from .tasks import sample_tracks
+    from .tasks import rescale_queries_to_prediction, sample_tracks
     zero = pred['displacement'].sum()*0.
     total = zero; terms = {}; supervised = False
     for prefix, weight, uncertain in [('joint_motion', options.joint_weight, False),
@@ -56,9 +56,14 @@ def auxiliary_motion_losses(pred, target, options):
             raise ValueError('auxiliary targets must be finite; confidence must lie in [0,1]')
         if not queries.shape[1] or not (valid & query_valid[..., None] & (confidence > 0)).any():
             continue
-        sampled = sample_tracks(pred, queries, strict=False)
+        scaled_queries, scaled_query_valid = queries, query_valid
+        if 'trajectory' in pred:
+            scaled_queries, scaled_query_valid = rescale_queries_to_prediction(
+                queries, pred['trajectory'].shape[-3:-1], target, query_valid
+            )
+        sampled = sample_tracks(pred, scaled_queries, strict=False)
         cross_time = sampled['source_time_idx'][..., None] != pred['query_time_idx'][:, None]
-        valid = valid & query_valid[..., None] & sampled['query_valid'][..., None] & cross_time & (confidence > 0)
+        valid = valid & scaled_query_valid[..., None] & sampled['query_valid'][..., None] & cross_time & (confidence > 0)
         if sampled['displacement'].shape != truth.shape:
             raise ValueError('auxiliary motion time/point axes disagree with predictions')
         if not valid.any():

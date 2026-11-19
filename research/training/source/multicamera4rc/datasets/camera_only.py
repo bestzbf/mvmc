@@ -65,6 +65,12 @@ def attach_camera_tracks_recipe(clip, sample):
     _attach_camera_recipe(clip, sample, kind='camera_tracks')
     sample['targets'].update({k:v for k,v in sparse.items() if k.startswith('sparse_')})
     sample['targets']['sparse_visibility_valid'].zero_()
+    # RGB matches used by the optional stereo reprojection loss are not BCE
+    # labels. Keep empty tensors on the monocular route for batched collation.
+    if 'sparse_stereo_uv' not in sparse:
+        mask = sparse['sparse_visibility_valid']
+        sample['targets'].update(sparse_stereo_uv=sparse['sparse_queries'].new_zeros((*mask.shape, 2)),
+                                 sparse_stereo_uv_valid=torch.zeros_like(mask))
     sample['targets']['dense_sparse_tracks_scale'] = scale
 
 
