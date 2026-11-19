@@ -17,10 +17,16 @@ from ..geometry import unproject_depth
 from ..metadata import gather_observations
 
 
-def _world(uv, depth, K, E):
+def _convention(clip):
+    metadata = getattr(clip, "metadata", None) or {}
+    convention = metadata.get("extrinsics_convention", metadata.get("pose_convention", "w2c"))
+    return {"world_to_camera": "w2c", "camera_to_world": "c2w"}.get(convention, convention)
+
+
+def _world(uv, depth, K, E, convention="w2c"):
     pixels = np.concatenate((uv, np.ones((*uv.shape[:-1], 1))), -1)
     camera = (pixels @ np.linalg.inv(K).T) * depth[..., None]
-    C = np.linalg.inv(E)
+    C = np.asarray(E, np.float64) if convention == "c2w" else np.linalg.inv(E)
     return camera @ C[:3, :3].T + C[:3, 3]
 
 
@@ -41,6 +47,7 @@ def replica_pairs(clip):
     frames = clip.metadata["frame_numbers"]
     indices = {int(f): i for i, f in enumerate(frames)}
     K, E = np.asarray(clip.intrinsics), np.asarray(clip.extrinsics)
+    convention = _convention(clip)
     depths = [np.asarray(d, np.float32) for d in clip.depths]
     kernel = np.ones((3, 3), np.uint8)
 
@@ -58,7 +65,7 @@ def replica_pairs(clip):
     for s, frame in enumerate(frames):
         h, w = depths[s].shape
         y, x = np.indices((h, w)); uv = np.stack((x, y), -1).astype(np.float32)
-        world0 = _world(uv, depths[s], K[s], E[s])
+        world0 = _world(uv, depths[s], K[s], E[s], convention)
         row = []
         for direction, step, reverse in (("forward", 1, "backward"), ("backward", -1, "forward")):
             t = indices.get(int(frame)+step)
@@ -99,7 +106,7 @@ def replica_pairs(clip):
             cycle = np.linalg.norm(composition, axis=-1) <= 1.+.01*np.linalg.norm(flow, axis=-1)
             valid = (m > 0) & (sample((b > 0).astype(np.uint8), coords, True) > 0)
             valid &= inside & safe[s] & (sample(safe[t].astype(np.uint8), coords, True) > 0) & (z > 0) & np.isfinite(z) & cycle
-            delta = _world(coords, z, K[t], E[t]) - world0
+            delta = _world(coords, z, K[t], E[t], convention) - world0
             valid &= np.isfinite(delta).all(-1)
             row.append((t, np.where(valid[..., None], delta, 0).astype(np.float32), valid))
         result.append(row)
@@ -113,13 +120,14 @@ def vkitti_pairs(clip, adapter):
     indices = {(c, int(f)): i for i, (c, f) in enumerate(zip(cameras, frames))}
     base = adapter.seq_to_dir[clip.sequence_name]/"frames"
     K, E = np.asarray(clip.intrinsics), np.asarray(clip.extrinsics)
+    convention = _convention(clip)
     result = []
     for s, frame in enumerate(frames):
         d = np.asarray(clip.depths[s], np.float32); h, w = d.shape
         y, x = np.indices((h, w)); uv = np.stack((x, y), -1)
         pixels = np.concatenate((uv, np.ones((h, w, 1))), -1)
         cam0 = (pixels @ np.linalg.inv(K[s]).T)*d[..., None]
-        world0 = _world(uv, d, K[s], E[s])
+        world0 = _world(uv, d, K[s], E[s], convention)
         row = []
         for step, sfdir, sfprefix, fdir, fprefix in (
                 (1, "forwardSceneFlow", "sceneFlow", "forwardFlow", "flow"),
@@ -136,7 +144,7 @@ def vkitti_pairs(clip, adapter):
             if raw.shape != (h, w, 3) or optical.shape != raw.shape or raw.dtype != np.uint16 or optical.dtype != np.uint16:
                 raise ValueError("VKITTI scene-flow encoding must be native RGB16")
             sf = (2.*raw[..., ::-1].astype(np.float64)/65535.-1.)*10.
-            C1 = np.linalg.inv(E[t])
+            C1 = np.asarray(E[t], np.float64) if convention == "c2w" else np.linalg.inv(E[t])
             end = (cam0+sf) @ C1[:3, :3].T + C1[:3, 3]
             delta = end-world0
             valid = (d > 0) & (d < 655.35) & (optical[..., 0] > 0)
@@ -171,17 +179,22 @@ def attach_partial_dense_recipe(clip, sample, *, kind, image_mode, adapter=None)
     times = torch.full((S, 2), -1, dtype=torch.long)
     if kind not in ("geometry", "geometry_tracks", "pointodyssey_tracks"):
         pairs = replica_pairs(clip) if kind == "replica_flow" else vkitti_pairs(clip, adapter)
-        # ``replica_pairs`` and ``vkitti_pairs`` return deltas in the
-        # canonical world/reference gauge.  ``materialize_partial_dense_targets``
-        # adds them to the world-space base points below, so applying the first
-        # camera rotation here would rotate a world vector a second time.
+        metadata = getattr(clip, "metadata", None) or {}
+        valid_slot = metadata.get("valid_slot")
+        ref_slot = int(np.flatnonzero(np.asarray(valid_slot, dtype=bool))[0]) if valid_slot is not None else 0
+        E = np.asarray(clip.extrinsics[ref_slot], np.float64)
+        if _convention(clip) == "c2w":
+            E = np.linalg.inv(E)
+        # ``replica_pairs`` and ``vkitti_pairs`` return deltas in the raw
+        # dataset world frame, whereas ``prepare_clip`` transforms ``c2w`` and
+        # base points into observation zero's reference camera gauge.
         for s, row in enumerate(pairs):
             for d, pair in enumerate(row):
                 if pair is None:
                     continue
                 t, dv, mask = pair
                 content = _content_size(*mask.shape, (H, W), image_mode)
-                dv = np.where(mask[..., None], dv, 0).astype(np.float32)
+                dv = np.where(mask[..., None], dv @ E[:3, :3].T, 0).astype(np.float32)
                 xyz = torch.from_numpy(dv).permute(2, 0, 1)[None]
                 m = torch.from_numpy(mask.copy())[None, None].float()
                 if tuple(mask.shape) != content:

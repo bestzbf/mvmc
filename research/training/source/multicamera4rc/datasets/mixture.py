@@ -155,10 +155,6 @@ class MultiCameraAdapterDataset(Dataset):
             if name == "stereo4d":
                 if supervision != "dense" or kind != "camera_tracks":
                     raise ValueError("Stereo4D requires camera_tracks supervision")
-            elif name == "stereo4d":
-                if cameras not in (1, 2):raise ValueError("Stereo4D needs one or two cameras")
-                if "stereo" in options and options["stereo"] != (cameras == 2):raise ValueError("Stereo4D stereo/layout mismatch")
-                options["stereo"] = cameras == 2
             elif name == "kinoptic_human":
                 if supervision != "dense" or kind != "kinoptic_human":
                     raise ValueError("Kinoptic human packs require separated kinoptic_human supervision")

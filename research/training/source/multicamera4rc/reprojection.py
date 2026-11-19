@@ -55,7 +55,13 @@ def reprojection_losses(pred, target, options):
         raise ValueError('reprojection needs camera/time/source metadata')
     if not {'K', 'c2w'} <= set(target):
         return {}, zero
-    height, width = pred['trajectory'].shape[-3:-1]
+    pred_h, pred_w = pred['trajectory'].shape[-3:-1]
+    if 'trajectory' in target and target['trajectory'].ndim == 6:
+        height, width = target['trajectory'].shape[-3:-1]
+    elif 'depth' in target and target['depth'].ndim == 4:
+        height, width = target['depth'].shape[-2:]
+    else:
+        height, width = pred_h, pred_w
     canvas = zero.new_tensor([width, height])
     options_depth = QueryPairOptions()
     losses, errors, behinds, counts, dense_counts, sparse_counts = [], [], [], [], [], []
@@ -63,7 +69,18 @@ def reprojection_losses(pred, target, options):
     camera_known = observed & target.get('camera_valid', observed).bool()
     camera_known &= target.get('camera_translation_valid', observed).bool()
 
+    def _scale_pred_K(pk):
+        if (height, width) == (pred_h, pred_w):
+            return pk
+        ratio = pk.new_tensor((width / pred_w, height / pred_h, 1.0))
+        scaled = (pk * ratio[:, None]).clone()
+        scaled[:2, 2] += (ratio[:2] - 1.0) / 2.0
+        return scaled
+
     def add_view(estimate, truth, valid, bi, si, visible=None, visibility_known=None, *, sparse=False):
+        if not sparse and estimate.shape[-3:-1] != truth.shape[-3:-1]:
+            from .losses import _resize_vector
+            estimate = _resize_vector(estimate, tuple(truth.shape[-3:-1]))
         # Flatten only this source/time, never form S*Q*T*H*W camera copies.
         truth = truth.detach().float().reshape(-1, 3)
         estimate = estimate.float().reshape(-1, 3)
@@ -93,7 +110,7 @@ def reprojection_losses(pred, target, options):
                 ids, uv, gz = ids[selected], uv[selected], gz[selected]
         if not len(ids):
             return
-        pe, pk = pred['c2w'][bi, si].float(), pred['K'][bi, si].float()
+        pe, pk = pred['c2w'][bi, si].float(), _scale_pred_K(pred['K'][bi, si].float())
         points = estimate[ids]
         if not all(torch.isfinite(x).all() for x in (points, pe, pk)):
             raise FloatingPointError('nonfinite prediction on admitted reprojection GT')

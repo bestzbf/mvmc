@@ -228,8 +228,11 @@ def crop_sample(sample, boxes):
         target['dense_syn4d_content_hw']=torch.tensor([[h,w]]*s,dtype=torch.long)
         target['dense_motion_source_valid']=(target['dense_syn4d_face_map']>=0).flatten(1).any(1)
 
+    has_kinoptic_queries = False
+    kinoptic_source_valid = torch.zeros(s, dtype=torch.bool)
     for prefix in ('joint_motion','pseudo_motion'):
         if prefix+'_queries' not in target:continue
+        has_kinoptic_queries = True
         queries=target[prefix+'_queries'].clone();source=queries[:,0].long()
         queries[:,1]-=boxes[source,1].to(queries)
         queries[:,2]-=boxes[source,0].to(queries)
@@ -237,6 +240,11 @@ def crop_sample(sample, boxes):
         target[prefix+'_queries']=queries
         target[prefix+'_query_valid']=target[prefix+'_query_valid']&retained
         target[prefix+'_valid']=target[prefix+'_valid']&retained[:,None]
+        active = target[prefix+'_query_valid']
+        if active.any():
+            kinoptic_source_valid[source[active]] = True
+    if has_kinoptic_queries and 'dense_motion_source_valid' in target:
+        target['dense_motion_source_valid'] = kinoptic_source_valid
 
     if 'sparse_queries' in target:
         queries=target['sparse_queries'].clone()
